@@ -106,7 +106,7 @@ serverudp.on('close',function(){
   console.log('Socket is closed !');
 });
 
-serverudp.bind(7800);
+serverudp.bind(3020);
 
 setTimeout(function(){
 serverudp.close();
