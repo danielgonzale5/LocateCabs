@@ -80,10 +80,10 @@ DatosGPS = msg.toString().split(";")
     var date = new Date(unix_timestamp);
     var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     var month = months[date.getMonth()];
-    var hours = date.getHours().toLocaleString();
+    var hours = date.toLocaleTimeString('en-GB',{timeZone:'America/Bogota'});
     var minutes = "0" + date.getMinutes();
     var seconds = "0" + date.getSeconds();
-    var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    var formattedTime = hours.substr(0,2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
     var tot1 = formattedTime.toString() ; 
     var tot2 =  date.getDate().toString()+"/"+  month.toString()+"/"+date.getFullYear().toString() ; 
 
