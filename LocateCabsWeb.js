@@ -1,7 +1,6 @@
 var app    = require('express')();
 var server = require('http').createServer(app);
-//const fetch = require('node-fetch')
-//require('dotenv').config()
+require('dotenv').config()
 const port = 3000
 var DatosGPS;
 var Datatotalgps
@@ -28,9 +27,9 @@ const mysql = require('mysql')
 var data;
 
 var con = mysql.createConnection({
-    host: "database-locatecabs.cglibizn6is8.us-east-2.rds.amazonaws.com",
-    username: "admin",
-    password: "locatecabs12345",
+    host: process.env.DB_HOST,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASS,
     database: 'locatecabs'
 })   
 

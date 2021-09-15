@@ -16,7 +16,6 @@
     "express-myconnection": "^1.0.4",
     "mysql": "^2.18.1",
     "no-ip": "^1.0.2",
-    "node-fetch": "^3.0.0",
     "socket.io": "^4.2.0"
   },
   "devDependencies": {
