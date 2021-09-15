@@ -12,6 +12,7 @@ app.get('/', function(req, res) {
 });
 
 
+
 var io = require('socket.io')(server);
 
 server.listen(port, function(error) {
@@ -22,13 +23,22 @@ server.listen(port, function(error) {
     }
 })
 
+dotenv = require('dotenv');
+const result = dotenv.config();
+
+if (result.error) {
+  throw result.error;
+}
+
+console.log(result.parsed)
+
 const mysql = require('mysql')
 var data;
 
 var con = mysql.createConnection({
-    host: 'database-locatecabs.crn2rslxhr6l.us-east-2.rds.amazonaws.com',
-    user: 'admin',
-    password: 'locatecabs12345',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
     database: 'locatecabs'
 })   
 
