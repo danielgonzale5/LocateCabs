@@ -1,6 +1,5 @@
 var app    = require('express')();
 var server = require('http').createServer(app);
-require('dotenv').config()
 
 const port = 3000
 var DatosGPS;
@@ -25,6 +24,16 @@ server.listen(port, function(error) {
     }
 })
 
+//Variables de entorno
+dotenv = require('dotenv')
+
+const result = dotenv.config()
+
+if (result.error) {
+  throw result.error
+}
+
+console.log(result.parsed)
 
 
 const mysql = require('mysql')
