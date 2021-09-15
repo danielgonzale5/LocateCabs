@@ -14,6 +14,7 @@ app.get('/', function(req, res) {
 });
 
 
+
 var io = require('socket.io')(server);
 
 server.listen(port, function(error) {
@@ -24,12 +25,14 @@ server.listen(port, function(error) {
     }
 })
 
+
+
 const mysql = require('mysql')
 var data;
 
 var con = mysql.createConnection({
     host: process.env.DB_HOST,
-    username: process.env.DB_USER,
+    user: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: 'locatecabs'
 })   
