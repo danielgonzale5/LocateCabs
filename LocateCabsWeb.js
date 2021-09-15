@@ -1,6 +1,6 @@
 var app    = require('express')();
 var server = require('http').createServer(app);
-require('dotenv').config()
+//require('dotenv').config()
 
 const port = 3000
 var DatosGPS;
