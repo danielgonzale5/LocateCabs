@@ -28,9 +28,9 @@ const mysql = require('mysql')
 var data;
 
 var con = mysql.createConnection({
-    host: process.env.DB_HOST,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
+    host: "database-locatecabs.cglibizn6is8.us-east-2.rds.amazonaws.com",
+    username: "admin",
+    password: "locatecabs12345",
     database: 'locatecabs'
 })   
 
