@@ -1,6 +1,5 @@
 var app    = require('express')();
 var server = require('http').createServer(app);
-require('dotenv').config()
 
 const port = 3000
 var DatosGPS;
@@ -25,15 +24,25 @@ server.listen(port, function(error) {
     }
 })
 
+//Variables de entorno
+dotenv = require('dotenv')
+
+const entvar = dotenv.config()
+
+if (entvar.error) {
+  throw result.error
+}
+
+console.log(entvar.parsed)
 
 
 const mysql = require('mysql')
 var data;
 
 var con = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
+    host: entvar.parsed.DB_HOST,
+    user: entvar.parsed.DB_USER,
+    password: entvar.parsed.DB_PASS,
     database: 'locatecabs'
 })   
 
