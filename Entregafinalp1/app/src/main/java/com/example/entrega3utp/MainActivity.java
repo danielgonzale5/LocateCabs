@@ -14,17 +14,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
-import android.view.View;
+
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -33,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
     TextView mensaje1; //especificamos que vamos a usar un objeto de la clase textview para que la app pueda escribir en el
     TextView mensaje2;
     EditText numip;   // especificamos que vamos a usar un objeto de la clase EditText para que podamos escribir en el
-    EditText dirserv;
+    Switch estado ;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         //en java lo siguiente se llama casting el cual es un objeto que se pasa a otro y que concerva la herencia .
         numip = (EditText) findViewById(R.id.num);  //Debemos buscar el objeto por medio de una Id y nos ayuda la clase R y nos sirve como puente de comunicación .
-        dirserv = (EditText) findViewById(R.id.dir);
-
+        estado = findViewById(R.id.switch1);
 
 
     }
@@ -125,15 +122,33 @@ public class MainActivity extends AppCompatActivity {
             mensaje1.setText(Text);
             this.mainActivity.setLocation(loc);
 
-            /////
+
             if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.INTERNET}, 1000);
             }
 
-            MessageSender ms = new MessageSender() ;
+
+            MessageSender m = new MessageSender();
+            MessageSender m1 = new MessageSender();
+            MessageSender m2 = new MessageSender();
+            MessageSender m3 = new MessageSender();
+            MessageSender m4 = new MessageSender();
+
+
             String mensaje = numip.getText().toString()+";"+loc.getLatitude()+";"+loc.getLongitude()+";"+loc.getTime()+";";
-            String direc = dirserv.getText().toString();
-            ms.execute(mensaje, direc);
+
+
+
+
+            if (estado.isChecked()) {
+
+                m.execute(mensaje,"bozoyuko.ddns.net");
+                m1.execute(mensaje,"danielgonzale5.ddns.net");
+                m2.execute(mensaje,"towarlexerddns.ddns.net");
+                m3.execute(mensaje,"juanmartinez.ddns.net");
+                m4.execute(mensaje,"leocamargo.ddns.net");
+
+            }
         }
 
 

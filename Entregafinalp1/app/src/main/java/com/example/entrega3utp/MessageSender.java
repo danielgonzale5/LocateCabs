@@ -18,11 +18,11 @@ public class MessageSender extends AsyncTask<String, Void, Void> {
 
     protected Void doInBackground(String...voids) {
         String message = voids[0];
-        String direc = voids[1];
+        String direct = voids[1];
 
         try {
             socket = new DatagramSocket();
-            DatagramPacket packet = new DatagramPacket(message.getBytes(StandardCharsets.UTF_8), message.length(), InetAddress.getByName(direc), 3020);
+            DatagramPacket packet = new DatagramPacket(message.getBytes(StandardCharsets.UTF_8), message.length(), InetAddress.getByName(direct), 3020);
             socket.send(packet);
             socket.close();
 
@@ -34,3 +34,4 @@ public class MessageSender extends AsyncTask<String, Void, Void> {
 
 
 }
+

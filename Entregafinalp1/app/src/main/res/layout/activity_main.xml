@@ -7,17 +7,6 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="152dp"
-        android:text="introduzca dirección destino:"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
         android:id="@+id/mensaje_id2"
         android:layout_width="329dp"
         android:layout_height="71dp"
@@ -40,20 +29,6 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/dir"
-        android:layout_width="325dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="64dp"
-        android:ems="10"
-        android:hint="Dirección de servidor"
-        android:inputType="textPersonName"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.581"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -135,5 +110,15 @@
         app:layout_constraintTop_toBottomOf="@+id/mensaje_id2"
         app:layout_constraintVertical_bias="0.444"
         tools:layout_editor_absoluteX="0dp" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="171dp"
+        android:layout_height="31dp"
+        android:layout_marginBottom="108dp"
+        android:text="Envio"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
