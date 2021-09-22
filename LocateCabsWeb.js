@@ -132,8 +132,8 @@ con.query('SELECT * FROM gps ORDER BY idGPS DESC LIMIT 1', function(err, rows) {
   data = JSON.parse(JSON.stringify(rows))
   var dataGPS = Object.values(data[0])
   var DataUsu = dataGPS[1]
-  var DataLat = parseFloat(dataGPS[2]).toFixed(5)
-  var DataLong = parseFloat(dataGPS[3]).toFixed(5)
+  var DataLat = parseFloat(dataGPS[2]).toFixed(6)
+  var DataLong = parseFloat(dataGPS[3]).toFixed(6)
   var DataFecha = dataGPS[4]
   var DataHora = dataGPS[5]
 
