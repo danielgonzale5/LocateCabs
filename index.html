@@ -171,8 +171,7 @@
                                     circle.setLatLng(new L.LatLng(lat, long))}
 
               function poly(){
-              polylines = L.polyline(polylinePoints);
-              polylines.addTo(mymap);  }
+              polylines = L.polyline(polylinePoints); }
 
               function Markerlabel() { circle_marker.bindPopup(usuario,{autoPan: false}).openPopup()}
               
@@ -211,7 +210,7 @@
                      valor = document.getElementById('switch').checked ;
                    
                          if (valor){ 
-                            
+                            mymap.remove(polylines);
                             mymap.addLayer(circle_marker);
                             mymap.addLayer(circle);
                             setInterval(setMarker, 1000);
@@ -219,12 +218,10 @@
                           }
                           
                             else{
-                              mymap.removeLayer(circle_marker);
+                            polylines.addTo(mymap);  
+                            mymap.removeLayer(circle_marker);
                             mymap.removeLayer(circle);
-                            setInterval(poly, 1000);
-
-                            
-                           
+                            setInterval(poly, 1000);            
                             } 
 
                              if (old_user != usuario){ 
