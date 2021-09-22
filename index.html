@@ -155,15 +155,16 @@
               function setMarker() {circle_marker.setLatLng(new L.LatLng(lat, long)) ;
                 circle.setLatLng(new L.LatLng(lat, long))}
               function Markerlabel() { circle_marker.bindPopup(usuario,{autoPan: false}).openPopup()}
-              
+              function poly() {var polylines = L.polyline(latlngs, {color: 'red'}).addTo(map);}
               let mymap = L.map('mapid').setView([lat,long], 18);
               var circle = L.circle([lat,long], {radius: 50, color: '#FCFF42'}).addTo(mymap);
               var circle_marker = L.circleMarker([lat,long],{color: '#CA2049'}) .bindPopup("No Data",{autoPan: false}).addTo(mymap);  
               circle_marker.openPopup();
+
               L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
               attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-               maxZoom: 19 }).addTo(mymap);
-               
+               maxZoom: 19 }).addTo(mymap); ;
+
               document.addEventListener('DOMContentLoaded', function() {
 
                   old_user = "-";
@@ -178,7 +179,27 @@
                       lat  =  data.DataLat ;  
                       long  =  data.DataLong ;
                       usuario = data.DataUsu ;
-                      setInterval(setMarker, 3000); 
+
+                      var latlngs = [];
+                      var latlngsTemp = [];
+
+                      polylinePoints = [[startlat,startlong],[finallat, finallong]];
+                      valor = document.getElementById('switch').checked
+                      console.log(valor)
+                      
+                      if (valor) {
+                        mymap.removeLayer(circle_marker);
+                        mymap.removeLayer(circle);
+                        latlngsTemp = [lat,long];
+                        latlngs.push(latlngsTemp);
+                        poly();
+                      } else {
+                        mymap.addLayer(circle_marker);
+                        mymap.addLayer(circle);
+                        latlngs = [];
+                        setInterval(setMarker, 3000); 
+                      }
+
                       if (old_user != usuario){ 
                         setTimeout(function(){MapsetUbication(), Markerlabel()}, 1000);
                         old_user = usuario;  
