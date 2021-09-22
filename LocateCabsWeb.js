@@ -24,7 +24,8 @@ server.listen(port, function(error) {
     }
 })
 
-//Variables de entorno
+//Variables de entorno - Método de seguridad
+
 dotenv = require('dotenv')
 
 const entvar = dotenv.config()
@@ -86,8 +87,6 @@ serverudp.send(msg,info.port,'localhost',function(error){
 
 DatosGPS = msg.toString().split(";")
  
-
-
 // 
     Datatotalgps = parseFloat(DatosGPS[3])
     let unix_timestamp = Datatotalgps
@@ -103,9 +102,7 @@ DatosGPS = msg.toString().split(";")
 
 //
 
-
-
-
+//Insertar información en DB
 var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, Fecha, Hora) VALUES ?";
 var values = [
     [DatosGPS[0],DatosGPS[1], DatosGPS[2],tot2,tot1],];
@@ -126,6 +123,11 @@ setTimeout(function(){
 serverudp.close();
 },999999999);
 
+//Consulta a DB
+
+
+
+
 setInterval(function(){
 con.query('SELECT * FROM gps ORDER BY idGPS DESC LIMIT 1', function(err, rows) {
   if(err) throw err;
@@ -144,21 +146,16 @@ con.query('SELECT * FROM gps ORDER BY idGPS DESC LIMIT 1', function(err, rows) {
       DataFecha: DataFecha,
       DataHora: DataHora
 
-      
   });
 
 io.on('connection', function(socket) {
   socket.emit('change', {
-    DataUsu :DataUsu, 
+      DataUsu :DataUsu, 
       DataLat: DataLat,
       DataLong: DataLong,
       DataFecha: DataFecha,
       DataHora: DataHora 
   });
-
-
-  
-
 
 });
 });

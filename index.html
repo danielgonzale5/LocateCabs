@@ -29,7 +29,7 @@
             text-align: left;
             margin-bottom: 50px;
         }
-        #mapid { height: 500px; }
+
         button {
             background-color: rgb(76, 175, 80);
             border: none;
@@ -42,18 +42,56 @@
         }
 
         button:hover {
-
           background-color: rgb(62, 142, 65)
-
         }
 
         button:active{
-
           background-color: rgb(62, 142, 65);
           /* box-shadow: 0 5px #666; */
           transform: translateY(4px);
-
         }
+        
+        .sw{
+         display: inline-block;
+         width: 100px;
+         height: 35px;
+         background: darkgray;
+         border-radius: 100px;
+         cursor: pointer;
+         position: relative;
+         transition: .2s;
+         ali
+        }
+
+        .sw::after{
+          content: "";
+          display: block;
+          width: 25px;
+          height: 25px;
+          background-color:snow;
+          border-radius: 100px;
+          position: absolute;
+          top:5px;
+          left:4px;
+          transition:.2s;
+        }
+
+        #switch:checked + .sw::after {
+          left: 70px;
+        }
+        
+        #switch:checked + .sw{
+          left: 0px;
+          background-color:rgb(62, 142, 65);
+        }
+
+        #switch {
+          display: none;
+        }
+
+        #mapid { height: 350px; }
+      
+
       </style>
        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -64,12 +102,13 @@
 </head>
 <body>
     <div>
-      <header style="text-align: center"><b><i>LocateCabs</b></i></header>
+      <header style="text-align:center"><b><i>Locate Cabs</b></i></header>
     </div>
 
     <div>
       <label>Usuario</label>
-      <label id="UsuID"style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
+      <label id="UsuID" 
+      style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
     </div>
 
     <div>
@@ -81,6 +120,7 @@
       <label>Longitud</label>
       <label id="LongID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
     </div>
+
     <div>
       <label>Fecha</label>
       <label id="FechaID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
@@ -89,11 +129,21 @@
         <label>Hora</label>
         <label id="HoraID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
     </div>
-    <div id="mapid"></div>
 
     <div>
+     <mapid>
+       <div id="mapid"></div>  
+     </mapid>
+    </div>
 
+
+    <div>
       <button onclick="MapAutoCenter(), Markerlabel()">Auto-center Camera</button>
+    </div>
+
+    <div class="switch-container">
+    <input type="Checkbox" id="switch">
+    <label for="switch" class="sw"></label>
     </div>
 
 
