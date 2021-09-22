@@ -54,6 +54,50 @@
           transform: translateY(4px);
 
         }
+
+        .sw{
+         display: inline-block;
+         width: 100px;
+         height: 35px;
+         background: darkgray;
+         border-radius: 100px;
+         cursor: pointer;
+         position: relative;
+         transition: .2s;
+
+
+
+        }
+
+        .sw::after{
+          content: "";
+          display: block;
+          width: 25px;
+          height: 25px;
+          background-color:snow;
+          border-radius: 100px;
+          position: absolute;
+          top:5px;
+          left:4px;
+          transition:.2s;
+
+
+          
+        }
+
+        #switch:checked + .sw::after {
+          left: 70px;
+        }
+        
+        #switch:checked + .sw{
+          left: 0px;
+          background-color:rgb(62, 142, 65);
+        }
+
+        #switch {
+          display: none;
+        }
+
       </style>
        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -96,12 +140,30 @@
       <button onclick="MapAutoCenter(), Markerlabel()">Auto-center Camera</button>
     </div>
 
+    <div class="switch-container">
+    
+      <input type="Checkbox" id="switch">
+      <label for="switch" class="sw"></label>
+    
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
    
               let lat = 0;
               let long = 0 ; 
+
+              let startlat = 11.001553497558204 ;
+              let startlong= -74.81903784370151; 
+              let finallat = 10.987312354635225 ;
+              let finallong= -74.78493675796004 ;
+
+              var polylinePoints
+
+              function poly(){
+              polylines = L.polyline(polylinePoints);
+              polylines.addTo(mymap);  }
+
               function MapsetUbication() {mymap.setView(new L.LatLng(lat,long));}
               function MapAutoCenter() {mymap.setView(new L.LatLng(lat,long), 18);}
               function setMarker() {circle_marker.setLatLng(new L.LatLng(lat, long)) ;
@@ -131,6 +193,27 @@
                       long  =  data.DataLong ;
                       usuario = data.DataUsu ;
                       setInterval(setMarker, 3000); 
+
+
+                      polylinePoints = [[startlat,startlong],[finallat, finallong]];
+                      valor = document.getElementById('switch').checked ;
+
+                      if (valor){ 
+                            
+                            mymap.addLayer(circle_marker);
+                            mymap.addLayer(circle);
+                            setInterval(setMarker, 1000);
+                          
+                          }
+                          
+                            else{
+                              mymap.removeLayer(circle_marker);
+                              mymap.removeLayer(circle);
+                              setInterval(poly, 1000);
+
+                            } 
+
+
                       if (old_user != usuario){ 
                         setTimeout(function(){MapsetUbication(), Markerlabel()}, 1000);
                         old_user = usuario;  
