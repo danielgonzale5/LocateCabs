@@ -102,10 +102,19 @@
    
               let lat = 0;
               let long = 0 ; 
+
+              let startlat = 11.001553497558204 ;
+              let startlong= -74.81903784370151; 
+              let finallat = 10.987312354635225 ;
+              let finallong= -74.78493675796004 ;
+
+              var polylinePoints = [[startlat,startlong],[finallat, finallong]];
+
               function MapsetUbication() {mymap.setView(new L.LatLng(lat,long));}
               function MapAutoCenter() {mymap.setView(new L.LatLng(lat,long), 18);}
               function setMarker() {circle_marker.setLatLng(new L.LatLng(lat, long)) ;
                 circle.setLatLng(new L.LatLng(lat, long))}
+              function poly()     {L.polyline(polylinePoints).addTo(mymap);}
               function Markerlabel() { circle_marker.bindPopup(usuario,{autoPan: false}).openPopup()}
               
               let mymap = L.map('mapid').setView([lat,long], 18);
@@ -119,7 +128,10 @@
               document.addEventListener('DOMContentLoaded', function() {
 
                   old_user = "-";
-                  
+    
+      var polyline = L.polyline(polylinePoints).addTo(mymap);      
+            
+
                   io().on('change', function(data) {
                   
                       document.getElementById('UsuID').innerHTML = data.DataUsu;
@@ -138,7 +150,7 @@
                       
                   }); 
             
-                                         
+                  poly() ;                         
               });
 
     </script>
