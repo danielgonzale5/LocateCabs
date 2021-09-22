@@ -54,6 +54,50 @@
           transform: translateY(4px);
 
         }
+
+        .sw{
+         display: inline-block;
+         width: 100px;
+         height: 35px;
+         background: darkgray;
+         border-radius: 100px;
+         cursor: pointer;
+         position: relative;
+         transition: .2s;
+
+
+
+        }
+
+        .sw::after{
+          content: "";
+          display: block;
+          width: 25px;
+          height: 25px;
+          background-color:snow;
+          border-radius: 100px;
+          position: absolute;
+          top:5px;
+          left:4px;
+          transition:.2s;
+
+
+          
+        }
+
+        #switch:checked + .sw::after {
+          left: 70px;
+        }
+        
+        #switch:checked + .sw{
+          left: 0px;
+          background-color:rgb(62, 142, 65);
+        }
+
+        #switch {
+          display: none;
+        }
+
       </style>
        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -96,6 +140,10 @@
       <button onclick="MapAutoCenter(), Markerlabel()">Auto-center Camera</button>
     </div>
 
+    <div class="switch-container">
+      <input type="Checkbox" id="switch">
+      <label for="switch" class="sw"></label>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
