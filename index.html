@@ -161,24 +161,28 @@
               let finallat = 10.987312354635225 ;
               let finallong= -74.78493675796004 ;
 
-              var polylinePoints
+              var polylinePoints;
+              
 
               function MapsetUbication() {mymap.setView(new L.LatLng(lat,long));}
               function MapAutoCenter() {mymap.setView(new L.LatLng(lat,long), 18);}
 
               
               function setMarker() {circle_marker.setLatLng(new L.LatLng(lat, long)) ;
-                                    circle.setLatLng(new L.LatLng(lat, long))}
+                                    circle.setLatLng(new L.LatLng(lat, long)) ; }
+                 
+              var polylines ; 
 
-              function poly(){
-              polylines = L.polyline(polylinePoints); }
+              function poly()     {polylines = L.polyline(polylinePoints).addTo(mymap);
+                                    }
 
               function Markerlabel() { circle_marker.bindPopup(usuario,{autoPan: false}).openPopup()}
               
+
               let mymap = L.map('mapid').setView([lat,long], 18);
               var circle = L.circle([lat,long], {radius: 50, color: '#FCFF42'}).addTo(mymap);
               var circle_marker = L.circleMarker([lat,long],{color: '#CA2049'}) .bindPopup("No Data",{autoPan: false}).addTo(mymap);  
-            
+
               circle_marker.openPopup();
 
               L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -207,22 +211,23 @@
 
 
                       polylinePoints = [[startlat,startlong],[finallat, finallong]];
-                     valor = document.getElementById('switch').checked ;
+                       valor = document.getElementById('switch').checked ;
                    
-                         if (valor){ 
-                            mymap.remove(polylines);
-                            mymap.addLayer(circle_marker);
-                            mymap.addLayer(circle);
-                            setInterval(setMarker, 1000);
-                          
-                          }
-                          
-                            else{
-                            polylines.addTo(mymap);  
+                    if (valor){ 
+                            polylines.addTo(map);
                             mymap.removeLayer(circle_marker);
                             mymap.removeLayer(circle);
-                            setInterval(poly, 1000);            
-                            } 
+                            setInterval(poly, 1000);   
+                            
+                            }
+                          
+                            else{
+                           
+                             mymap.addLayer(circle_marker);
+                             mymap.addLayer(circle);
+                             setInterval(setMarker, 1000);
+                             } 
+
 
                              if (old_user != usuario){ 
                             setTimeout(function(){MapsetUbication(), Markerlabel()}, 1000);
