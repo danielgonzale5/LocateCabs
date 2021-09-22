@@ -212,14 +212,18 @@
                    
                          if (valor){ 
                             
-                            mymap.removeLayer(circle_marker);
-                            mymap.removeLayer(circle);
-                            setInterval(poly, 1000);     }
-                          
-                            else{
                             mymap.addLayer(circle_marker);
                             mymap.addLayer(circle);
                             setInterval(setMarker, 1000);
+                          
+                          }
+                          
+                            else{
+                              mymap.removeLayer(circle_marker);
+                            mymap.removeLayer(circle);
+                            setInterval(poly, 1000);
+
+                            
                            
                             } 
 
