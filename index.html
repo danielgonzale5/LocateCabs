@@ -174,7 +174,7 @@
               var polylines ; 
 
               function poly()     {L.polyline(polylinePoints).addTo(mymap);}
-             function clearpoly () {    map.removeLayer(polylines);}  
+             function clearpoly () {    mymap.removeLayer(polylines);}  
 
               function Markerlabel() { circle_marker.bindPopup(usuario,{autoPan: false}).openPopup()}
               
@@ -225,7 +225,8 @@
                             
                              mymap.addLayer(circle_marker);
                              mymap.addLayer(circle);
-                             setInterval(clearpoly,3000 )  ;
+
+                             setInterval(clearpoly,1000 )  ;
 
                              setInterval(setMarker, 1000);
                              } 
