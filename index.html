@@ -169,9 +169,7 @@
     function setMarker() {
       circle_marker.setLatLng(new L.LatLng(lat, long));
     }
-    function setMarker1() {
-      circle_marker1.setLatLng(new L.LatLng(latlngs[0]));
-    }
+
     //var polylines ; 
 
     function clearpoly() {
@@ -192,8 +190,7 @@
     let mymap = L.map('mapid').setView([lat, long], 18);
     var circle_marker = L.circleMarker([lat, long], { color: '#CA2049' }).bindPopup("No Data", { autoPan: false }).addTo(mymap);
     circle_marker.openPopup();
-    var circle_marker1 = L.circleMarker(latlngs[0], { color: '#FCFF42' }).bindPopup({ autoPan: false }).addTo(mymap);
-    circle_marker1.openPopup();
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
@@ -201,6 +198,7 @@
 
     document.addEventListener('DOMContentLoaded', function () {
       mymap.addLayer(circle_marker);
+
       old_user = "-";
 
       io().on('change', function (data) {
@@ -248,7 +246,6 @@
       }
 
       else {
-        setMarker1();
         setTimeout(startPolyline, 2500);
         setInterval(function () {
           setMarker();
