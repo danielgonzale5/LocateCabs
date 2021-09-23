@@ -166,8 +166,14 @@
     let latlngsTemp = [];
 
     function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
-    function MapAutoCenter() { mymap.setView(new L.LatLng(lat, long), 18); }
 
+    function MapAutoCenter() { 
+      if (document.getElementById('switch').checked){
+        mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
+      } else {
+        mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
+      }   
+    }
 
     function setMarker() {
       circle_marker.setLatLng(new L.LatLng(lat, long));
