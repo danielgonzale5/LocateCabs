@@ -158,14 +158,10 @@
 
     let lat = 0;
     let long = 0;
-
-    let startlat = 11.001553497558204;
-    let startlong = -74.81903784370151;
-    let finallat = 10.987312354635225;
-    let finallong = -74.78493675796004;
-
     var polylinePoints;
     var polyline;
+    var startpoint;
+    var startpoint_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
 
@@ -178,23 +174,30 @@
       circle.setLatLng(new L.LatLng(lat, long));
     }
 
-    //var polylines ; 
+    function Markerlabel() {
+      circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
+    }
+
+    function createStartPoint() { 
+      startpoint= L.marker([lat,long]).addTo(mymap);
+    }
+
+    function startPolyline() {
+      polyline = L.polyline(latlngs).addTo(mymap);
+    }
+
+    function addPolyline() {
+      polyline.setLatLngs(latlngs) 
+      if (!polyline.isEmpty() && polyline.getLatLngs().length==1 && startpoint_was_set==0){
+        setTimeout(createStartPoint(), 1000)
+        startpoint_was_set=1;
+      }    
+
+    }
 
     function clearpoly() {
       polyline.removeFrom(mymap)
     }
-
-    function Markerlabel() {
-      circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
-    }
-    function startPolyline() {
-      polyline = L.polyline(latlngs).addTo(mymap)
-    }
-
-    function addPolyline() {
-      polyline.setLatLngs(latlngs)
-    }
-
 
 
     let mymap = L.map('mapid').setView([lat, long], 18);
@@ -211,8 +214,6 @@
 
 
     document.addEventListener('DOMContentLoaded', function () {
-      mymap.addLayer(circle_marker);
-      mymap.addLayer(circle);
       old_user = "-";
 
       io().on('change', function (data) {
@@ -230,20 +231,14 @@
         finallong = data.DataLong;
         finallat = data.DataLat;
 
-
-
-        polylinePoints = [[startlat, startlong], [finallat, finallong]];
-
         setInterval(setMarker, 1000);
 
         valor = document.getElementById('switch').checked;
         if (valor) {
           setInterval(latlngsTemp = [lat, long], 1000);
           setInterval(latlngs.push(latlngsTemp), 1000);
-          //console.log(latlngs)
         } else {
           latlngs = [];
-          //setInterval(setMarker, 3000);
         }
 
 
@@ -268,19 +263,29 @@
 
       if (valor) {
 
-        setTimeout(clearpoly, 1000);
+        setTimeout(function(){
+          clearpoly();
+          circle.setRadius(50);
+          startpoint.removeFrom(mymap);
+          startpoint_was_set=0;
+        }
+          , 1000)
+
       }
 
       else {
 
-        setTimeout(startPolyline, 2500);
-        setInterval(function () {
-          setMarker();
-          addPolyline()
+        setTimeout(function(){
+          circle.setRadius(0);
+          startPolyline();
         }
           , 1000);
-
-
+        
+        setInterval(function () {
+          setMarker();
+          addPolyline();
+        }
+          , 1000);
 
       }
 
