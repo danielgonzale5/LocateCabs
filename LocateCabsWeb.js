@@ -12,7 +12,9 @@ app.get('/', function(req, res) {
     res.sendfile(dir + '/index.html');
 });
 
-
+app.get('/routing', function(req, res) {
+  res.sendfile(dir + '/index_routingmachine.html');
+});
 
 var io = require('socket.io')(server);
 
