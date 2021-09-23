@@ -245,7 +245,14 @@
         if (old_user != usuario) {
           setTimeout(function () {
             MapsetUbication();
-            Markerlabel()
+            Markerlabel();
+            if (valor) {
+              latlngs = [];
+              startpoint.removeFrom(mymap);
+              startpoint_was_set=0;
+              clearpoly();
+              startPolyline();
+            }
           }
             , 1000);
 
@@ -266,10 +273,11 @@
         setTimeout(function(){
           clearpoly();
           circle.setRadius(50);
+          circle_marker.openPopup();
           startpoint.removeFrom(mymap);
           startpoint_was_set=0;
         }
-          , 1000)
+          , 100)
 
       }
 
