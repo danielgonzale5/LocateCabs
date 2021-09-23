@@ -1,5 +1,6 @@
 var app = require('express')();
 var server = require('http').createServer(app);
+var systemchild = require("child_process");
 
 const port = 3000
 var DatosGPS;
@@ -8,11 +9,18 @@ var udp = require('dgram');
 
 var dir = __dirname;
 
+app.post('/github', function (req, res) {
+  console.log("received")
+  systemchild.exec("cd /home/ubuntu/LocateCabs && git reset --hard && git pull")
+});
+
 app.get('/', function (req, res) {
   res.sendfile(dir + '/index.html');
 });
 
-
+app.get('/routing', function(req, res) {
+  res.sendfile(dir + '/index_routingmachine.html');
+});
 
 var io = require('socket.io')(server);
 
