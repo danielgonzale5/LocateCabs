@@ -158,47 +158,62 @@
 
     let lat = 0;
     let long = 0;
-
+    var polylinePoints;
     var polyline;
+    var startpoint;
+    var startpoint_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
 
     function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
     function MapAutoCenter() { mymap.setView(new L.LatLng(lat, long), 18); }
 
+
     function setMarker() {
       circle_marker.setLatLng(new L.LatLng(lat, long));
-    }
-
-    //var polylines ; 
-
-    function clearpoly() {
-      polyline.removeFrom(mymap)
+      circle.setLatLng(new L.LatLng(lat, long));
     }
 
     function Markerlabel() {
       circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
     }
+
+    function createStartPoint() { 
+      startpoint= L.marker([lat,long]).addTo(mymap);
+    }
+
     function startPolyline() {
-      polyline = L.polyline(latlngs).addTo(mymap)
+      polyline = L.polyline(latlngs).addTo(mymap);
     }
 
     function addPolyline() {
-      polyline.setLatLngs(latlngs)
+      polyline.setLatLngs(latlngs) 
+      if (!polyline.isEmpty() && polyline.getLatLngs().length==1 && startpoint_was_set==0){
+        setTimeout(createStartPoint(), 1000)
+        startpoint_was_set=1;
+      }    
+
     }
 
+    function clearpoly() {
+      polyline.removeFrom(mymap)
+    }
+
+
     let mymap = L.map('mapid').setView([lat, long], 18);
+    var circle = L.circle([lat, long], { radius: 50, color: '#FCFF42' }).addTo(mymap);
     var circle_marker = L.circleMarker([lat, long], { color: '#CA2049' }).bindPopup("No Data", { autoPan: false }).addTo(mymap);
     circle_marker.openPopup();
+
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);
 
-    document.addEventListener('DOMContentLoaded', function () {
-      mymap.addLayer(circle_marker);
 
+
+    document.addEventListener('DOMContentLoaded', function () {
       old_user = "-";
 
       io().on('change', function (data) {
@@ -210,6 +225,7 @@
         document.getElementById('HoraID').innerHTML = data.DataHora;
         lat = data.DataLat;
         long = data.DataLong;
+
 
         usuario = data.DataUsu;
         finallong = data.DataLong;
@@ -224,14 +240,25 @@
         } else {
           latlngs = [];
         }
-        
+
+
         if (old_user != usuario) {
           setTimeout(function () {
             MapsetUbication();
-            Markerlabel()
-          }, 1000);
+            Markerlabel();
+            if (valor) {
+              latlngs = [];
+              startpoint.removeFrom(mymap);
+              startpoint_was_set=0;
+              clearpoly();
+              startPolyline();
+            }
+          }
+            , 1000);
+
           old_user = usuario;
         }
+
 
       });
 
@@ -242,19 +269,36 @@
       valor = document.getElementById('switch').checked;
 
       if (valor) {
-        setTimeout(clearpoly, 1000);
+
+        setTimeout(function(){
+          clearpoly();
+          circle.setRadius(50);
+          circle_marker.openPopup();
+          startpoint.removeFrom(mymap);
+          startpoint_was_set=0;
+        }
+          , 100)
+
       }
 
       else {
-        setTimeout(startPolyline, 2500);
-        setInterval(function () {
-          setMarker();
-          addPolyline()
+
+        setTimeout(function(){
+          circle.setRadius(0);
+          startPolyline();
         }
           , 1000);
+        
+        setInterval(function () {
+          setMarker();
+          addPolyline();
+        }
+          , 1000);
+
       }
 
     }
+
 
   </script>
 
