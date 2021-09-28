@@ -3,7 +3,6 @@ var server = require('http').createServer(app);
 
 const port = 3000
 var DatosGPS;
-var Datatotalgps
 var udp = require('dgram');
 
 var dir = __dirname;
@@ -89,28 +88,12 @@ serverudp.on('message', function (msg, info) {
   DatosGPS = msg.toString().split(";")
 
 
-
-  // 
-  Datatotalgps = parseFloat(DatosGPS[3])
-  let unix_timestamp = Datatotalgps
-  var date = new Date(unix_timestamp);
-  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  var month = months[date.getMonth()];
-  var hours = date.toLocaleTimeString('en-GB', { timeZone: 'America/Bogota' });
-  var minutes = "0" + date.getMinutes();
-  var seconds = "0" + date.getSeconds();
-  var formattedTime = hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-  var tot1 = formattedTime.toString();
-  var tot2 = date.getDate().toString() + "/" + month.toString() + "/" + date.getFullYear().toString();
-
-  //
-
-
+ 
 
 
   var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, Fecha, Hora) VALUES ?";
   var values = [
-    [DatosGPS[0], DatosGPS[1], DatosGPS[2], tot2, tot1],];
+    [DatosGPS[0], DatosGPS[1], DatosGPS[2], DatosGPS[3], "-"],];
   con.query(Imysql, [values], function (err, result) {
     if (err) throw err;
     console.log("Records inserted: " + result.affectedRows);
@@ -136,15 +119,15 @@ setInterval(function () {
     var DataUsu = dataGPS[1]
     var DataLat = parseFloat(dataGPS[2]).toFixed(6)
     var DataLong = parseFloat(dataGPS[3]).toFixed(6)
-    var DataFecha = dataGPS[4]
-    var DataHora = dataGPS[5]
+    var DataTime = parseFloat(dataGPS[4])
+
 
     io.emit('change', {
       DataUsu: DataUsu,
       DataLat: DataLat,
       DataLong: DataLong,
-      DataFecha: DataFecha,
-      DataHora: DataHora
+      DataTime: DataTime,
+
     });
 
     io.on('connection', function (socket) {
@@ -152,8 +135,7 @@ setInterval(function () {
         DataUsu: DataUsu,
         DataLat: DataLat,
         DataLong: DataLong,
-        DataFecha: DataFecha,
-        DataHora: DataHora
+        DataTime: DataTime,
       });
     });
   });

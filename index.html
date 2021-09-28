@@ -228,8 +228,19 @@
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
-        document.getElementById('FechaID').innerHTML = data.DataFecha;
-        document.getElementById('HoraID').innerHTML = data.DataHora;
+
+        var date = new Date(parseFloat(data.DataTime));
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var month = months[date.getMonth()];
+        var hours = date.toLocaleTimeString();
+        var minutes = "0" + date.getMinutes();
+        var seconds = "0" + date.getSeconds();
+        var formattedTime = hours.substr(0,2) + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+        var datofecha =  date.getDate()+"/"+  month+"/"+date.getFullYear() ;
+
+        document.getElementById('FechaID').innerHTML = datofecha;
+        document.getElementById('HoraID').innerHTML = formattedTime;
         lat = data.DataLat;
         long = data.DataLong;
 
