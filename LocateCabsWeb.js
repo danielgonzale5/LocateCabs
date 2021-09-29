@@ -1,11 +1,18 @@
 var app = require('express')();
 var server = require('http').createServer(app);
+var systemchild = require("child_process");
 
 const port = 3000
 var DatosGPS;
+
 var udp = require('dgram');
 
 var dir = __dirname;
+
+app.post('/github', function (req, res) {
+  console.log("received")
+  systemchild.exec("cd /home/ubuntu/LocateCabs && git reset --hard && git pull")
+});
 
 app.get('/', function (req, res) {
   res.sendfile(dir + '/index.html');
@@ -55,9 +62,9 @@ con.connect((err) => {
   }
 })
 
-var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, Fecha, Hora) VALUES ?";
+var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, TimeStamp) VALUES ?";
 var values = [
-  ["-", "-", "-", "-", "-"],
+  ["-", "-", "-", "-"],
 ];
 
 con.query(Imysql, [values], function (err) {
@@ -92,13 +99,9 @@ serverudp.on('message', function (msg, info) {
 
   DatosGPS = msg.toString().split(";")
 
-
- 
-
-
-  var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, Fecha, Hora) VALUES ?";
+  var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, TimeStamp) VALUES ?";
   var values = [
-    [DatosGPS[0], DatosGPS[1], DatosGPS[2], DatosGPS[3], "-"],];
+    [DatosGPS[0], DatosGPS[1], DatosGPS[2], DatosGPS[3]]];
   con.query(Imysql, [values], function (err, result) {
     if (err) throw err;
     console.log("Records inserted: " + result.affectedRows);
