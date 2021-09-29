@@ -15,38 +15,38 @@
     label {
       font-family: Arial;
       font-style: normal;
-      font-size: 120%;
+      font-size: 200%;
       display: inline-block;
       width: 150px;
       text-align: center;
     }
 
     input {
-      font-size: 120%;
+      font-size: 200%;
     }
 
     header {
       /*color: rgb(76, 175, 80);*/
       font-family: Arial;
       font-style: normal;
-      font-size: 300%;
+      font-size: 400%;
       text-align: left;
       margin-bottom: 50px;
     }
 
     #mapid {
-      height: 650px; width:900px;  float: left
+      height: 350px;
     }
 
     button {
       background-color: rgb(76, 175, 80);
       border: none;
       color: white;
-      padding: 12px 27px;
+      padding: 15px 32px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 100%;
+      font-size: 16px;
     }
 
     button:hover {
@@ -104,47 +104,11 @@
     #switch {
       display: none;
     }
-    
-    #switch2:checked+.sw::after {
-      left: 70px;
+
+    .leaflet-control-container .leaflet-routing-container-hide {
+    display: none;
     }
 
-    #switch2:checked+.sw {
-      left: 0px;
-      background-color: rgb(62, 142, 65);
-    }
-
-    #switch2 {
-      display: none;
-    }
-    
-    .divSquare{
-        width:200; padding: 5px 50px 0px 5px;
-    }
-    .CenterButton{
-        width:200; padding: 5px 50px 5px 5px;
-    }
-    .HistoricButton{
-        width:200; padding: 5px 50px 5px 5px;
-    }
-    .Historics{
-        width:200; padding: 5px 50px 5px 5px;
-    }
-    
-    #CenterBS {
-      padding: 5px 5px 5px 5px;     
-      display: inline-block;
-    }
-    
-    #B2 {
-      margin-right: 10px;
-      display: inline;
-    }
-    
-    #S2 {
-      display: inline;
-    }
-        
   </style>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -152,112 +116,66 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin=""></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>  
 </head>
 
-<body style="background-color:white;">
+<body>
   <div>
     <header style="text-align: center"><b><i>LocateCabs</b></i></header>
   </div>
-  <div id="mapid"></div>
-  <div class="divSquare">
-      <h1>Información de Geolocalización</h1>
-  </div>
-  <div class="divSquare">
+
+  <div>
     <label>Usuario</label>
     <label id="UsuID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
   </div>
-  <div class="divSquare">
+
+  <div>
     <label>Latitud</label>
     <label id="LatID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
   </div>
-  <div class="divSquare">
+
+  <div>
     <label>Longitud</label>
     <label id="LongID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
   </div>
-  <div class="divSquare">
+  <div>
     <label>Fecha</label>
     <label id="FechaID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
   </div>
-  <div class="divSquare">
+  <div>
     <label>Hora</label>
     <label id="HoraID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
   </div>
-  <div class="CenterButton;">
+  <div id="mapid"></div>
+
+  <div>
+
     <button onclick="MapAutoCenter(), Markerlabel()">Auto-center Camera</button>
   </div>
-  <div class="switch-container;">
-    <h3>Trazar Polilínea en tiempo real</h3>
+
+  <div class="switch-container">
     <input type="Checkbox" id="switch">
     <label for="switch" onclick="condicional();" class="sw"></label>
   </div>
-  <div class="Historics;">
-      <h3>Consulta de Historicos</h3>
-        <label for="IHist">Inicio:</label>
-        <input type="datetime-local" id="IHist" name="InitialHistoric" value="2021-06-01T00:00" min="2021-06-01T00:00" max="2022-06-01T00:00">
-        <div></div>
-        <label for="FHist">Fin:</label>
-        <input type="datetime-local" id="FHist" name="FinalHistoric" value="2021-06-02T00:00" min="2021-06-01T00:00" max="2022-06-01T00:00">
-  </div>
-  <div id= "CenterBS">
-      <div id= "B2" class="HistoricButton">
-        <button  id ="button2" onclick="MapAutoCenter(), Markerlabel()">Ver Historicos</button>
-      </div>
-      <div id= "S2" class="switch-container;">
-        <input type="Checkbox" id="switch2">
-        <label for="switch2" onclick="condicional();" class="sw"></label>
-      </div>
-  </div>
-  
+
+
   <script src="/socket.io/socket.io.js"></script>
-
-
   <script>
 
     let lat = 0;
     let long = 0;
-    var polylinePoints;
     var polyline;
+    var control; //Routing Machine
     var startpoint;
     var startpoint_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
 
-    var datainicio = document.getElementById('IHist')  ;
-    var datafin = document.getElementById('FHist');
-
-    
-   
-    function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
-
-
-    function normaltounix() {}
-
-
-    window.addEventListener('load',function(){
-       
-      datainicio.addEventListener('change',function() {
-      var uno = new Date(this.value).valueOf()
-      
-       console.log(uno.toString());                   });
-
-      datafin.addEventListener('change',function()    {
-      var dos =   new Date(this.value).valueOf()
-        console.log(dos.toString());                  });
-
-    }) ; 
-    
-
-
-    function MapAutoCenter() { 
-      if (document.getElementById('switch').checked){
-        mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
-      } else {
-        mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
-      }   
+    function MapsetUbication() { 
+      mymap.setView(new L.LatLng(lat, long)); 
     }
-
-
-
+    
     function MapAutoCenter() { 
       if (document.getElementById('switch').checked){
         mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
@@ -276,6 +194,7 @@
     }
 
     function createStartPoint() { 
+      vectorlat=polyline.getLatLngs();
       startpoint= L.marker([lat,long]).addTo(mymap);
     }
 
@@ -289,12 +208,50 @@
         setTimeout(createStartPoint(), 1000)
         startpoint_was_set=1;
       }    
-
+      console.log(polyline.getLatLngs().length);
     }
 
     function clearpoly() {
       polyline.removeFrom(mymap)
     }
+
+    //Routing Macine (OSRM - Open Source Routing Machine)
+
+    let latlngs_routing_extend = [];
+
+    function startRouteService(){
+      control = L.Routing.control({
+        router: L.Routing.mapbox('pk.eyJ1IjoidG93YXJsZXhlciIsImEiOiJja3R3ZTBreXAyaWE2MndvMmJ4dHJuNzByIn0.bTSlek3T0aV_PqhZv_jIxQ', { profile: 'mapbox/walking' }),
+        waypoints: latlngs_routing_extend,
+        routeDragInterval: 3000,
+        show: false,
+        collapsible: false,
+        fitSelectedRoutes: false,
+        addWaypoints: false,
+        draggableWaypoints: false,
+        createMarker: function() { return null; }
+      }).addTo(mymap);
+
+      control._container.style.display = "None";
+
+    }
+
+    function addRouteService(){
+
+      if (startpoint_was_set==1){
+
+        if (latlngs_routing_extend.length==25){
+          latlngs_routing_extend = [];
+          control.addTo(mymap);
+        } else {
+
+          control.setWaypoints(latlngs_routing_extend);
+
+        }
+ 
+      }
+    }  
+      
 
 
     let mymap = L.map('mapid').setView([lat, long], 18);
@@ -303,7 +260,7 @@
     circle_marker.openPopup();
 
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + 'pk.eyJ1IjoidG93YXJsZXhlciIsImEiOiJja3R3ZTBreXAyaWE2MndvMmJ4dHJuNzByIn0.bTSlek3T0aV_PqhZv_jIxQ', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);
@@ -312,25 +269,14 @@
 
     document.addEventListener('DOMContentLoaded', function () {
       old_user = "-";
- 
+
       io().on('change', function (data) {
-     
+
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
-
-        var date = new Date(parseFloat(data.DataTime));
-        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        var month = months[date.getMonth()];
-        var hours = date.toLocaleTimeString();
-        var minutes = "0" + date.getMinutes();
-        var seconds = "0" + date.getSeconds();
-        var formattedTime = hours.substr(0,2) +':'+ minutes.substr(-2) + ':' + seconds.substr(-2);
-
-        var datofecha =  date.getDate()+"/"+  month+"/"+date.getFullYear() ;
-
-        document.getElementById('FechaID').innerHTML = datofecha;
-        document.getElementById('HoraID').innerHTML = formattedTime;
+        document.getElementById('FechaID').innerHTML = data.DataFecha;
+        document.getElementById('HoraID').innerHTML = data.DataHora;
         lat = data.DataLat;
         long = data.DataLong;
 
@@ -343,13 +289,26 @@
 
         valor = document.getElementById('switch').checked;
         if (valor) {
-          
           setInterval(latlngsTemp = [lat, long], 1000);
           setInterval(latlngs.push(latlngsTemp), 1000);
+
+          if (latlngs.length>=26){
+
+            setTimeout(latlngs_routing_extend.push(latlngsTemp), 1000);
+                    
+          } else {
+
+            latlngs_routing_extend = latlngs;
+
+          }
+
+
         } else {
           latlngs = [];
         }
 
+        //Condicional para Routing Machine.
+        
 
         if (old_user != usuario) {
           setTimeout(function () {
@@ -357,10 +316,13 @@
             Markerlabel();
             if (valor) {
               latlngs = [];
+              latlngs_routing_extend = [];
               startpoint.removeFrom(mymap);
               startpoint_was_set=0;
               clearpoly();
+              control.remove();
               startPolyline();
+              startRouteService();
             }
           }
             , 1000);
@@ -378,9 +340,10 @@
       valor = document.getElementById('switch').checked;
 
       if (valor) {
-
         setTimeout(function(){
           clearpoly();
+          latlngs_routing_extend = [];
+          control.remove();
           circle.setRadius(50);
           circle_marker.openPopup();
           startpoint.removeFrom(mymap);
@@ -395,19 +358,21 @@
         setTimeout(function(){
           circle.setRadius(0);
           startPolyline();
+          startRouteService();
         }
           , 1000);
         
         setInterval(function () {
           setMarker();
           addPolyline();
+          addRouteService();
         }
           , 1000);
 
       }
 
     }
-//Hola.
+
 
   </script>
 
