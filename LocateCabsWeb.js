@@ -152,7 +152,7 @@ setInterval(function () {
 
 app.post('/historic', function (req, res) {
   console.log("Historics sended")
-  console.log(request.body);
+  console.log(req.body);
   respone.json({
     status:'success',
     UserData: datausua, 
