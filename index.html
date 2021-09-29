@@ -248,12 +248,15 @@
       var datausua = document.getElementById('iname').value;
       var datainicio = document.getElementById('IHist').value ;
       var datafin = document.getElementById('FHist').value;
-      var uno = new Date(datainicio).valueOf()
-      var dos = new Date(datafin).valueOf()
+      datainicio = new Date(datainicio).valueOf();
+      datafin = new Date(datafin).valueOf() ;
+      datainicio = datainicio.toString() ; 
+      datafin = datafin.toString() ; 
 
       console.log(datausua);
-      console.log(uno.toString()); 
-      console.log(dos.toString());
+      console.log(datainicio); 
+      console.log(datafin);
+
 
      }
     
