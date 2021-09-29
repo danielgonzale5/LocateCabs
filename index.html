@@ -209,9 +209,11 @@
   </div>
   
   <script src="/socket.io/socket.io.js"></script>
+
+
   <script>
-    //hello
-    //Declarar variables.
+
+    
     let lat = 0;
     let long = 0;
     var polylinePoints;
@@ -221,7 +223,31 @@
     let latlngs = [];
     let latlngsTemp = [];
 
+    var datainicio = document.getElementById('IHist')  ;
+    var datafin = document.getElementById('FHist');
+
+    
+   
     function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
+
+
+    function normaltounix() {}
+
+
+    window.addEventListener('load',function(){
+       
+      datainicio.addEventListener('change',function() {
+      var uno = new Date(this.value).valueOf()
+      
+       console.log(uno.toString());                   });
+
+      datafin.addEventListener('change',function()    {
+      var dos =   new Date(this.value).valueOf()
+        console.log(dos.toString());                  });
+
+    }) ; 
+    
+
 
     function MapAutoCenter() { 
       if (document.getElementById('switch').checked){
@@ -230,6 +256,8 @@
         mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
       }   
     }
+
+
 
     function setMarker() {
       circle_marker.setLatLng(new L.LatLng(lat, long));
@@ -277,9 +305,9 @@
 
     document.addEventListener('DOMContentLoaded', function () {
       old_user = "-";
-
+ 
       io().on('change', function (data) {
-
+     
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
@@ -308,6 +336,7 @@
 
         valor = document.getElementById('switch').checked;
         if (valor) {
+          
           setInterval(latlngsTemp = [lat, long], 1000);
           setInterval(latlngs.push(latlngsTemp), 1000);
         } else {
@@ -371,6 +400,7 @@
       }
 
     }
+
 
   </script>
 
