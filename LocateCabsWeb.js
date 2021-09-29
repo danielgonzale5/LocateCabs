@@ -11,7 +11,8 @@ var dir = __dirname;
 
 app.post('/github', function (req, res) {
   console.log("received")
-  systemchild.exec("cd /home/ubuntu/LocateCabs && git reset --hard && git pull")
+  systemchild.exec("cd /home/ubuntu/LocateCabs && git reset --hard &&git pull")
+  systemchild.exec("git pull")
 });
 
 app.get('/', function (req, res) {
