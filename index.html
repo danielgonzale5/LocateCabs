@@ -186,7 +186,7 @@
     <label id="HoraID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
   </div>
   <div class="CenterButton;">
-    <button onclick="">Auto-center Camera</button>
+    <button onclick="MapAutoCenter(), Markerlabel()">Auto-center Camera</button>
   </div>
   <div class="switch-container;">
     <h3>Trazar Polilínea en tiempo real</h3>
@@ -232,8 +232,8 @@
 
   <script>
 
-    let lat = 0;
-    let long = 0;
+    let lat = 10.984719;
+    let long = -74.811302;
     var polylinePoints;
     var polyline;
     var startpoint;
@@ -262,16 +262,6 @@
     
    
     function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
-
-
-
-    function MapAutoCenter() { 
-      if (document.getElementById('switch').checked){
-        mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
-      } else {
-        mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
-      }   
-    }
 
 
 
