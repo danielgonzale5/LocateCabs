@@ -6,12 +6,8 @@ const port = 3000
 var DatosGPS;
 
 var udp = require('dgram');
-const express = require('express');
 
 var dir = __dirname;
-
-//Routing 
-app.use (express.json({limit: '2mb'}));
 
 app.post('/github', function (req, res) {
   console.log("received")
@@ -24,12 +20,6 @@ app.get('/', function (req, res) {
 
 app.get('/routing', function(req, res) {
   res.sendfile(dir + '/index_routingmachine.html');
-});
-
-
-app.post('/historic',function(request, response){
-  console.log("Sended to backend");
-  console.log(request.body);
 });
 
 var io = require('socket.io')(server);
@@ -159,3 +149,29 @@ setInterval(function () {
     });
   });
 }, 3000);
+
+app.post('/historic', function (req, res) {
+  console.log("Historics sended")
+  console.log(request.body);
+  respone.json({
+    status:'success',
+    UserData: datausua, 
+    TSini: dataini,
+    TSfin: datafin
+  });
+  console.log(UserData, TSini, TSfin)
+  con.query("SELECT * FROM gps WHERE Usuario=('"+UserData+"') AND TimeStamp BETWEEN ('"+TSini+"') AND ('"+TSfin+"');", function (err, rows) {
+    if (err) throw err;
+    HistData = JSON.parse(JSON.stringify(rows))
+    var DataHist = Object.values(HistData[0])
+    var DataTimeStamp= DataHist[4]
+    io.emit('timestamp', {
+      DataTimeStamp: DataTimeStamp,
+    });
+    io.on('connection', function (socket) {
+      socket.emit('timestamp', {
+        DataTimeStamp: DataTimeStamp
+      });
+    });
+  });
+});
