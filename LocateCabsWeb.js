@@ -59,6 +59,7 @@ var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, Fecha, Hora) VALUES ?
 var values = [
   ["-", "-", "-", "-", "-"],
 ];
+
 con.query(Imysql, [values], function (err) {
   if (err) throw err;
 });
@@ -67,6 +68,8 @@ con.query(Imysql, [values], function (err) {
 
 // creating a udp server
 var serverudp = udp.createSocket('udp4');
+
+
 
 // emits when any error occurs
 serverudp.on('error', function (error) {
@@ -139,6 +142,7 @@ setInterval(function () {
         DataLong: DataLong,
         DataTime: DataTime,
       });
+      
     });
   });
 }, 3000);

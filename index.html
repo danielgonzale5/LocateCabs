@@ -6,12 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LocateCabs</title>
+
   <style>
+    
     div {
       margin-bottom: 10px;
       text-align: center;
     }
 
+
+   
     label {
       font-family: Arial;
       font-style: normal;
@@ -152,11 +156,20 @@
     <label for="switch" onclick="condicional();" class="sw"></label>
   </div>
 
+  <h3>Consulta de Historicos</h3>
+  <label for="IHist">Inicio:</label>
+  <input type="datetime-local" id="IHist" name="InitialHistoric" value="2021-06-01T00:00:00" min="2021-06-01T00:00:00" max="2100-06-01T00:00:00">
+  <div></div>
+  <label for="FHist">Fin:</label>
+  <input type="datetime-local" id="FHist" name="FinalHistoric" value="2021-06-02T00:00:00" min="2021-06-01T00:00:00" max="2100-06-01T00:00:00">
+  
 
   <script src="/socket.io/socket.io.js"></script>
+
+
   <script>
-    //hello
-    //Declarar variables.
+
+    
     let lat = 0;
     let long = 0;
     var polylinePoints;
@@ -166,7 +179,31 @@
     let latlngs = [];
     let latlngsTemp = [];
 
+    var datainicio = document.getElementById('IHist')  ;
+    var datafin = document.getElementById('FHist');
+
+    
+   
     function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
+
+
+    function normaltounix() {}
+
+
+    window.addEventListener('load',function(){
+       
+      datainicio.addEventListener('change',function() {
+      var uno = new Date(this.value).valueOf()
+      
+       console.log(uno.toString());                   });
+
+      datafin.addEventListener('change',function()    {
+      var dos =   new Date(this.value).valueOf()
+        console.log(dos.toString());                  });
+
+    }) ; 
+    
+
 
     function MapAutoCenter() { 
       if (document.getElementById('switch').checked){
@@ -175,6 +212,8 @@
         mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
       }   
     }
+
+
 
     function setMarker() {
       circle_marker.setLatLng(new L.LatLng(lat, long));
@@ -222,9 +261,9 @@
 
     document.addEventListener('DOMContentLoaded', function () {
       old_user = "-";
-
+ 
       io().on('change', function (data) {
-
+     
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
@@ -253,6 +292,7 @@
 
         valor = document.getElementById('switch').checked;
         if (valor) {
+          
           setInterval(latlngsTemp = [lat, long], 1000);
           setInterval(latlngs.push(latlngsTemp), 1000);
         } else {
@@ -316,7 +356,7 @@
       }
 
     }
-//Hola.
+
 
   </script>
 
