@@ -17,7 +17,7 @@
       font-style: normal;
       font-size: 120%;
       display: inline-block;
-      width: 150px;
+      width: 70px;
       text-align: center;
     }
 
@@ -35,11 +35,11 @@
     }
 
     #mapid {
-      height: 650px; width:900px;  float: left
+      height: 650px; width:1000px;  float: left
     }
 
     button {
-      background-color: rgb(76, 175, 80);
+      background-color: rgb(221, 204, 47);
       border: none;
       color: white;
       padding: 12px 27px;
@@ -51,12 +51,12 @@
 
     button:hover {
 
-      background-color: rgb(62, 142, 65)
+      background-color: rgb(221, 204, 47);
     }
 
     button:active {
 
-      background-color: rgb(62, 142, 65);
+      background-color: rgb(221, 204, 47);
       /* box-shadow: 0 5px #666; */
       transform: translateY(4px);
 
@@ -98,7 +98,7 @@
 
     #switch:checked+.sw {
       left: 0px;
-      background-color: rgb(62, 142, 65);
+      background-color: rgb(221, 204, 47);
     }
 
     #switch {
@@ -111,7 +111,7 @@
 
     #switch2:checked+.sw {
       left: 0px;
-      background-color: rgb(62, 142, 65);
+      background-color: rgb(221, 204, 47);
     }
 
     #switch2 {
@@ -119,16 +119,17 @@
     }
     
     .divSquare{
-        width:200; padding: 5px 50px 0px 5px;
+        width:100; padding: 5px 50px 0px 5px;
     }
+    
     .CenterButton{
-        width:200; padding: 5px 50px 5px 5px;
+        width:100; padding: 5px 50px 5px 5px;
     }
     .HistoricButton{
-        width:200; padding: 5px 50px 5px 5px;
+        width:100; padding: 5px 50px 5px 5px;
     }
     .Historics{
-        width:200; padding: 5px 50px 5px 5px;
+        width:100; padding: 5px 50px 5px 5px;
     }
     
     #CenterBS {
@@ -159,6 +160,10 @@
   <div>
     <header style="text-align: center"><b><i>LocateCabs</b></i></header>
   </div>
+
+
+
+  
   <div id="mapid"></div>
 
   <div class="divSquare">
@@ -240,11 +245,8 @@
     var startpoint_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
-
-   
     
-    
-    function enviarhist (){
+    function enviarhist ()  {
       var datausua = document.getElementById('iname').value;
       var datainicio = document.getElementById('IHist').value ;
       var datafin = document.getElementById('FHist').value;
@@ -252,18 +254,25 @@
       datafin = new Date(datafin).valueOf() ;
       datainicio = datainicio.toString() ; 
       datafin = datafin.toString() ; 
-
       console.log(datausua);
       console.log(datainicio); 
-      console.log(datafin);
+      console.log(datafin);   
+      
+      const info = {datausua, datainicio, datafin};
+      const options = {
 
+        method: 'POST',
+        Headers: {
+          'Content-Type': 'application/json'
+        },
 
-     }
+        body: JSON.stringify(info)
+      };
     
-   
+      fetch('/historic', options);
+    }
+    
     function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
-
-
 
     function MapAutoCenter() { 
       if (document.getElementById('switch').checked){
@@ -298,11 +307,9 @@
       }    
 
     }
-
     function clearpoly() {
       polyline.removeFrom(mymap)
     }
-
 
     let mymap = L.map('mapid').setView([lat, long], 18);
     var circle = L.circle([lat, long], { radius: 50, color: '#FCFF42' }).addTo(mymap);
@@ -346,6 +353,8 @@
         finallong = data.DataLong;
         finallat = data.DataLat;
 
+
+
         setInterval(setMarker, 1000);
 
         valor = document.getElementById('switch').checked;
@@ -379,7 +388,7 @@
       });
 
     });
-
+   // prueba
     function condicional() {
 
       valor = document.getElementById('switch').checked;
