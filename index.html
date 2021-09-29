@@ -396,6 +396,7 @@
           circle.setRadius(0);
           startPolyline();
         }
+<<<<<<< HEAD
           , 1000);
         
         setInterval(function () {
@@ -410,6 +411,108 @@
 //Hola.
 
   </script>
+=======
+      </style>
+       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+       crossorigin=""/>
+       <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+</head>
+<body>
+    <div>
+      <header style="text-align: center"><b><i>LocateCabs</b></i></header>
+    </div>
+
+    <div>
+      <label>Usuario</label>
+      <label id="UsuID"style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
+    </div>
+
+    <div>
+      <label>Latitud</label>
+      <label id="LatID"style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
+    </div>
+
+    <div>
+      <label>Longitud</label>
+      <label id="LongID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
+    </div>
+    <div>
+      <label>Fecha</label>
+      <label id="FechaID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
+    </div>
+    <div>
+        <label>Hora</label>
+        <label id="HoraID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
+    </div>
+    <div id="mapid"></div>
+
+    <div>
+
+      <button onclick="MapAutoCenter(), Markerlabel()">Auto-center Camera</button>
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+   
+              let lat = 0;
+              let long = 0 ; 
+
+              let startlat = 11.001553497558204 ;
+              let startlong= -74.81903784370151; 
+              let finallat = 10.987312354635225 ;
+              let finallong= -74.78493675796004 ;
+
+              var polylinePoints = [[startlat,startlong],[finallat, finallong]];
+
+              function MapsetUbication() {mymap.setView(new L.LatLng(lat,long));}
+              function MapAutoCenter() {mymap.setView(new L.LatLng(lat,long), 18);}
+              function setMarker() {circle_marker.setLatLng(new L.LatLng(lat, long)) ;
+                circle.setLatLng(new L.LatLng(lat, long))}
+              function poly()     {L.polyline(polylinePoints).addTo(mymap);}
+              function Markerlabel() { circle_marker.bindPopup(usuario,{autoPan: false}).openPopup()}
+              
+              let mymap = L.map('mapid').setView([lat,long], 18);
+              var circle = L.circle([lat,long], {radius: 50, color: '#FCFF42'}).addTo(mymap);
+              var circle_marker = L.circleMarker([lat,long],{color: '#CA2049'}) .bindPopup("No Data",{autoPan: false}).addTo(mymap);  
+              circle_marker.openPopup();
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+               maxZoom: 19 }).addTo(mymap);
+               
+              document.addEventListener('DOMContentLoaded', function() {
+
+                  old_user = "-";
+    
+      var polyline = L.polyline(polylinePoints).addTo(mymap);      
+            
+
+                  io().on('change', function(data) {
+                  
+                      document.getElementById('UsuID').innerHTML = data.DataUsu;
+                      document.getElementById('LatID').innerHTML =  data.DataLat;
+                      document.getElementById('LongID').innerHTML = data.DataLong;
+                      document.getElementById('FechaID').innerHTML = data.DataFecha;
+                      document.getElementById('HoraID').innerHTML = data.DataHora;
+                      lat  =  data.DataLat ;  
+                      long  =  data.DataLong ;
+                      usuario = data.DataUsu ;
+                      setInterval(setMarker, 3000); 
+                      if (old_user != usuario){ 
+                        setTimeout(function(){MapsetUbication(), Markerlabel()}, 1000);
+                        old_user = usuario;  
+                      }
+                      
+                  }); 
+            
+                  poly() ;                         
+              });
+
+    </script>
+>>>>>>> 728db96bb0be6f62132977871bde0081850d2c81
 
 </body>
 
