@@ -9,8 +9,6 @@ var udp = require('dgram');
 
 var dir = __dirname;
 
-app.use(exp)
-
 app.post('/github', function (req, res) {
   console.log("received")
   systemchild.exec("cd /home/ubuntu/LocateCabs && git reset --hard && git pull")
@@ -22,11 +20,6 @@ app.get('/', function (req, res) {
 
 app.get('/routing', function(req, res) {
   res.sendfile(dir + '/index_routingmachine.html');
-});
-
-app.post('/historic', function (req, res) {
-  console.log("sended to backend")
-
 });
 
 var io = require('socket.io')(server);
@@ -156,4 +149,3 @@ setInterval(function () {
     });
   });
 }, 3000);
-
