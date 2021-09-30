@@ -254,7 +254,7 @@
     function changehist(){
       valor = document.getElementById('switch2').checked;
       if (valor) {
-        enviarhist();
+        await enviarhist();
 
         setTimeout(function(){
             if (Coordinates.length!=0){
@@ -475,7 +475,7 @@
 
     }
 
-    await io().on('timestamp', function (dataTS) {
+    io().on('timestamp', function (dataTS) {
         Coordinates = dataTS.DataTimeStamp;
         console.log('io-on-timestamp Coordinates= '+Coordinates)
       });
