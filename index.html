@@ -255,21 +255,21 @@
 
         setTimeout(function(){
             //console.log('Coordinates= '+Coordinates[0]);
-            if (hist_was_set==1){
-              if (Coordinates.length!=0){
-                polylineHistoric.setLatLngs(Coordinates);
-                startpointHist.setLatLng(Coordinates[0]);
-                finalpointHist.setLatLng(Coordinates[Coordinates.length-1]);
-                mymap.fitBounds(Coordinates);
-              }
-            } else {
-              
-              startPolyline2();
-              startpointHist= L.marker(Coordinates[0]).addTo(mymap);
-              finalpointHist= L.marker(Coordinates[Coordinates.length-1]).addTo(mymap);
+            if (Coordinates.length!=0){
+              if (hist_was_set==1){
+                  polylineHistoric.setLatLngs(Coordinates);
+                  startpointHist.setLatLng(Coordinates[0]);
+                  finalpointHist.setLatLng(Coordinates[Coordinates.length-1]);
+                  mymap.fitBounds(Coordinates);
+                
+              } else {
+                startPolyline2();
+                startpointHist= L.marker(Coordinates[0]).addTo(mymap);
+                finalpointHist= L.marker(Coordinates[Coordinates.length-1]).addTo(mymap);
 
+              }
             }
-        }, 2000)
+        }, 1000)
 
       }
     }
