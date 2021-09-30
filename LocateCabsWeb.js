@@ -1,6 +1,6 @@
 var app = require('express')();
 var server = require('http').createServer(app);
-var systemchild = require("child_process");
+var  systemchild  =  require ( 'child_process' ) ;
 
 const port = 3000
 var DatosGPS;
@@ -11,7 +11,7 @@ var dir = __dirname;
 
 app.post('/github', function (req, res) {
   console.log("received")
-  systemchild.exec("cd /home/ubuntu/LocateCabs && git reset --hard && git pull")
+  systemchild.exec('cd /home/ubuntu/LocateCabs && git reset --hard && git pull')
 });
 
 app.get('/', function (req, res) {
