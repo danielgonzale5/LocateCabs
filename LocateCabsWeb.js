@@ -150,7 +150,8 @@ setInterval(function () {
     });
   });
 }, 3000);
-app.use(express.json({limit: '100mb'}));
+//{limit: '100mb'}
+app.use(express.json());
 app.post('/historic', function (req, res) {
   console.log("Historics sended")
   console.log(req.body);
