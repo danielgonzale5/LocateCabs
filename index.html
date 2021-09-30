@@ -241,6 +241,7 @@
     var startpoint_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
+    let Coordinates = [];
 
    
     
@@ -434,14 +435,14 @@
     }
 
     io().on('timestamp', function (dataTS) {
-        var Coordinates = [];
         Coordinates = dataTS.DataTimeStamp;
         console.log(Coordinates)
     });
-
+    console.log(Coordinates)
     function condicional2() {
       valor = document.getElementById('switch2').checked;
       if (valor) {
+        console.log(Coordinates)
         startPolyline2();
       }else{
         clearpoly2();
