@@ -254,10 +254,12 @@
 
         setTimeout(function(){
           //if(Coordinates!=null && isNaN(lat)==false && long!=null && isNaN(long)==false){
-            polylineHistoric.setLatLngs(Coordinates);
             console.log(Coordinates[0]);
-            startpointHist.setLatLng(Coordinates[0]);
-            finalpointHist.setLatLng(Coordinates[Coordinates.length-1]);
+            if (Coordinates.length!=0){
+              polylineHistoric.setLatLngs(Coordinates);
+              startpointHist.setLatLng(Coordinates[0]);
+              finalpointHist.setLatLng(Coordinates[Coordinates.length-1]);
+            }
             mymap.fitBounds(Coordinates);
           //}
         }, 2000)
