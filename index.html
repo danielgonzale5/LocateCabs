@@ -299,7 +299,7 @@
           body: JSON.stringify(info)
         };
       
-        await fetch('/historic', options);
+        fetch('/historic', options);
       }
     
    
@@ -475,7 +475,7 @@
 
     }
 
-    io().on('timestamp', function (dataTS) {
+    await io().on('timestamp', function (dataTS) {
         Coordinates = dataTS.DataTimeStamp;
         console.log('io-on-timestamp Coordinates= '+Coordinates)
       });
