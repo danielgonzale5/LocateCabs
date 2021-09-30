@@ -364,8 +364,7 @@
     }
 
     function addPolyline() {
-      if (latlngs.length!=0){
-        console.log('valido= '+latlngs)
+      if (latlngs.length!=0 && isNaN(latlngs)==false){
         polyline.setLatLngs(latlngs) 
         if (!polyline.isEmpty() && polyline.getLatLngs().length==1 && startpoint_was_set==0){
           setTimeout(createStartPoint(), 1000)
