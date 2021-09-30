@@ -232,12 +232,8 @@
 
   </center>
 
-  
-  <script src="/socket.io/socket.io.js"></script>
-
-
   <script>
-   //hello sdsadsda ffffsdfdsf sadsadadsdsads
+
     let lat = 10.984719;
     let long = -74.811302;
     var polylinePoints;
@@ -247,6 +243,7 @@
     let latlngs = [];
     let latlngsTemp = [];
 
+   
     
     
     function enviarhist ()  {
@@ -257,11 +254,22 @@
       datafin = new Date(datafin).valueOf() ;
       datainicio = datainicio.toString() ; 
       datafin = datafin.toString() ; 
-
       console.log(datausua);
       console.log(datainicio); 
-      console.log(datafin);      
+      console.log(datafin);   
+      
+      const info = {datausua, datainicio, datafin};
+      const options = {
+
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify(info)
+      };
     
+      fetch('/historic', options);
     }
     
    
@@ -418,8 +426,13 @@
       }
 
     }
-
-
+    io().on('timestamp', function (dataTS) {
+     var Coordinates = [];
+     Coordinates = dataTS.DataTimeStamp;
+     console.log(Coordinates)
+     var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+     mymap.fitBounds(polylineHistoric.getBounds());
+    });
   </script>
 
 </body>
