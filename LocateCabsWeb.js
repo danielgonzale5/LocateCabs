@@ -150,32 +150,38 @@ setInterval(function () {
     });
   });
 }, 3000);
+// comunicacion fronted y backend
 app.use(express.json({limit: '2mb'}));
 app.post('/historic', function (req, res) {
   console.log("Historics sended")
   console.log(req.body);
+  //Declaracion de variables, recibidas por el packet JSon 
   var HisDat = req.body;
   var UserData=HisDat.datausua.toString();
   var TSini=HisDat.datainicio.toString();
   var TSfin=HisDat.datafin.toString();
-  console.log(UserData, TSini, TSfin)
+  console.log(UserData, TSini, TSfin)// muestra los datos en la consola 
   con.query("SELECT * FROM gps WHERE Usuario=('"+UserData+"') AND TimeStamp BETWEEN ('"+TSini+"') AND ('"+TSfin+"');", function (err, rows) {
     if (err) throw err;
+    // Declaracion de variables
     var HistData = JSON.parse(JSON.stringify(rows))
     var DataHist = Object.values(HistData)
     var ConverArray =[]
     var CoordinatesArrTemp = []
     var CoordinatesArr = []
     console.log(DataHist)
+    //Llenado del vector de objeos
     for (var i = 0; i < DataHist.length; i++) {
       ConverArray.push(Object.values(DataHist[i]))
    }
    console.log(ConverArray)
+     //LLenado del vector que contiene lon y lat
     for (var j = 0; j < DataHist.length; j++) {
       CoordinatesArrTemp = [ConverArray[j][2],ConverArray[j][3]];
       CoordinatesArr.push(CoordinatesArrTemp);
     }
     var DataTimeStamp= CoordinatesArr
+     // envia al Index
     io.emit('timestamp', {
       DataTimeStamp: DataTimeStamp,
     });
