@@ -298,12 +298,10 @@
 
           body: JSON.stringify(info)
         };
-        try {
-          await fetch('/historic', options);
-        } catch (error) {
-          console.log(error);
-        }
-        
+
+        response = fetch('/historic', options);
+        await response.json()
+
       }
     
    
