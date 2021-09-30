@@ -221,11 +221,11 @@
 
     <div id= "CenterBS">
       <div id= "B2" class="HistoricButton">
-      <button onclick="enviarhist()">Ver historicos</button>
+      <button >Ver historicos</button>
       </div>
       <div id= "S2" class="switch-container;">
         <input type="Checkbox" id="switch2">
-        <label for="switch2" onclick="enviarhist();" class="sw"></label>
+        <label for="switch2" onclick="condicional2();" class="sw"></label>
       </div>
   </div>
 
@@ -255,8 +255,7 @@
 
     
     function enviarhist ()  {
-     
-      if (sw2==false) {           
+            
       var datausua = document.getElementById('iname').value;
       var datainicio = document.getElementById('IHist').value ;
       var datafin = document.getElementById('FHist').value;
@@ -276,7 +275,7 @@
         body: JSON.stringify(info)
       };
     
-      fetch('/historic', options);   }
+      fetch('/historic', options); 
 
     }
     
@@ -445,16 +444,20 @@
 
     });
 
-    if (sw2) {  
-      setTimeout(function(){ 
-        clearpolyhist();
-      }, 100)    
-    }
-     else {
-       polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
-       mymap.fitBounds(polylineHistoric.getBounds());
-     }  
+    function condicional2() {
 
+      if (sw2) {  
+        setTimeout(function(){ 
+          clearpolyhist();
+        }, 100)    
+      }
+      else {
+        enviarhist ()
+        polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+        mymap.fitBounds(polylineHistoric.getBounds());
+      }  
+
+    }
   </script>
 
 </body>
