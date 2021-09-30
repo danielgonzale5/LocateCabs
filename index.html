@@ -145,6 +145,10 @@
       display: inline;
     }
         
+    input:checked:not([disabled]){   
+      background-color: #2196F3; 
+    }
+
   </style>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -186,8 +190,9 @@
     <label id="HoraID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
   </div>
   <div class="CenterButton;">
-    <button onclick="MapAutoCenter(), Markerlabel()"style="border: 1px solid black; border-radius: 8px; width: 250px;">Auto-center Camera</button>
+    <button onclick="MapAutoCenter(), Markerlabel()" style="border: 1px solid black; border-radius: 8px; width: 250px;">Auto-center Camera</button>
   </div>
+
   <center>
     <h3>Polilinea en vivo</h3>
   </center>
@@ -197,51 +202,47 @@
     <label for="switch" onclick="condicional();" class="sw"></label>
   </div>
 
- <center>
-  <h3>Consulta de Historicos</h3>
- </center>
-  
-  <div class="divSquare">
-    
-        <label for="IHist">Inicio</label>
-        <input type="datetime-local" id="IHist" name="InitialHistoric" value="2021-06-01T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00" style="border: 1px solid black; border-radius: 8px; width: 250px;">
-        <div></div>
-        <label for="FHist">Fin</label>
-        <input type="datetime-local" id="FHist" name="FinalHistoric" value="2021-06-02T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00" style="border: 1px solid black; border-radius: 8px; width: 250px;">
- 
- 
-      </div>
   <center>
-    <div class="divSquare">
-
-      <label for="iname">Usuario</label>
-      <input type="text" id="iname" onchange="changehist()" name="Usuario" style="border: 1px solid black; border-radius: 8px; width: 250px;"/>
-    </center>
-  
-    </div>
+    <h3>Consulta de Historicos</h3>
   </center>
-  
+
+  <div class="divSquare">
+        <label for="IHist">Inicio:</label>
+        <input type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
+        <div></div>
+        <label for="FHist">Fin:</label>
+        <input type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
+
   </div>
 
- 
-  <center> 
+  <center>
 
+  <div class="divSquare">
+
+    <label for="iname">Usuario</label>
+    <input type="text" id="iname" onchange="changehist()" name="Usuario" style="border: 1px solid black; border-radius: 8px; width: 200px;"/>
+  </center>
+
+  </div>
+
+  <center>
       <h3>Trazar Históricos</h3>
-   
+
       <div id= "S2" class="switch-container;">
         <input type="Checkbox" id="switch2">
-        <label for="switch2" onclick="condicional2()" class="sw"></label>
+        <label for="switch2" onclick="condicional2();" class="sw"></label>
       </div>
     </div>
+
   </center>
- 
 
   
   <script src="/socket.io/socket.io.js"></script>
 
 
   <script>
-     let lat = 10.984719;
+
+    let lat = 10.984719;
     let long = -74.811302;
     var polylinePoints;
     var polyline;
@@ -259,16 +260,22 @@
     let latlngsTemp = [];
     let Coordinates = [];
 
-   
+    //Condición de Calendario
     window.addEventListener('load',function(){
+      datainicio = document.getElementById('IHist')
 
-
-    datainicio.addEventListener('change',function() {
-    
-    document.getElementById('FHist')= document.getElementById('IHist'); 
+      datainicio.addEventListener('change',function() {
+        var uno = new Date(this.value).valueOf()
+        console.log(this.value);  
+        document.getElementById('FHist').value = this.value ; 
+      });
+      datafin = document.getElementById('FHist')
+      datafin.addEventListener('change',function() {
+        if (document.getElementById('IHist').value>this.value) {
+          this.value = document.getElementById('IHist').value ; 
+        }
+      });
     });
-    }) ;  
-
 
     function changehist(){
       valor = document.getElementById('switch2').checked;
@@ -334,7 +341,9 @@
 
     function MapAutoCenter() { 
       if (document.getElementById('switch').checked){
-        mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
+        if (startpoint_was_set==1){
+          mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
+        }
       } else {
         mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
       }   
