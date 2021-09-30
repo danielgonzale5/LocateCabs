@@ -370,10 +370,9 @@
       polyline.removeFrom(mymap)
     }
     function clearpoly2() {
-      if (hist_was_set==1){
         polylineHistoric.removeFrom(mymap)
         hist_was_set=0;
-      }
+
     }
 
     let mymap = L.map('mapid').setView([lat, long], 18);
@@ -496,9 +495,11 @@
     function condicional2() {
       valor = document.getElementById('switch2').checked;
       if (valor) {
-        clearpoly2();
-        startpointHist.removeFrom(mymap);
-        finalpointHist.removeFrom(mymap);
+        if (hist_was_set==1){
+          clearpoly2();
+          startpointHist.removeFrom(mymap);
+          finalpointHist.removeFrom(mymap);
+        }
         setMarker();
         circle_marker.setRadius(10);
         circle.setRadius(50);
