@@ -313,11 +313,6 @@
       polyline.removeFrom(mymap)
     }
 
-    function clearpolyhist() {
-      polylineHistoric.removeFrom(mymap)
-    }
-
-
     let mymap = L.map('mapid').setView([lat, long], 18);
     var circle = L.circle([lat, long], { radius: 50, color: '#FCFF42' }).addTo(mymap);
     var circle_marker = L.circleMarker([lat, long], { color: '#CA2049' }).bindPopup("No Data", { autoPan: false }).addTo(mymap);
