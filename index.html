@@ -220,13 +220,9 @@
 
   <center>
 
-    <div id= "CenterBS">
-      <div id= "B2" class="HistoricButton">
-      <button onclick="enviarhist()">Ver historicos</button>
-      </div>
       <div id= "S2" class="switch-container;">
         <input type="Checkbox" id="switch2">
-        <label for="switch2" onclick="" class="sw"></label>
+        <label for="switch2" onclick="enviarhist ()" class="sw"></label>
       </div>
   </div>
 
@@ -251,6 +247,16 @@
     
     
     function enviarhist ()  {
+       
+      swtch2 = document.getElementById('switch').checked;
+      if (swtch2){
+        setTimeout(function(){
+          clearpolyhist() ; }
+          , 100) 
+      }
+
+      else {
+
       var datausua = document.getElementById('iname').value;
       var datainicio = document.getElementById('IHist').value ;
       var datafin = document.getElementById('FHist').value;
@@ -258,23 +264,24 @@
       datafin = new Date(datafin).valueOf() ;
       datainicio = datainicio.toString() ; 
       datafin = datafin.toString() ; 
-      console.log(datausua);
-      console.log(datainicio); 
-      console.log(datafin);   
       
+
       const info = {datausua, datainicio, datafin};
       const options = {
 
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
 
-        body: JSON.stringify(info)
-      };
-    
-      fetch('/historic', options);
-    }
+      body: JSON.stringify(info)
+          };
+
+        fetch('/historic', options);
+
+        }
+
+        }
     
    
     function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
@@ -317,6 +324,9 @@
 
     function clearpoly() {
       polyline.removeFrom(mymap)
+    }
+    function clearpolyhist() {
+      polylineHistoric.removeFrom(mymap)
     }
 
 
@@ -431,11 +441,14 @@
 
     }
     io().on('timestamp', function (dataTS) {
+      
      var Coordinates = [];
      Coordinates = dataTS.DataTimeStamp;
      console.log(Coordinates)
      var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
      mymap.fitBounds(polylineHistoric.getBounds());
+    
+    
     });
 
   </script>
