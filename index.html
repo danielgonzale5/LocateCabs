@@ -325,7 +325,7 @@
 
     function MapAutoCenter() { 
       if (document.getElementById('switch').checked){
-        if (polyline_set==1){
+        if (startpoint_was_set==1){
           mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
         }
       } else {
