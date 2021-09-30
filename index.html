@@ -208,10 +208,10 @@
 
   <div class="divSquare">
         <label for="IHist">Inicio:</label>
-        <input type="datetime-local" id="IHist" oninput="changehist()" name="InitialHistoric" value="2021-06-01T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
+        <input type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
         <div></div>
         <label for="FHist">Fin:</label>
-        <input type="datetime-local" id="FHist" oninput="changehist()" name="FinalHistoric" value="2021-06-02T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
+        <input type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
 
   </div>
 
@@ -263,14 +263,18 @@
     //Condición de Calendario
     window.addEventListener('load',function(){
       datainicio = document.getElementById('IHist')
-      
-      datafin = datainicio.addEventListener('change',function() {
-      var uno = new Date(this.value).valueOf()
-      //console.log(this.value);  
-      document.getElementById('FHist').value = this.value ; 
 
+      datainicio.addEventListener('change',function() {
+        var uno = new Date(this.value).valueOf()
+        console.log(this.value);  
+        document.getElementById('FHist').value = this.value ; 
       });
-
+      datafin = document.getElementById('FHist')
+      datafin.addEventListener('change',function() {
+        if (document.getElementById('IHist').value>this.value) {
+          this.value = document.getElementById('IHist').value ; 
+        }
+      });
     });
 
     function changehist(){
