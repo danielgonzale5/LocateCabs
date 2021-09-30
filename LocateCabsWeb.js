@@ -171,7 +171,7 @@ app.post('/historic', function (req, res) {
       ConverArray.push = Object.values(DataHist[i])
    }
     for (var j = 0; j < DataHist.length; j++) {
-      CoordinatesArrTemp = [ConverArray[i][2],ConverArray[i][3]];
+      CoordinatesArrTemp = [ConverArray[j][2],ConverArray[j][3]];
       CoordinatesArr.push(CoordinatesArrTemp);
     }
     var DataTimeStamp= CoordinatesArr
