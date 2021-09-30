@@ -457,38 +457,38 @@
     });
 
     function condicional() {
+      if (document.getElementById('switch').disabled != true){
+        valor = document.getElementById('switch').checked;
 
-      valor = document.getElementById('switch').checked;
+        if (valor) {
 
-      if (valor) {
-
-        setTimeout(function(){
-          clearpoly();
-          circle.setRadius(50);
-          circle_marker.openPopup();
-          startpoint.removeFrom(mymap);
-          startpoint_was_set=0;
+          setTimeout(function(){
+            clearpoly();
+            circle.setRadius(50);
+            circle_marker.openPopup();
+            startpoint.removeFrom(mymap);
+            startpoint_was_set=0;
+          }
+            , 100)
+            document.getElementById('switch2').disabled = false;
         }
-          , 100)
-          document.getElementById('switch2').disabled = false;
+
+        else {
+          document.getElementById('switch2').disabled = true;
+          setTimeout(function(){
+            circle.setRadius(0);
+            startPolyline();
+          }
+            , 1000);
+          
+          setInterval(function () {
+            setMarker();
+            addPolyline();
+          }
+            , 1000);
+
+        }
       }
-
-      else {
-        document.getElementById('switch2').disabled = true;
-        setTimeout(function(){
-          circle.setRadius(0);
-          startPolyline();
-        }
-          , 1000);
-        
-        setInterval(function () {
-          setMarker();
-          addPolyline();
-        }
-          , 1000);
-
-      }
-
     }
 
     io().on('timestamp', function (dataTS) {
@@ -497,32 +497,34 @@
       });
     
     function condicional2() {
-      valor = document.getElementById('switch2').checked; 
-      if (valor) {
-        if (hist_was_set==1){
-          clearpoly2();
-          startpointHist.removeFrom(mymap);
-          finalpointHist.removeFrom(mymap);
-        }
-        setMarker();
-        circle_marker.setRadius(10);
-        circle.setRadius(50);
-        circle_marker.openPopup();
-        document.getElementById('switch').disabled = false;
-      }else{
-        document.getElementById('switch').disabled = true;
-        enviarhist();
-        setTimeout(function(){
-          startPolyline2();
-          if (Coordinates.length!=0){
-            startpointHist= L.marker(Coordinates[0]).addTo(mymap);
-            finalpointHist= L.circleMarker(Coordinates[Coordinates.length-1],{ color: '#FFB242' }).addTo(mymap);
+      if (document.getElementById('switch2').disabled != true){
+        valor = document.getElementById('switch2').checked; 
+        if (valor) {
+          if (hist_was_set==1){
+            clearpoly2();
+            startpointHist.removeFrom(mymap);
+            finalpointHist.removeFrom(mymap);
           }
-          circle_marker.closePopup();
-          circle_marker.setRadius(0);
-          circle.setRadius(0);
-        },500)
+          setMarker();
+          circle_marker.setRadius(10);
+          circle.setRadius(50);
+          circle_marker.openPopup();
+          document.getElementById('switch').disabled = false;
+        }else{
+          document.getElementById('switch').disabled = true;
+          enviarhist();
+          setTimeout(function(){
+            startPolyline2();
+            if (Coordinates.length!=0){
+              startpointHist= L.marker(Coordinates[0]).addTo(mymap);
+              finalpointHist= L.circleMarker(Coordinates[Coordinates.length-1],{ color: '#FFB242' }).addTo(mymap);
+            }
+            circle_marker.closePopup();
+            circle_marker.setRadius(0);
+            circle.setRadius(0);
+          },500)
 
+        }
       }
     }
   </script>
