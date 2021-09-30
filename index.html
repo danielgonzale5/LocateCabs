@@ -346,7 +346,9 @@
     }
 
     function startPolyline() {
-      polyline = L.polyline(latlngs).addTo(mymap);
+      if (latlngs.length!=0){
+        polyline = L.polyline(latlngs).addTo(mymap);
+      }
     }
 
     function startPolyline2() {
@@ -362,12 +364,13 @@
     }
 
     function addPolyline() {
-      polyline.setLatLngs(latlngs) 
-      if (!polyline.isEmpty() && polyline.getLatLngs().length==1 && startpoint_was_set==0){
-        setTimeout(createStartPoint(), 1000)
-        startpoint_was_set=1;
-      }    
-
+      if (latlngs.length!=0){
+        polyline.setLatLngs(latlngs) 
+        if (!polyline.isEmpty() && polyline.getLatLngs().length==1 && startpoint_was_set==0){
+          setTimeout(createStartPoint(), 1000)
+          startpoint_was_set=1;
+        }    
+      }
     }
 
     function clearpoly() {
