@@ -254,7 +254,7 @@
     function changehist(){
       valor = document.getElementById('switch2').checked;
       if (valor) {
-        await enviarhist();
+        enviarhist();
 
         setTimeout(function(){
             if (Coordinates.length!=0){
@@ -298,8 +298,12 @@
 
           body: JSON.stringify(info)
         };
-      
-        fetch('/historic', options);
+        try {
+          await fetch('/historic', options);
+        } catch (error) {
+          console.log(error);
+        }
+        
       }
     
    
