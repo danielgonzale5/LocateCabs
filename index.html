@@ -248,13 +248,16 @@
     let latlngsTemp = [];
 
    
-    
+    function clearpolyhist() {
+      polylineHistoric.removeFrom(mymap)  
+    }
+
     
     function enviarhist ()  {
       sw2 = document.getElementById('switch2').checked;
       if (sw2) {        
           setTimeout(function(){
-            clearpolyhist() ; 
+          clearpolyhist(); 
           
          }
           , 100)}
@@ -324,11 +327,8 @@
     }
 
     function clearpoly() {
-      polyline.removeFrom(mymap)
+      polyline.removeFrom(mymap)  
       
-    }
-    function clearpolyhist() {
-      polylineHistoric.removeFrom(mymap)
     }
 
 
