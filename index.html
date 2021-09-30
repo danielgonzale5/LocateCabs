@@ -260,6 +260,16 @@
     let Coordinates = [];
 
    
+    window.addEventListener('load',function(){
+
+
+    datainicio.addEventListener('change',function() {
+    
+    document.getElementById('FHist')= document.getElementById('IHist'); 
+    });
+    }) ;  
+
+
     function changehist(){
       valor = document.getElementById('switch2').checked;
       if (valor) {
