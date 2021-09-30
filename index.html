@@ -260,7 +260,19 @@
     let latlngsTemp = [];
     let Coordinates = [];
 
-   
+    //Condición de Calendario
+    window.addEventListener('load',function(){
+      datainicio = document.getElementById('IHist')
+      
+      datafin = datainicio.addEventListener('change',function() {
+      var uno = new Date(this.value).valueOf()
+      //console.log(this.value);  
+      document.getElementById('FHist').value = this.value ; 
+
+      });
+
+    });
+
     function changehist(){
       valor = document.getElementById('switch2').checked;
       if (valor) {
