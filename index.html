@@ -428,6 +428,8 @@
      var Coordinates = [];
      Coordinates = dataTS.DataTimeStamp;
      console.log(Coordinates)
+     var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+     mymap.fitBounds(polylineHistoric.getBounds());
     });
   </script>
 
