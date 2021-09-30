@@ -166,9 +166,8 @@ app.post('/historic', function (req, res) {
     var CoordinatesArrTemp = []
     var CoordinatesArr = []
     for (var i = 0; i < DataHist.length; i++) {
-      CoordinatesArrTemp = [HistData[i][2],HistData[i][3]]
-      CoordinatesArr.push(CoordinatesArrTemp)
-      n += i;
+      CoordinatesArrTemp = [HistData[i][2],HistData[i][3]];
+      CoordinatesArr.push(CoordinatesArrTemp);
    }
     var DataTimeStamp= CoordinatesArr
     io.emit('timestamp', {
