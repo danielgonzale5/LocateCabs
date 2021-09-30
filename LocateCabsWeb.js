@@ -7,7 +7,7 @@ const port = 3000
 var DatosGPS;
 
 var udp = require('dgram');
-//P
+
 var dir = __dirname;
 
 app.post('/github', function (req, res) {
@@ -161,9 +161,21 @@ app.post('/historic', function (req, res) {
   console.log(UserData, TSini, TSfin)
   con.query("SELECT * FROM gps WHERE Usuario=('"+UserData+"') AND TimeStamp BETWEEN ('"+TSini+"') AND ('"+TSfin+"');", function (err, rows) {
     if (err) throw err;
-    HistData = JSON.parse(JSON.stringify(rows))
-    var DataHist = Object.values(HistData[0])
-    var DataTimeStamp= DataHist[4]
+    var HistData = JSON.parse(JSON.stringify(rows))
+    var DataHist = Object.values(HistData)
+    var ConverArray =[]
+    var CoordinatesArrTemp = []
+    var CoordinatesArr = []
+    console.log(DataHist)
+    for (var i = 0; i < DataHist.length; i++) {
+      ConverArray.push(Object.values(DataHist[i]))
+   }
+   console.log(ConverArray)
+    for (var j = 0; j < DataHist.length; j++) {
+      CoordinatesArrTemp = [ConverArray[j][2],ConverArray[j][3]];
+      CoordinatesArr.push(CoordinatesArrTemp);
+    }
+    var DataTimeStamp= CoordinatesArr
     io.emit('timestamp', {
       DataTimeStamp: DataTimeStamp,
     });
