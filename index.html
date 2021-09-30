@@ -257,7 +257,7 @@
           startpointHist.setLatLng(Coordinates[0]);
           finalpointHist.setLatLng(Coordinates[Coordinates.length-1]);
         }, 500)
-        
+
       }
     }
     
@@ -380,7 +380,7 @@
         finallong = data.DataLong;
         finallat = data.DataLat;
 
-        setInterval(setMarker, 1000);
+        setTimeout(setMarker, 1000);
 
         valor = document.getElementById('switch').checked;
         if (valor) {
