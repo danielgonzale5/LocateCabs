@@ -253,15 +253,13 @@
         enviarhist();
 
         setTimeout(function(){
-          //if(Coordinates!=null && isNaN(lat)==false && long!=null && isNaN(long)==false){
-            console.log('Coordinates= '+Coordinates[0]);
+            //console.log('Coordinates= '+Coordinates[0]);
             if (Coordinates.length!=0){
               polylineHistoric.setLatLngs(Coordinates);
               startpointHist.setLatLng(Coordinates[0]);
               finalpointHist.setLatLng(Coordinates[Coordinates.length-1]);
               mymap.fitBounds(Coordinates);
             }
-          //}
         }, 2000)
 
       }
@@ -428,7 +426,7 @@
 
       io().on('timestamp', function (dataTS) {
         Coordinates = dataTS.DataTimeStamp;
-        console.log('(io.on("timestamp") Coordinates= '+Coordinates)
+        console.log('io-on-timestamp Coordinates= '+Coordinates)
       });
 
     });
@@ -481,7 +479,7 @@
       }else{
         enviarhist();
         setTimeout(function(){
-          console.log('(Switch-on) Coordinates= '+Coordinates);
+          //console.log('Switch-on Coordinates= '+Coordinates);
           startPolyline2();
           if (Coordinates.length!=0){
             startpointHist= L.marker(Coordinates[0]).addTo(mymap);
