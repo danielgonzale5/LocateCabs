@@ -299,9 +299,9 @@
 
           body: JSON.stringify(info)
         };
-        //Esperarespuesta
-        let res= await fetch('/historic', options);
-        res.end();
+        
+        await fetch('/historic', options);
+
       }
     
    
