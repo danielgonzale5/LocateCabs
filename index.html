@@ -504,7 +504,9 @@
         circle_marker.setRadius(10);
         circle.setRadius(50);
         circle_marker.openPopup();
+        document.getElementById("switch2").setAttribute("disabled", false);
       }else{
+        document.getElementById("switch2").setAttribute("disabled", true);
         enviarhist();
         setTimeout(function(){
           startPolyline2();
