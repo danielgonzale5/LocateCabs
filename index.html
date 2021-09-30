@@ -246,6 +246,7 @@
     var startpoint_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
+    var polylineHistoric; 
     sw2 = document.getElementById('switch2').checked;
    
     function clearpolyhist() {
@@ -441,11 +442,11 @@
      var Coordinates = [];
      Coordinates = dataTS.DataTimeStamp;
      console.log(Coordinates)
-     var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+     polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
      
      if (sw2) {  setTimeout(function(){ clearpolyhist() ;}, 100)
          }
-    else {
+     else {
      
       mymap.fitBounds(polylineHistoric.getBounds());                               }  
 
