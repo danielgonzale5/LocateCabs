@@ -254,7 +254,7 @@
 
         setTimeout(function(){
           //if(Coordinates!=null && isNaN(lat)==false && long!=null && isNaN(long)==false){
-            console.log('Coordinates='+Coordinates[0]);
+            console.log('Coordinates= '+Coordinates[0]);
             if (Coordinates.length!=0){
               polylineHistoric.setLatLngs(Coordinates);
               startpointHist.setLatLng(Coordinates[0]);
@@ -275,9 +275,9 @@
         datafin = new Date(datafin).valueOf() ;
         datainicio = datainicio.toString() ; 
         datafin = datafin.toString() ; 
-        console.log(datausua);
-        console.log(datainicio); 
-        console.log(datafin);   
+        console.log('datausua= '+datausua);
+        console.log('datainicio= '+datainicio); 
+        console.log('datafina= '+datafin);   
         
         const info = {datausua, datainicio, datafin};
         const options = {
@@ -428,7 +428,7 @@
 
       io().on('timestamp', function (dataTS) {
         Coordinates = dataTS.DataTimeStamp;
-        console.log(Coordinates)
+        console.log('(io.on("timestamp") Coordinates= '+Coordinates)
       });
 
     });
@@ -481,7 +481,7 @@
       }else{
         enviarhist();
         setTimeout(function(){
-          console.log(Coordinates);
+          console.log('(Switch-on) Coordinates= '+Coordinates);
           startPolyline2();
           if (Coordinates.length!=0){
             startpointHist= L.marker(Coordinates[0]).addTo(mymap);
