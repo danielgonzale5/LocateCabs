@@ -246,7 +246,7 @@
     var startpoint_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
-
+    sw2 = document.getElementById('switch2').checked;
    
     function clearpolyhist() {
       polylineHistoric.removeFrom(mymap)  
@@ -254,8 +254,9 @@
 
     
     function enviarhist ()  {
-      sw2 = document.getElementById('switch2').checked;
-      if (sw2==false) {           var datausua = document.getElementById('iname').value;
+     
+      if (sw2==false) {           
+      var datausua = document.getElementById('iname').value;
       var datainicio = document.getElementById('IHist').value ;
       var datafin = document.getElementById('FHist').value;
       datainicio = new Date(datainicio).valueOf();
@@ -441,7 +442,13 @@
      Coordinates = dataTS.DataTimeStamp;
      console.log(Coordinates)
      var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
-     mymap.fitBounds(polylineHistoric.getBounds());
+     
+     if (sw2) {clearpolyhist() ; }
+    else {mymap.fitBounds(polylineHistoric.getBounds());}  
+    
+     
+
+
     });
 
   </script>
