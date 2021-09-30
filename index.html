@@ -325,7 +325,7 @@
 
     function MapAutoCenter() { 
       if (document.getElementById('switch').checked){
-        console.log(polyline.getBounds())
+        console.log(polyline.getBounds().length)
         mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
       } else {
         mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
