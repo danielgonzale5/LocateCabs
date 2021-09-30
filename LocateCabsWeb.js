@@ -149,15 +149,16 @@ setInterval(function () {
     });
   });
 }, 3000);
-
+app.use(app.json({limit: '2mb'}))
 app.post('/historic', function (req, res) {
   console.log("Historics sended")
   console.log(req.body);
+  const HisDat = req.body
   respone.json({
     status:'success',
-    UserData: datausua, 
-    TSini: dataini,
-    TSfin: datafin
+    UserData: HisDat.datausua, 
+    TSini: HisDat.dataini,
+    TSfin: HisDat.datafin
   });
   console.log(UserData, TSini, TSfin)
   con.query("SELECT * FROM gps WHERE Usuario=('"+UserData+"') AND TimeStamp BETWEEN ('"+TSini+"') AND ('"+TSfin+"');", function (err, rows) {
