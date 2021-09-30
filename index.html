@@ -442,6 +442,8 @@
       valor = document.getElementById('switch2').checked;
       if (valor) {
         clearpoly2();
+        circle_marker.removeFrom(mymap);
+        circle.removeFrom(mymap);
         startpointHist.removeFrom(mymap);
         finalpointHist.removeFrom(mymap);
         
