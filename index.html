@@ -470,11 +470,11 @@
           startpoint_was_set=0;
         }
           , 100)
-          document.getElementById("switch2").disabled = false;
+          $('#switch2').removeAttr('disabled');
       }
 
       else {
-        document.getElementById("switch2").disabled = true;
+        $('#switch2').attr('disabled','disabled');
         setTimeout(function(){
           circle.setRadius(0);
           startPolyline();
@@ -508,9 +508,9 @@
         circle_marker.setRadius(10);
         circle.setRadius(50);
         circle_marker.openPopup();
-        document.getElementById("switch").disabled = false;
+        $('#switch').removeAttr('disabled');
       }else{
-        document.getElementById("switch").disabled = true;
+        $('#switch').attr('disabled','disabled');
         enviarhist();
         setTimeout(function(){
           startPolyline2();
