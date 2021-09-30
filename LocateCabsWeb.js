@@ -164,6 +164,8 @@ app.post('/historic', function (req, res) {
     var HistData = JSON.parse(JSON.stringify(rows))
     var DataHist = Object.values(HistData[0])
     var DataTimeStamp= [DataHist[2],DataHist[3]]
+    console.log(DataHist[2])
+    console.log(DataHist[3])
     io.emit('timestamp', {
       DataTimeStamp: DataTimeStamp,
     });
