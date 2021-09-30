@@ -250,6 +250,7 @@
     var datainicio;
     var datafin;
     var polylineHistoric;
+    var polyline_set=0;
     var startpoint;
     var startpointHist;
     var finalpointHist;
@@ -346,7 +347,10 @@
     }
 
     function startPolyline() {
-      polyline = L.polyline(latlngs).addTo(mymap); 
+      if (latlngs.length!=0 && isNaN(latlngs)==false){
+        polyline = L.polyline(latlngs).addTo(mymap); 
+        polyline_set=1;
+      }
     }
 
     function startPolyline2() {
@@ -362,7 +366,7 @@
     }
 
     function addPolyline() {
-      if (latlngs.length!=0 && isNaN(latlngs)==false){
+      if ((polyline_set==1)){
         polyline.setLatLngs(latlngs) 
         if (!polyline.isEmpty() && polyline.getLatLngs().length==1 && startpoint_was_set==0){
           setTimeout(createStartPoint(), 1000)
@@ -372,7 +376,9 @@
     }
 
     function clearpoly() {
-      polyline.removeFrom(mymap)
+      if (polyline_set==1){
+        polyline.removeFrom(mymap)
+      }
     }
     function clearpoly2() {
         polylineHistoric.removeFrom(mymap)
