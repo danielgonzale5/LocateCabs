@@ -163,13 +163,17 @@ app.post('/historic', function (req, res) {
     if (err) throw err;
     var HistData = JSON.parse(JSON.stringify(rows))
     var DataHist = Object.values(HistData)
+    var ConverArray =[]
     var CoordinatesArrTemp = []
     var CoordinatesArr = []
     console.log(DataHist)
     for (var i = 0; i < DataHist.length; i++) {
-      CoordinatesArrTemp = [DataHist[i][2],DataHist[i][3]];
-      CoordinatesArr.push(CoordinatesArrTemp);
+      ConverArray.push = Object.values(DataHist[i])
    }
+    for (var j = 0; j < DataHist.length; j++) {
+      CoordinatesArrTemp = [ConverArray[i][2],ConverArray[i][3]];
+      CoordinatesArr.push(CoordinatesArrTemp);
+    }
     var DataTimeStamp= CoordinatesArr
     io.emit('timestamp', {
       DataTimeStamp: DataTimeStamp,
