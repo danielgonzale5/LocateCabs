@@ -324,8 +324,14 @@
     }
 
     function startPolyline2() {
-      polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
-      mymap.fitBounds(Coordinates);
+      if (Coordinates!=[]){
+        polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+        mymap.fitBounds(Coordinates);
+      } else {
+
+        console.log('El intervalo de tiempo ó Usuario ingresado no es válido.');
+
+      }
     }
 
     function addPolyline() {
