@@ -255,14 +255,7 @@
     
     function enviarhist ()  {
       sw2 = document.getElementById('switch2').checked;
-      if (sw2) {        
-          
-          clearpolyhist(); 
-          
-      }
-
-      else {     
-      var datausua = document.getElementById('iname').value;
+      if (sw2==false) {           var datausua = document.getElementById('iname').value;
       var datainicio = document.getElementById('IHist').value ;
       var datafin = document.getElementById('FHist').value;
       datainicio = new Date(datainicio).valueOf();
@@ -281,7 +274,7 @@
         body: JSON.stringify(info)
       };
     
-      fetch('/historic', options);}
+      fetch('/historic', options);   }
 
     }
     
@@ -406,8 +399,8 @@
 
 
       });
-
     });
+
 
     function condicional() {
 
