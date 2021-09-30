@@ -438,11 +438,11 @@
         Coordinates = dataTS.DataTimeStamp;
         console.log(Coordinates)
         if (document.getElementById('switch2').checked){
-          var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
-          mymap.fitBounds(polylineHistoric.getBounds());
-        } else {
           var Coordinates = [];
           clearpolyhist();
+        } else {
+          var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+          mymap.fitBounds(polylineHistoric.getBounds());
         }
     });
   </script>
