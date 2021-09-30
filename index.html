@@ -236,190 +236,207 @@
 
 
   <script>
-   //hello sdsadsda ffffsdfdsf sadsadadsdsads
-    let lat = 10.984719;
-    let long = -74.811302;
-    var polylinePoints;
-    var polyline;
-    var startpoint;
-    var startpoint_was_set=0;
-    let latlngs = [];
-    let latlngsTemp = [];
-
     
-    
-    function enviarhist ()  {
-      var datausua = document.getElementById('iname').value;
-      var datainicio = document.getElementById('IHist').value ;
-      var datafin = document.getElementById('FHist').value;
-      datainicio = new Date(datainicio).valueOf();
-      datafin = new Date(datafin).valueOf() ;
-      datainicio = datainicio.toString() ; 
-      datafin = datafin.toString() ; 
-
-      console.log(datausua);
-      console.log(datainicio); 
-      console.log(datafin);      
-    
-    }
-    
-   
-    function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
+let lat = 10.984719;
+let long = -74.811302;
+var polylinePoints;
+var polyline;
+var startpoint;
+var startpoint_was_set=0;
+let latlngs = [];
+let latlngsTemp = [];
 
 
 
-    function MapAutoCenter() { 
-      if (document.getElementById('switch').checked){
-        mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
-      } else {
-        mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
-      }   
-    }
 
-    function setMarker() {
-      circle_marker.setLatLng(new L.LatLng(lat, long));
-      circle.setLatLng(new L.LatLng(lat, long));
-    }
+function enviarhist ()  {
+  var datausua = document.getElementById('iname').value;
+  var datainicio = document.getElementById('IHist').value ;
+  var datafin = document.getElementById('FHist').value;
+  datainicio = new Date(datainicio).valueOf();
+  datafin = new Date(datafin).valueOf() ;
+  datainicio = datainicio.toString() ; 
+  datafin = datafin.toString() ; 
+  console.log(datausua);
+  console.log(datainicio); 
+  console.log(datafin);   
+  
+  const info = {datausua, datainicio, datafin};
+  const options = {
 
-    function Markerlabel() {
-      circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
-    }
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
 
-    function createStartPoint() { 
-      startpoint= L.marker([lat,long]).addTo(mymap);
-    }
+    body: JSON.stringify(info)
+  };
 
-    function startPolyline() {
-      polyline = L.polyline(latlngs).addTo(mymap);
-    }
-
-    function addPolyline() {
-      polyline.setLatLngs(latlngs) 
-      if (!polyline.isEmpty() && polyline.getLatLngs().length==1 && startpoint_was_set==0){
-        setTimeout(createStartPoint(), 1000)
-        startpoint_was_set=1;
-      }    
-
-    }
-
-    function clearpoly() {
-      polyline.removeFrom(mymap)
-    }
+  fetch('/historic', options);
+}
 
 
-    let mymap = L.map('mapid').setView([lat, long], 18);
-    var circle = L.circle([lat, long], { radius: 50, color: '#FCFF42' }).addTo(mymap);
-    var circle_marker = L.circleMarker([lat, long], { color: '#CA2049' }).bindPopup("No Data", { autoPan: false }).addTo(mymap);
-    circle_marker.openPopup();
-
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 19
-    }).addTo(mymap);
+function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
 
 
 
-    document.addEventListener('DOMContentLoaded', function () {
-      old_user = "-";
+function MapAutoCenter() { 
+  if (document.getElementById('switch').checked){
+    mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
+  } else {
+    mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
+  }   
+}
+
+function setMarker() {
+  circle_marker.setLatLng(new L.LatLng(lat, long));
+  circle.setLatLng(new L.LatLng(lat, long));
+}
+
+function Markerlabel() {
+  circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
+}
+
+function createStartPoint() { 
+  startpoint= L.marker([lat,long]).addTo(mymap);
+}
+
+function startPolyline() {
+  polyline = L.polyline(latlngs).addTo(mymap);
+}
+
+function addPolyline() {
+  polyline.setLatLngs(latlngs) 
+  if (!polyline.isEmpty() && polyline.getLatLngs().length==1 && startpoint_was_set==0){
+    setTimeout(createStartPoint(), 1000)
+    startpoint_was_set=1;
+  }    
+
+}
+
+function clearpoly() {
+  polyline.removeFrom(mymap)
+}
+
+
+let mymap = L.map('mapid').setView([lat, long], 18);
+var circle = L.circle([lat, long], { radius: 50, color: '#FCFF42' }).addTo(mymap);
+var circle_marker = L.circleMarker([lat, long], { color: '#CA2049' }).bindPopup("No Data", { autoPan: false }).addTo(mymap);
+circle_marker.openPopup();
+
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  maxZoom: 19
+}).addTo(mymap);
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  old_user = "-";
+
+  io().on('change', function (data) {
  
-      io().on('change', function (data) {
-     
-        document.getElementById('UsuID').innerHTML = data.DataUsu;
-        document.getElementById('LatID').innerHTML = data.DataLat;
-        document.getElementById('LongID').innerHTML = data.DataLong;
+    document.getElementById('UsuID').innerHTML = data.DataUsu;
+    document.getElementById('LatID').innerHTML = data.DataLat;
+    document.getElementById('LongID').innerHTML = data.DataLong;
 
-        var date = new Date(parseFloat(data.DataTime));
-        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        var month = months[date.getMonth()];
-        var hours = date.toLocaleTimeString();
-        var minutes = "0" + date.getMinutes();
-        var seconds = "0" + date.getSeconds();
-        var formattedTime = hours.substr(0,2) +':'+ minutes.substr(-2) + ':' + seconds.substr(-2);
+    var date = new Date(parseFloat(data.DataTime));
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var month = months[date.getMonth()];
+    var hours = date.toLocaleTimeString();
+    var minutes = "0" + date.getMinutes();
+    var seconds = "0" + date.getSeconds();
+    var formattedTime = hours.substr(0,2) +':'+ minutes.substr(-2) + ':' + seconds.substr(-2);
 
-        var datofecha =  date.getDate()+"/"+  month+"/"+date.getFullYear() ;
+    var datofecha =  date.getDate()+"/"+  month+"/"+date.getFullYear() ;
 
-        document.getElementById('FechaID').innerHTML = datofecha;
-        document.getElementById('HoraID').innerHTML = formattedTime;
-        lat = data.DataLat;
-        long = data.DataLong;
+    document.getElementById('FechaID').innerHTML = datofecha;
+    document.getElementById('HoraID').innerHTML = formattedTime;
+    lat = data.DataLat;
+    long = data.DataLong;
 
 
-        usuario = data.DataUsu;
-        finallong = data.DataLong;
-        finallat = data.DataLat;
+    usuario = data.DataUsu;
+    finallong = data.DataLong;
+    finallat = data.DataLat;
 
-        setInterval(setMarker, 1000);
+    setInterval(setMarker, 1000);
 
-        valor = document.getElementById('switch').checked;
+    valor = document.getElementById('switch').checked;
+    if (valor) {
+      
+      setInterval(latlngsTemp = [lat, long], 1000);
+      setInterval(latlngs.push(latlngsTemp), 1000);
+    } else {
+      latlngs = [];
+    }
+
+
+    if (old_user != usuario) {
+      setTimeout(function () {
+        MapsetUbication();
+        Markerlabel();
         if (valor) {
-          
-          setInterval(latlngsTemp = [lat, long], 1000);
-          setInterval(latlngs.push(latlngsTemp), 1000);
-        } else {
           latlngs = [];
-        }
-
-
-        if (old_user != usuario) {
-          setTimeout(function () {
-            MapsetUbication();
-            Markerlabel();
-            if (valor) {
-              latlngs = [];
-              startpoint.removeFrom(mymap);
-              startpoint_was_set=0;
-              clearpoly();
-              startPolyline();
-            }
-          }
-            , 1000);
-
-          old_user = usuario;
-        }
-
-
-      });
-
-    });
-
-    function condicional() {
-
-      valor = document.getElementById('switch').checked;
-
-      if (valor) {
-
-        setTimeout(function(){
-          clearpoly();
-          circle.setRadius(50);
-          circle_marker.openPopup();
           startpoint.removeFrom(mymap);
           startpoint_was_set=0;
-        }
-          , 100)
-
-      }
-
-      else {
-
-        setTimeout(function(){
-          circle.setRadius(0);
+          clearpoly();
           startPolyline();
         }
-          , 1000);
-        
-        setInterval(function () {
-          setMarker();
-          addPolyline();
-        }
-          , 1000);
-
       }
+        , 1000);
 
+      old_user = usuario;
     }
-  // Fff
-   
-  </script>
+
+
+  });
+
+});
+
+function condicional() {
+
+  valor = document.getElementById('switch').checked;
+
+  if (valor) {
+
+    setTimeout(function(){
+      clearpoly();
+      circle.setRadius(50);
+      circle_marker.openPopup();
+      startpoint.removeFrom(mymap);
+      startpoint_was_set=0;
+    }
+      , 100)
+
+  }
+
+  else {
+
+    setTimeout(function(){
+      circle.setRadius(0);
+      startPolyline();
+    }
+      , 1000);
+    
+    setInterval(function () {
+      setMarker();
+      addPolyline();
+    }
+      , 1000);
+
+  }
+
+}
+io().on('timestamp', function (dataTS) {
+ var Coordinates = [];
+ Coordinates = dataTS.DataTimeStamp;
+ console.log(Coordinates)
+ var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+ mymap.fitBounds(polylineHistoric.getBounds());
+});
+</script>
 
 </body>
 
