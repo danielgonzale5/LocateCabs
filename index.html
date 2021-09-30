@@ -313,6 +313,10 @@
       polyline.removeFrom(mymap)
     }
 
+    function clearpolyhist() {
+      polylineHistoric.removeFrom(mymap)
+    }
+
 
     let mymap = L.map('mapid').setView([lat, long], 18);
     var circle = L.circle([lat, long], { radius: 50, color: '#FCFF42' }).addTo(mymap);
@@ -425,11 +429,18 @@
 
     }
     io().on('timestamp', function (dataTS) {
-     var Coordinates = [];
-     Coordinates = dataTS.DataTimeStamp;
-     console.log(Coordinates)
-     var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
-     mymap.fitBounds(polylineHistoric.getBounds());
+      if (document.getElementById('switch2').checked){
+        enviarhist();
+        var Coordinates = [];
+        Coordinates = dataTS.DataTimeStamp;
+        console.log(Coordinates)
+        var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+        mymap.fitBounds(polylineHistoric.getBounds());
+      } else {
+        var Coordinates = [];
+        clearpolyhist();
+
+      } 
     });
   </script>
 
