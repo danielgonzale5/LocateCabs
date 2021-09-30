@@ -241,7 +241,7 @@
 
 
   <script>
-let lat = 10.984719;
+     let lat = 10.984719;
     let long = -74.811302;
     var polylinePoints;
     var polyline;
@@ -249,6 +249,7 @@ let lat = 10.984719;
     var datainicio;
     var datafin;
     var polylineHistoric;
+    var polyline_set=0;
     var startpoint;
     var startpointHist;
     var finalpointHist;
@@ -345,8 +346,9 @@ let lat = 10.984719;
     }
 
     function startPolyline() {
-      if (latlngs.length!=0){
-        polyline = L.polyline(latlngs).addTo(mymap);
+      if (isNaN(latlngs)==false){
+        polyline = L.polyline(latlngs).addTo(mymap); 
+        polyline_set=1;
       }
     }
 
@@ -355,7 +357,6 @@ let lat = 10.984719;
         polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
         mymap.fitBounds(Coordinates);
         hist_was_set=1;
-        
       } else {
 
         console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
@@ -364,7 +365,7 @@ let lat = 10.984719;
     }
 
     function addPolyline() {
-      if (latlngs.length!=0){
+      if ((polyline_set==1)){
         polyline.setLatLngs(latlngs) 
         if (!polyline.isEmpty() && polyline.getLatLngs().length==1 && startpoint_was_set==0){
           setTimeout(createStartPoint(), 1000)
@@ -374,7 +375,9 @@ let lat = 10.984719;
     }
 
     function clearpoly() {
-      polyline.removeFrom(mymap)
+      if (polyline_set==1){
+        polyline.removeFrom(mymap)
+      }
     }
     function clearpoly2() {
         polylineHistoric.removeFrom(mymap)
@@ -442,8 +445,10 @@ let lat = 10.984719;
             Markerlabel();
             if (valor) {
               latlngs = [];
-              startpoint.removeFrom(mymap);
-              startpoint_was_set=0;
+              if (startpoint_was_set==1){
+                startpoint.removeFrom(mymap);
+                startpoint_was_set=0;
+              }
               clearpoly();
               startPolyline();
             }
@@ -469,14 +474,17 @@ let lat = 10.984719;
             clearpoly();
             circle.setRadius(50);
             circle_marker.openPopup();
-            startpoint.removeFrom(mymap);
-            startpoint_was_set=0;
+            if (startpoint_was_set==1){
+              startpoint.removeFrom(mymap);
+              startpoint_was_set=0;
+            }
           }
             , 100)
             document.getElementById('switch2').disabled = false;
         }
 
         else {
+          console.log('latlngs='+ latlngs.length)
           document.getElementById('switch2').disabled = true;
           setTimeout(function(){
             circle.setRadius(0);
