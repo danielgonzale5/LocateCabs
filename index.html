@@ -415,6 +415,11 @@
 
       });
 
+      io().on('timestamp', function (dataTS) {
+        Coordinates = dataTS.DataTimeStamp;
+        console.log(Coordinates)
+      });
+
     });
 
     function condicional() {
@@ -452,10 +457,7 @@
 
     }
 
-    io().on('timestamp', function (dataTS) {
-        Coordinates = dataTS.DataTimeStamp;
-        console.log(Coordinates)
-    });
+    
     console.log(Coordinates)
     function condicional2() {
       valor = document.getElementById('switch2').checked;
