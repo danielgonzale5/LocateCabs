@@ -35,14 +35,14 @@
     }
 
     #mapid {
-      height: 650px; width:900px;  float: left
+      height: 750px; width:950px;  float: left
     }
 
     button {
       background-color: rgb(184, 194, 42);
       border: none;
       color: white;
-      padding: 12px 27px;
+      padding: 12px 29px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
@@ -56,7 +56,7 @@
 
     button:active {
 
-      background-color: rgb(184, 194, 42);
+      background-color: rgb(155, 163, 44);
       /* box-shadow: 0 5px #666; */
       transform: translateY(4px);
 
@@ -127,11 +127,9 @@
         width:200; padding: 5px 50px 5px 5px;
     }
     .HistoricButton{
-        width:200; padding: 5px 50px 5px 5px;
+        width:200; padding: 5px 20px 5px 5px;
     }
-    .Historics{
-        width:200; padding: 5px 50px 5px 5px;
-    }
+    
     
     #CenterBS {
       padding: 5px 5px 5px 5px;     
@@ -199,21 +197,23 @@
     <label for="switch" onclick="condicional();" class="sw"></label>
   </div>
 
- 
-
-  <div class="Historics;">
-      <h3>Consulta de Historicos</h3>
-        <label for="IHist">Inicio:  </label>
+ <center>
+  <h3>Consulta de Historicos</h3>
+ </center>
+  
+  <div class="divSquare">
+    
+        <label for="IHist">Inicio</label>
         <input type="datetime-local" id="IHist" name="InitialHistoric" value="2021-06-01T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00" style="border: 1px solid black; border-radius: 8px; width: 200px;">
         <div></div>
-        <label for="FHist">Fin:     </label>
+        <label for="FHist">Fin</label>
         <input type="datetime-local" id="FHist" name="FinalHistoric" value="2021-06-02T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00" style="border: 1px solid black; border-radius: 8px; width: 200px;">
  
  
       </div>
   <center>
   <div class="divSquare">
-  <label for="iname">Usuario: </label> 
+  <label for="iname">Usuario</label> 
  
     <input type="text" id="iname" name="Usuario" style="border: 1px solid black; border-radius: 8px; width: 200px;"/>
   </center>
