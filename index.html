@@ -263,14 +263,18 @@
     //Condición de Calendario
     window.addEventListener('load',function(){
       datainicio = document.getElementById('IHist')
-      
-      datafin = datainicio.addEventListener('change',function() {
-      var uno = new Date(this.value).valueOf()
-      //console.log(this.value);  
-      document.getElementById('FHist').value = this.value ; 
 
+      datainicio.addEventListener('change',function() {
+        var uno = new Date(this.value).valueOf()
+        console.log(this.value);  
+        document.getElementById('FHist').value = this.value ; 
       });
-
+      datafin = document.getElementById('FHist')
+      datafin.addEventListener('change',function() {
+        if (document.getElementById('IHist').value>this.value) {
+          this.value = document.getElementById('IHist').value ; 
+        }
+      });
     });
 
     function changehist(){
