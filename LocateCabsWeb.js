@@ -165,6 +165,7 @@ app.post('/historic', function (req, res) {
     var DataHist = Object.values(HistData)
     var CoordinatesArrTemp = []
     var CoordinatesArr = []
+    console.log(DataHist[0][2])
     for (var i = 0; i < DataHist.length; i++) {
       CoordinatesArrTemp = [DataHist[i][2],DataHist[i][3]];
       CoordinatesArr.push(CoordinatesArrTemp);
