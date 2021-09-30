@@ -220,7 +220,7 @@
       </div>
       <div id= "S2" class="switch-container;">
         <input type="Checkbox" id="switch2">
-        <label for="switch2" onclick="" class="sw"></label>
+        <label for="switch2" onclick="condicional2()" class="sw"></label>
       </div>
   </div>
 
@@ -236,6 +236,7 @@
     let long = -74.811302;
     var polylinePoints;
     var polyline;
+    var polylineHistoric
     var startpoint;
     var startpoint_was_set=0;
     let latlngs = [];
@@ -300,6 +301,11 @@
       polyline = L.polyline(latlngs).addTo(mymap);
     }
 
+    function startPolyline2() {
+      polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+      mymap.fitBounds(polylineHistoric.getBounds());
+    }
+
     function addPolyline() {
       polyline.setLatLngs(latlngs) 
       if (!polyline.isEmpty() && polyline.getLatLngs().length==1 && startpoint_was_set==0){
@@ -311,6 +317,9 @@
 
     function clearpoly() {
       polyline.removeFrom(mymap)
+    }
+    function clearpoly2() {
+      polylineHistoric.removeFrom(mymap)
     }
 
     let mymap = L.map('mapid').setView([lat, long], 18);
@@ -428,9 +437,16 @@
         var Coordinates = [];
         Coordinates = dataTS.DataTimeStamp;
         console.log(Coordinates)
-        var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
-        mymap.fitBounds(polylineHistoric.getBounds());
     });
+
+    function condicional2() {
+      valor = document.getElementById('switch2').checked;
+      if (valor) {
+        startPolyline2();
+      }else{
+        clearpoly2();
+      }
+    }
   </script>
 
 </body>
