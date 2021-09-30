@@ -370,8 +370,10 @@
       polyline.removeFrom(mymap)
     }
     function clearpoly2() {
-      polylineHistoric.removeFrom(mymap)
-      hist_was_set=0;
+      if (hist_was_set==1){
+        polylineHistoric.removeFrom(mymap)
+        hist_was_set=0;
+      }
     }
 
     let mymap = L.map('mapid').setView([lat, long], 18);
