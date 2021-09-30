@@ -301,8 +301,10 @@
     }
 
     function setMarker() {
-      circle_marker.setLatLng(new L.LatLng(lat, long));
-      circle.setLatLng(new L.LatLng(lat, long));
+      if(lat!=null && long!=null){
+        circle_marker.setLatLng(new L.LatLng(lat, long));
+        circle.setLatLng(new L.LatLng(lat, long));
+      }
     }
 
     function Markerlabel() {
