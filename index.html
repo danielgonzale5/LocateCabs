@@ -467,8 +467,10 @@
             clearpoly();
             circle.setRadius(50);
             circle_marker.openPopup();
-            startpoint.removeFrom(mymap);
-            startpoint_was_set=0;
+            if (startpoint_was_set==1){
+              startpoint.removeFrom(mymap);
+              startpoint_was_set=0;
+            }
           }
             , 100)
             document.getElementById('switch2').disabled = false;
