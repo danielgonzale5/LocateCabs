@@ -241,12 +241,15 @@
     let latlngs = [];
     let latlngsTemp = [];
     let Coordinates = [];
-
+    var ws2 = document.getElementById('switch2').checked;
    
     
     
     function enviarhist ()  {
-      var datausua = document.getElementById('iname').value;
+
+      if (ws2==false){
+
+     var datausua = document.getElementById('iname').value;
       var datainicio = document.getElementById('IHist').value ;
       var datafin = document.getElementById('FHist').value;
       datainicio = new Date(datainicio).valueOf();
@@ -269,6 +272,9 @@
       };
     
       fetch('/historic', options);
+
+      }
+
     }
     
    
@@ -403,11 +409,8 @@
       valor = document.getElementById('switch').checked;
 
       if (valor) {
-
         setTimeout(function(){
           clearpoly();
-          circle.setRadius(50);
-          circle_marker.openPopup();
           startpoint.removeFrom(mymap);
           startpoint_was_set=0;
         }
@@ -439,8 +442,8 @@
     });
     console.log(Coordinates)
     function condicional2() {
-      valor = document.getElementById('switch2').checked;
-      if (valor) {
+      
+      if (ws2) {
         clearpoly2();
         circle_marker.removeFrom(mymap);
         circle.removeFrom(mymap);
