@@ -347,7 +347,7 @@
     }
 
     function startPolyline() {
-      if (latlngs.length!=0 && isNaN(latlngs)==false){
+      if (isNaN(latlngs)==false){
         polyline = L.polyline(latlngs).addTo(mymap); 
         polyline_set=1;
       }
@@ -446,8 +446,10 @@
             Markerlabel();
             if (valor) {
               latlngs = [];
-              startpoint.removeFrom(mymap);
-              startpoint_was_set=0;
+              if (startpoint_was_set==1){
+                startpoint.removeFrom(mymap);
+                startpoint_was_set=0;
+              }
               clearpoly();
               startPolyline();
             }
