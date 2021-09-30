@@ -161,9 +161,9 @@ app.post('/historic', function (req, res) {
   console.log(UserData, TSini, TSfin)
   con.query("SELECT * FROM gps WHERE Usuario=('"+UserData+"') AND TimeStamp BETWEEN ('"+TSini+"') AND ('"+TSfin+"');", function (err, rows) {
     if (err) throw err;
-    HistData = JSON.parse(JSON.stringify(rows))
+    var HistData = JSON.parse(JSON.stringify(rows))
     var DataHist = Object.values(HistData[0])
-    var DataTimeStamp= DataHist[4]
+    var DataTimeStamp= [DataHist[2],DataHist[3]]
     io.emit('timestamp', {
       DataTimeStamp: DataTimeStamp,
     });
