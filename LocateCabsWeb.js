@@ -155,7 +155,7 @@ app.post('/historic', function (req, res) {
   console.log("Historics sended")
   console.log(req.body);
   const HisDat = req.body
-  respone.json({
+  res.json({
     status:'success',
     UserData: HisDat.datausua, 
     TSini: HisDat.dataini,
