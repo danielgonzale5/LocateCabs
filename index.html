@@ -199,17 +199,17 @@
   <div class="Historics;">
       <h3>Consulta de Historicos</h3>
         <label for="IHist">Inicio:</label>
-        <input type="datetime-local" id="IHist" name="InitialHistoric" value="2021-06-01T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
+        <input type="datetime-local" id="IHist" oninput="changehist()" name="InitialHistoric" value="2021-06-01T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
         <div></div>
         <label for="FHist">Fin:</label>
-        <input type="datetime-local" id="FHist" name="FinalHistoric" value="2021-06-02T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
+        <input type="datetime-local" id="FHist" oninput="changehist()" name="FinalHistoric" value="2021-06-02T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
  
  
       </div>
 
   <div class="divSquare">
   <label for="iname">Usuario</label>
-  <input type="text" onchange="enviarhist()" id="iname" name="Usuario" style="border: 1px solid black; border-radius: 8px; width: 200px;"/>
+  <input type="text" id="iname" oninput="changehist()" name="Usuario" style="border: 1px solid black; border-radius: 8px; width: 200px;"/>
   </div>
 
   <center>
@@ -237,21 +237,31 @@
     let long = -74.811302;
     var polylinePoints;
     var polyline;
-    var polylineHistoric
+    var polylineHistoric;
     var startpoint;
-    var startpointHist
-    var finalpointHist
+    var startpointHist;
+    var finalpointHist;
     var startpoint_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
     let Coordinates = [];
 
    
-    
-    
-    function enviarhist()  {
+    function changehist(){
       valor = document.getElementById('switch2').checked;
       if (valor) {
+        enviarhist();
+
+        setTimeout(function(){
+          polylineHistoric.setLatLngs(Coordinates);
+          startpointHist.setLatLng(Coordinates[0]);
+          finalpointHist.setLatLng(Coordinates[Coordinates.length-1]);
+        }, 500)
+        
+      }
+    }
+    
+    function enviarhist()  {
         var datausua = document.getElementById('iname').value;
         var datainicio = document.getElementById('IHist').value ;
         var datafin = document.getElementById('FHist').value;
@@ -276,12 +286,11 @@
       
         fetch('/historic', options);
       }
-    }
     
    
-    function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
-
-
+    function MapsetUbication() { 
+      mymap.setView(new L.LatLng(lat, long)); 
+    }
 
     function MapAutoCenter() { 
       if (document.getElementById('switch').checked){
@@ -464,7 +473,8 @@
           circleMarker.removeFrom(mymap);
           circle.removeFrom(mymap);
           circle.setRadius(0);
-        },100)
+        },500)
+
       }
     }
   </script>
