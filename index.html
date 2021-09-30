@@ -237,6 +237,9 @@
     let long = -74.811302;
     var polylinePoints;
     var polyline;
+    var datausua;
+    var datainicio;
+    var datafin;
     var polylineHistoric;
     var startpoint;
     var startpointHist;
@@ -274,9 +277,9 @@
     }
     
     function enviarhist()  {
-        var datausua = document.getElementById('iname').value;
-        var datainicio = document.getElementById('IHist').value ;
-        var datafin = document.getElementById('FHist').value;
+        datausua = document.getElementById('iname').value;
+        datainicio = document.getElementById('IHist').value ;
+        datafin = document.getElementById('FHist').value;
         datainicio = new Date(datainicio).valueOf();
         datafin = new Date(datafin).valueOf() ;
         datainicio = datainicio.toString() ; 
@@ -434,10 +437,6 @@
 
       });
 
-      io().on('timestamp', function (dataTS) {
-        Coordinates = dataTS.DataTimeStamp;
-        console.log('io-on-timestamp Coordinates= '+Coordinates)
-      });
 
     });
 
@@ -476,6 +475,10 @@
 
     }
 
+    io().on('timestamp', function (dataTS) {
+        Coordinates = dataTS.DataTimeStamp;
+        console.log('io-on-timestamp Coordinates= '+Coordinates)
+      });
     
     function condicional2() {
       valor = document.getElementById('switch2').checked;
