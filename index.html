@@ -444,7 +444,6 @@
     function condicional2() {
       valor = document.getElementById('switch2').checked;
       if (valor) {
-        Coordinates=[];
         clearpoly2();
         startpointHist.removeFrom(mymap);
         finalpointHist.removeFrom(mymap);
@@ -454,6 +453,7 @@
         startPolyline2();
         startpointHist= L.marker(Coordinates[0]).addTo(mymap)
         finalpointHist= L.marker(Coordinates[Coordinates.length-1]).addTo(mymap)
+        Coordinates=[];
       }
     }
   </script>
