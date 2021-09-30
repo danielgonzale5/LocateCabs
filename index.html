@@ -256,6 +256,7 @@
           polylineHistoric.setLatLngs(Coordinates);
           startpointHist.setLatLng(Coordinates[0]);
           finalpointHist.setLatLng(Coordinates[Coordinates.length-1]);
+          mymap.fitBounds(polylineHistoric.getBounds());
         }, 500)
 
       }
