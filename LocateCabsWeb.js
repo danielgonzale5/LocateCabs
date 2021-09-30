@@ -163,10 +163,14 @@ app.post('/historic', function (req, res) {
     if (err) throw err;
     var HistData = JSON.parse(JSON.stringify(rows))
     var DataHist = Object.values(HistData)
-    console.log(DataHist)
-    var DataTimeStamp= [DataHist[2],DataHist[3]]
-    console.log(DataHist[2])
-    console.log(DataHist[3])
+    var CoordinatesArrTemp = []
+    var CoordinatesArr = []
+    for (var i = 0; i < DataHist.length; i++) {
+      CoordinatesArrTemp = [HistData[i][2],HistData[i][3]]
+      CoordinatesArr.push(CoordinatesArrTemp)
+      n += i;
+   }
+    var DataTimeStamp= CoordinatesArr
     io.emit('timestamp', {
       DataTimeStamp: DataTimeStamp,
     });
