@@ -217,7 +217,7 @@
     <div id= "CenterBS">
       <div id= "S2" class="switch-container;">
         <input type="Checkbox" id="switch2">
-        <label for="switch2" onclick="condicional2(),enviarhist ()" class="sw"></label>
+        <label for="switch2" onclick="condicional2(),enviarhist ();" class="sw"></label>
       </div>
   </div>
 
@@ -445,13 +445,14 @@
       
       if (ws2) {
         clearpoly2();
-        circle_marker.removeFrom(mymap);
-        circle.removeFrom(mymap);
+        
         startpointHist.removeFrom(mymap);
         finalpointHist.removeFrom(mymap);
         
       }else{
         enviarhist()
+        circle_marker.removeFrom(mymap);
+        circle.removeFrom(mymap);
         console.log(Coordinates)
         startPolyline2();
         startpointHist= L.marker(Coordinates[0]).addTo(mymap)
