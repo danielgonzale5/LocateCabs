@@ -429,23 +429,12 @@
 
     }
 
-    if (document.getElementById('switch2').checked){
-        enviarhist();
-      }
-
     io().on('timestamp', function (dataTS) {
         var Coordinates = [];
         Coordinates = dataTS.DataTimeStamp;
         console.log(Coordinates)
-        if (document.getElementById('switch2').checked){
-          setTimeout(function(){
-          var Coordinates = [];
-          clearpolyhist();
-          }, 100);
-        } else {
-          var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
-          mymap.fitBounds(polylineHistoric.getBounds());
-        }
+        var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+        mymap.fitBounds(polylineHistoric.getBounds());
     });
   </script>
 
