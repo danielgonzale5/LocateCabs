@@ -153,9 +153,9 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin=""></script>
-  </head>
+</head>
 
-  <body style="background-color:white;">
+<body style="background-color:white;">
   <div>
     <header style="text-align: center"><b><i>LocateCabs</b></i></header>
   </div>
@@ -186,54 +186,45 @@
     <label id="HoraID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
   </div>
   <div class="CenterButton;">
-    <button onclick="MapAutoCenter(), Markerlabel()"style="border: 1px solid black; border-radius: 8px; width: 250px;">Auto-center Camera</button>
+    <button onclick="MapAutoCenter(), Markerlabel()">Auto-center Camera</button>
   </div>
-  <center>
-    <h3>Polilinea en vivo</h3>
-  </center>
-
   <div class="switch-container;">
+    <h3>Trazar Polilínea en tiempo real</h3>
     <input type="Checkbox" id="switch">
     <label for="switch" onclick="condicional();" class="sw"></label>
   </div>
 
-  <center>
-  <h3>Consulta de Historicos</h3>
-  </center>
+ 
 
-  <div class="divSquare">
-    
-        <label for="IHist">Inicio</label>
-        <input type="datetime-local" id="IHist" name="InitialHistoric" value="2021-06-01T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00" style="border: 1px solid black; border-radius: 8px; width: 200px;">
+  <div class="Historics;">
+      <h3>Consulta de Historicos</h3>
+        <label for="IHist">Inicio:</label>
+        <input type="datetime-local" id="IHist" oninput="changehist()" name="InitialHistoric" value="2021-06-01T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
         <div></div>
-        <label for="FHist">Fin</label>
-        <input type="datetime-local" id="FHist" name="FinalHistoric" value="2021-06-02T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00" style="border: 1px solid black; border-radius: 8px; width: 200px;">
-
-
+        <label for="FHist">Fin:</label>
+        <input type="datetime-local" id="FHist" oninput="changehist()" name="FinalHistoric" value="2021-06-02T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
+ 
+ 
       </div>
-  <center>
+
   <div class="divSquare">
-  <label for="iname">Usuario</label> 
-
-    <input type="text" id="iname" name="Usuario" style="border: 1px solid black; border-radius: 8px; width: 200px;"/>
-  </center>
-
+  <label for="iname">Usuario</label>
+  <input type="text" id="iname" onchange="changehist()" name="Usuario" style="border: 1px solid black; border-radius: 8px; width: 200px;"/>
   </div>
 
+  <center>
 
-  <center> 
     <div id= "CenterBS">
       <div id= "B2" class="HistoricButton">
-      <button onclick="enviarhist()" style="border: 1px solid black; border-radius: 8px; width: 200px;">Consultar</button>
+      <button onclick="enviarhist()">Consultar</button>
       </div>
-      <h3>Trazar Históricos</h3>
-  
-  
       <div id= "S2" class="switch-container;">
+        <h3>Trazar Polilínea Histórica</h3>
         <input type="Checkbox" id="switch2">
-        <label for="switch2" onclick="condicional2()" class="sw"></label>
+        <label for="switch2" onclick="condicional2();" class="sw"></label>
       </div>
-    </div>
+  </div>
+
   </center>
 
   
