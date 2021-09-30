@@ -241,7 +241,7 @@
     let latlngs = [];
     let latlngsTemp = [];
     let Coordinates = [];
-    var ws2 = document.getElementById('switch2').checked;
+    var 
    
     
     
@@ -442,10 +442,9 @@
     });
     console.log(Coordinates)
     function condicional2() {
-      
+      ws2 = document.getElementById('switch2').checked;
       if (ws2) {
         clearpoly2();
-        
         startpointHist.removeFrom(mymap);
         finalpointHist.removeFrom(mymap);
         
