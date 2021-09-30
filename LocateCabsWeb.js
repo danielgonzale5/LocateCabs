@@ -1,3 +1,4 @@
+const express = require('express')();
 var app = require('express')();
 var server = require('http').createServer(app);
 var systemchild = require("child_process");
@@ -149,7 +150,7 @@ setInterval(function () {
     });
   });
 }, 3000);
-app.use(app.json({limit: '2mb'}))
+app.use(express.json({limit: '2mb'}));
 app.post('/historic', function (req, res) {
   console.log("Historics sended")
   console.log(req.body);
