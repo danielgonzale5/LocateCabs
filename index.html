@@ -445,7 +445,7 @@
      polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
 
     });
-    if (sw2) {  setTimeout(function(){ clearpolyhist() ;}, 100)    }
+    if (sw2) {  clearpolyhist() ;     }
      else {
        mymap.fitBounds(polylineHistoric.getBounds());
      }  
