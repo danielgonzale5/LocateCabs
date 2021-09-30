@@ -319,7 +319,7 @@
       }    
 
     }
-//al
+
     function clearpoly() {
       polyline.removeFrom(mymap)  
       
@@ -442,12 +442,16 @@
      var Coordinates = [];
      Coordinates = dataTS.DataTimeStamp;
      console.log(Coordinates)
+
      
     
-     if (sw2) {  clearpolyhist() ;     }
+     if (sw2) {setTimeout(function(){clearpolyhist() ;}, 100)}
      else {
-      polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
-      mymap.fitBounds(polylineHistoric.getBounds());
+
+     polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+     mymap.fitBounds(polylineHistoric.getBounds());
+
+      
      }  
 
     });
