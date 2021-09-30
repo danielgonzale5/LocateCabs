@@ -296,13 +296,13 @@
             'Content-Type': 'application/json'
           },
 
-          
+
           body: JSON.stringify(info)
         };
 
-        response = fetch('/historic', options);
-        await response.json()
-
+        const res= await fetch('/historic', options);
+        const confirm= await res.json();
+        console.log('data found.')
       }
     
    
