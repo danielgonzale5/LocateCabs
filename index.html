@@ -455,11 +455,11 @@
         circle.setRadius(50);
         circle_marker.openPopup();
       }else{
-
-        console.log(Coordinates)
+        enviarhist();
+        console.log(Coordinates);
         startPolyline2();
-        startpointHist= L.marker(Coordinates[0]).addTo(mymap)
-        finalpointHist= L.marker(Coordinates[Coordinates.length-1]).addTo(mymap)
+        startpointHist= L.marker(Coordinates[0]).addTo(mymap);
+        finalpointHist= L.marker(Coordinates[Coordinates.length-1]).addTo(mymap);
         circleMarker.removeFrom(mymap);
         circle.removeFrom(mymap);
         circle.setRadius(0);
