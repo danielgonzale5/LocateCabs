@@ -438,8 +438,10 @@
         Coordinates = dataTS.DataTimeStamp;
         console.log(Coordinates)
         if (document.getElementById('switch2').checked){
+          setTimeout(function(){
           var Coordinates = [];
           clearpolyhist();
+          }, 100);
         } else {
           var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
           mymap.fitBounds(polylineHistoric.getBounds());
