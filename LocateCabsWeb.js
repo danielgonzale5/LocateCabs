@@ -1,16 +1,17 @@
 var app = require('express')();
 var server = require('http').createServer(app);
-var  systemchild  =  require ( 'child_process' ) ;
+var systemchild = require("child_process");
+
 const port = 3000
 var DatosGPS;
-// hola
+
 var udp = require('dgram');
 
 var dir = __dirname;
 
 app.post('/github', function (req, res) {
   console.log("received")
-  systemchild.exec('cd /home/ubuntu/LocateCabs && git reset --hard && git pull')
+  systemchild.exec("cd /home/ubuntu/LocateCabs && git reset --hard && git pull")
 });
 
 app.get('/', function (req, res) {
@@ -148,29 +149,3 @@ setInterval(function () {
     });
   });
 }, 3000);
-
-app.post('/historic', function (req, res) {
-  console.log("Historics sended")
-  console.log(request.body);
-  respone.json({
-    status:'success',
-    UserData: datausua, 
-    TSini: dataini,
-    TSfin: datafin
-  });
-  console.log(UserData, TSini, TSfin)
-  con.query("SELECT * FROM gps WHERE Usuario=('"+UserData+"') AND TimeStamp BETWEEN ('"+TSini+"') AND ('"+TSfin+"');", function (err, rows) {
-    if (err) throw err;
-    HistData = JSON.parse(JSON.stringify(rows))
-    var DataHist = Object.values(HistData[0])
-    var DataTimeStamp= DataHist[4]
-    io.emit('timestamp', {
-      DataTimeStamp: DataTimeStamp,
-    });
-    io.on('connection', function (socket) {
-      socket.emit('timestamp', {
-        DataTimeStamp: DataTimeStamp
-      });
-    });
-  });
-});

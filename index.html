@@ -236,7 +236,7 @@
 
 
   <script>
-
+   //hello sdsadsda ffffsdfdsf sadsadadsdsads
     let lat = 10.984719;
     let long = -74.811302;
     var polylinePoints;
@@ -245,6 +245,8 @@
     var startpoint_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
+
+    
     
     function enviarhist ()  {
       var datausua = document.getElementById('iname').value;
@@ -254,25 +256,17 @@
       datafin = new Date(datafin).valueOf() ;
       datainicio = datainicio.toString() ; 
       datafin = datafin.toString() ; 
+
       console.log(datausua);
       console.log(datainicio); 
-      console.log(datafin);   
-      
-      const info = {datausua, datainicio, datafin};
-      const options = {
-
-        method: 'POST',
-        Headers: {
-          'Content-Type': 'application/json'
-        },
-
-        body: JSON.stringify(info)
-      };
+      console.log(datafin);      
     
-      fetch('/historic', options);
     }
     
+   
     function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
+
+
 
     function MapAutoCenter() { 
       if (document.getElementById('switch').checked){
@@ -307,9 +301,11 @@
       }    
 
     }
+
     function clearpoly() {
       polyline.removeFrom(mymap)
     }
+
 
     let mymap = L.map('mapid').setView([lat, long], 18);
     var circle = L.circle([lat, long], { radius: 50, color: '#FCFF42' }).addTo(mymap);
@@ -352,8 +348,6 @@
         usuario = data.DataUsu;
         finallong = data.DataLong;
         finallat = data.DataLat;
-
-
 
         setInterval(setMarker, 1000);
 
@@ -423,8 +417,8 @@
       }
 
     }
-   // prueba 1
 
+   // hola
   </script>
 
 </body>
