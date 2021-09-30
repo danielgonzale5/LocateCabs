@@ -243,7 +243,7 @@
 
    
     
-    //Genera históricos (1).
+    
     function enviarhist ()  {
       var datausua = document.getElementById('iname').value;
       var datainicio = document.getElementById('IHist').value ;
@@ -428,6 +428,8 @@
      var Coordinates = [];
      Coordinates = dataTS.DataTimeStamp;
      console.log(Coordinates)
+     var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+     mymap.fitBounds(polylineHistoric.getBounds());
     });
   </script>
 
