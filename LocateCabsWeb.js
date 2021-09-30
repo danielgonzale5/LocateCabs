@@ -1,17 +1,16 @@
 var app = require('express')();
 var server = require('http').createServer(app);
 var  systemchild  =  require ( 'child_process' ) ;
-// hola
 const port = 3000
 var DatosGPS;
-
+// hola
 var udp = require('dgram');
 
 var dir = __dirname;
 
 app.post('/github', function (req, res) {
-  systemchild.exec('cd /home/ubuntu/LocateCabs && git reset --hard && git pull')
   console.log("received")
+  systemchild.exec('cd /home/ubuntu/LocateCabs && git reset --hard && git pull')
 });
 
 app.get('/', function (req, res) {
