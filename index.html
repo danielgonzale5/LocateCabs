@@ -267,9 +267,13 @@
               } else {
                 startPolyline2();
                 startpointHist= L.marker(Coordinates[0]).addTo(mymap);
-                finalpointHist= L.marker(Coordinates[Coordinates.length-1]).addTo(mymap);
+                finalpointHist= L.circleMarker(Coordinates[Coordinates.length-1],{ color: '#FFB242' }).addTo(mymap);
 
               }
+            } else {
+
+              console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
+
             }
         }, 1000)
 
@@ -343,7 +347,7 @@
         hist_was_set=1;
       } else {
 
-        console.log('El intervalo de tiempo ó Usuario ingresado no es válido.');
+        console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
 
       }
     }
@@ -494,11 +498,10 @@
       }else{
         enviarhist();
         setTimeout(function(){
-          //console.log('Switch-on Coordinates= '+Coordinates);
           startPolyline2();
           if (Coordinates.length!=0){
             startpointHist= L.marker(Coordinates[0]).addTo(mymap);
-            finalpointHist= L.marker(Coordinates[Coordinates.length-1]).addTo(mymap);
+            finalpointHist= L.circleMarker(Coordinates[Coordinates.length-1],{ color: '#FFB242' }).addTo(mymap);
           }
           circle_marker.removeFrom(mymap);
           circle.removeFrom(mymap);
