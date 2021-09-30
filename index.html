@@ -242,6 +242,7 @@
     var startpointHist;
     var finalpointHist;
     var startpoint_was_set=0;
+    var hist_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
     let Coordinates = [];
@@ -254,11 +255,19 @@
 
         setTimeout(function(){
             //console.log('Coordinates= '+Coordinates[0]);
-            if (Coordinates.length!=0){
-              polylineHistoric.setLatLngs(Coordinates);
-              startpointHist.setLatLng(Coordinates[0]);
-              finalpointHist.setLatLng(Coordinates[Coordinates.length-1]);
-              mymap.fitBounds(Coordinates);
+            if (hist_was_set==1){
+              if (Coordinates.length!=0){
+                polylineHistoric.setLatLngs(Coordinates);
+                startpointHist.setLatLng(Coordinates[0]);
+                finalpointHist.setLatLng(Coordinates[Coordinates.length-1]);
+                mymap.fitBounds(Coordinates);
+              }
+            } else {
+              
+              startPolyline2();
+              startpointHist= L.marker(Coordinates[0]).addTo(mymap);
+              finalpointHist= L.marker(Coordinates[Coordinates.length-1]).addTo(mymap);
+
             }
         }, 2000)
 
@@ -327,6 +336,7 @@
       if (Coordinates.length!=0){
         polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
         mymap.fitBounds(Coordinates);
+        hist_was_set=1;
       } else {
 
         console.log('El intervalo de tiempo ó Usuario ingresado no es válido.');
@@ -348,6 +358,7 @@
     }
     function clearpoly2() {
       polylineHistoric.removeFrom(mymap)
+      hist_was_set=0;
     }
 
     let mymap = L.map('mapid').setView([lat, long], 18);
