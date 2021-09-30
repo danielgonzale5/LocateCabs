@@ -301,7 +301,7 @@
     }
 
     function setMarker() {
-      if(lat!=null && !lat.isNaN() && long!=null && !long.isNaN()){
+      if(lat!=null && !Number.isNaN(lat) && long!=null && !Number.isNaN(long)){
         circle_marker.setLatLng(new L.LatLng(lat, long));
         circle.setLatLng(new L.LatLng(lat, long));
       }
