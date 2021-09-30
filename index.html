@@ -252,7 +252,12 @@
     
     function enviarhist ()  {
       sw2 = document.getElementById('switch2').checked;
-      if (sw2) {}
+      if (sw2) {        
+          setTimeout(function(){
+            clearpolyhist() ; 
+          
+         }
+          , 100)}
 
       else {     
       var datausua = document.getElementById('iname').value;
@@ -320,6 +325,10 @@
 
     function clearpoly() {
       polyline.removeFrom(mymap)
+      
+    }
+    function clearpolyhist() {
+      polylineHistoric.removeFrom(mymap)
     }
 
 
@@ -428,8 +437,7 @@
         
         setInterval(function () {
           setMarker();
-          addPolyline();
-        }
+          addPolyline();     }
           , 1000);
 
       }
