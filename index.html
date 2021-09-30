@@ -443,7 +443,10 @@
      console.log(Coordinates)
      
      
-     if (sw2) {clearpolyhist() ; }
+     if (sw2) {  setTimeout(function(){
+      clearpolyhist() ;
+                          }, 100)
+        }
     else {
       var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
       mymap.fitBounds(polylineHistoric.getBounds());                               }  
