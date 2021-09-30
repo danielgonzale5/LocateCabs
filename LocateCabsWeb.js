@@ -1,3 +1,4 @@
+const express = require('express');
 var app = require('express')();
 var server = require('http').createServer(app);
 var systemchild = require("child_process");
@@ -6,12 +7,8 @@ const port = 3000
 var DatosGPS;
 
 var udp = require('dgram');
-const express = require('express');
 
 var dir = __dirname;
-
-//Routing 
-app.use (express.json({limit: '2mb'}));
 
 app.post('/github', function (req, res) {
   console.log("received")
@@ -24,12 +21,6 @@ app.get('/', function (req, res) {
 
 app.get('/routing', function(req, res) {
   res.sendfile(dir + '/index_routingmachine.html');
-});
-
-
-app.post('/historic',function(request, response){
-  console.log("Sended to backend");
-  console.log(request.body);
 });
 
 var io = require('socket.io')(server);
@@ -159,3 +150,39 @@ setInterval(function () {
     });
   });
 }, 3000);
+app.use(express.json({limit: '2mb'}));
+app.post('/historic', function (req, res) {
+  console.log("Historics sended")
+  console.log(req.body);
+  var HisDat = req.body;
+  var UserData=HisDat.datausua.toString();
+  var TSini=HisDat.datainicio.toString();
+  var TSfin=HisDat.datafin.toString();
+  console.log(UserData, TSini, TSfin)
+  con.query("SELECT * FROM gps WHERE Usuario=('"+UserData+"') AND TimeStamp BETWEEN ('"+TSini+"') AND ('"+TSfin+"');", function (err, rows) {
+    if (err) throw err;
+    var HistData = JSON.parse(JSON.stringify(rows))
+    var DataHist = Object.values(HistData)
+    var ConverArray =[]
+    var CoordinatesArrTemp = []
+    var CoordinatesArr = []
+    console.log(DataHist)
+    for (var i = 0; i < DataHist.length; i++) {
+      ConverArray.push(Object.values(DataHist[i]))
+   }
+   console.log(ConverArray)
+    for (var j = 0; j < DataHist.length; j++) {
+      CoordinatesArrTemp = [ConverArray[j][2],ConverArray[j][3]];
+      CoordinatesArr.push(CoordinatesArrTemp);
+    }
+    var DataTimeStamp= CoordinatesArr
+    io.emit('timestamp', {
+      DataTimeStamp: DataTimeStamp,
+    });
+    io.on('connection', function (socket) {
+      socket.emit('timestamp', {
+        DataTimeStamp: DataTimeStamp
+      });
+    });
+  });
+});
