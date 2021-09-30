@@ -154,7 +154,7 @@ app.use(express.json({limit: '2mb'}));
 app.post('/historic', function (req, res) {
   console.log("Historics sended")
   console.log(req.body);
-  var HisDat = JSON.parse(req.body);
+  var HisDat = req.body;
   var UserData=HisDat.datausua;
   var TSini=HisDat.datainicio;
   var TSfin=HisDat.datafin;
