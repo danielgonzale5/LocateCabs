@@ -154,13 +154,10 @@ app.use(express.json({limit: '2mb'}));
 app.post('/historic', function (req, res) {
   console.log("Historics sended")
   console.log(req.body);
-  const HisDat = req.body
-  res.json({
-    status:'success',
-    UserData: HisDat.datausua, 
-    TSini: HisDat.dataini,
-    TSfin: HisDat.datafin
-  });
+  var HisDat = JSON.parse(req.body);
+  UserData=HisDat.datausua;
+  TSini=HisDat.datainicio;
+  TSfin=HisDat.datafin;
   console.log(UserData, TSini, TSfin)
   con.query("SELECT * FROM gps WHERE Usuario=('"+UserData+"') AND TimeStamp BETWEEN ('"+TSini+"') AND ('"+TSfin+"');", function (err, rows) {
     if (err) throw err;
