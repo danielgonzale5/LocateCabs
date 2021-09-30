@@ -249,7 +249,7 @@
     sw2 = document.getElementById('switch2').checked;
    
     function clearpolyhist() {
-      polylineHistoric.removeFrom(mymap)  
+      polylineHistoric.removeFrom(mymap) ; 
     }
 
     
@@ -441,14 +441,12 @@
      var Coordinates = [];
      Coordinates = dataTS.DataTimeStamp;
      console.log(Coordinates)
-     var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+     
      
      if (sw2) {clearpolyhist() ; }
-    else {mymap.fitBounds(polylineHistoric.getBounds());}  
-    
-     
-
-
+    else {
+      var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+      mymap.fitBounds(polylineHistoric.getBounds());                               }  
     });
 
   </script>
