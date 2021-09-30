@@ -116,6 +116,8 @@
 
     #switch2 {
       display: none;
+      content: "Trazar";
+      position: relative;
     }
     
     .divSquare{
@@ -189,7 +191,6 @@
     <button onclick="MapAutoCenter(), Markerlabel()">Auto-center Camera</button>
   </div>
   <div class="switch-container;">
-    <h3>Trazar Polilínea en tiempo real</h3>
     <input type="Checkbox" id="switch">
     <label for="switch" onclick="condicional();" class="sw"></label>
   </div>
@@ -218,12 +219,12 @@
       <div id= "B2" class="HistoricButton">
       <button onclick="enviarhist()">Consultar</button>
       </div>
+      <h3>Trazar Históricos</h3>
       <div id= "S2" class="switch-container;">
-        <h3>Trazar Polilínea Histórica</h3>
         <input type="Checkbox" id="switch2">
         <label for="switch2" onclick="condicional2()" class="sw"></label>
       </div>
-  </div>
+    </div>
 
   </center>
 
@@ -453,9 +454,6 @@
         startPolyline2();
         startpointHist= L.marker(Coordinates[0]).addTo(mymap)
         finalpointHist= L.marker(Coordinates[Coordinates.length-1]).addTo(mymap)
-        circle_marker.removeFrom(mymap);
-        circle.removeFrom(mymap);
-        
       }
     }
   </script>
