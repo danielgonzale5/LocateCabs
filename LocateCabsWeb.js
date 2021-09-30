@@ -185,4 +185,7 @@ app.post('/historic', function (req, res) {
       });
     });
   });
+  res.json({
+    status: 'received'
+  });
 });

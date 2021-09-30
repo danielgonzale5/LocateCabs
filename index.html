@@ -276,7 +276,7 @@
       }
     }
     
-    function enviarhist()  {
+    async function enviarhist()  {
         datausua = document.getElementById('iname').value;
         datainicio = document.getElementById('IHist').value ;
         datafin = document.getElementById('FHist').value;
@@ -300,8 +300,8 @@
           body: JSON.stringify(info)
         };
 
-        fetch('/historic', options);
-
+        let res= await fetch('/historic', options);
+        res.end();
       }
     
    
