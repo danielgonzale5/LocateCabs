@@ -324,7 +324,7 @@
     }
 
     function startPolyline2() {
-      if (Coordinates!=[]){
+      if (Coordinates.length!=0){
         polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
         mymap.fitBounds(Coordinates);
       } else {
@@ -467,7 +467,6 @@
     }
 
     
-    console.log(Coordinates)
     function condicional2() {
       valor = document.getElementById('switch2').checked;
       if (valor) {
