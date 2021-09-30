@@ -431,17 +431,19 @@
 
     if (document.getElementById('switch2').checked){
         enviarhist();
-      } else {
-        var Coordinates = [];
-        clearpolyhist();
       }
 
     io().on('timestamp', function (dataTS) {
         var Coordinates = [];
         Coordinates = dataTS.DataTimeStamp;
         console.log(Coordinates)
-        var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
-        mymap.fitBounds(polylineHistoric.getBounds());
+        if (document.getElementById('switch2').checked){
+          var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+          mymap.fitBounds(polylineHistoric.getBounds());
+        } else {
+          var Coordinates = [];
+          clearpolyhist();
+        }
     });
   </script>
 
