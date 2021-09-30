@@ -235,6 +235,8 @@
     var polyline;
     var polylineHistoric
     var startpoint;
+    var startpointHist;
+    var finalpointHist;
     var startpoint_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
@@ -440,11 +442,15 @@
       valor = document.getElementById('switch2').checked;
       if (valor) {
         clearpoly2();
+        startpointHist.removeFrom(mymap);
+        finalpointHist.removeFrom(mymap);
         
       }else{
         enviarhist()
         console.log(Coordinates)
-        startPolyline2();  
+        startPolyline2();
+        startpointHist= L.marker(Coordinates[0]).addTo(mymap)
+        finalpointHist= L.marker(Coordinates[Coordinates.length-1]).addTo(mymap)
       }
     }
   </script>
