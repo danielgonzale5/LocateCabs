@@ -444,10 +444,12 @@
     function condicional2() {
       valor = document.getElementById('switch2').checked;
       if (valor) {
+        Coordinates=[];
         clearpoly2();
         startpointHist.removeFrom(mymap);
         finalpointHist.removeFrom(mymap);
       }else{
+        enviarhist();
         console.log(Coordinates)
         startPolyline2();
         startpointHist= L.marker(Coordinates[0]).addTo(mymap)
