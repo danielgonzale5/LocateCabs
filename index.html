@@ -498,6 +498,7 @@
         startpointHist.removeFrom(mymap);
         finalpointHist.removeFrom(mymap);
         setMarker();
+        circle_marker.setRadius(10);
         circle.setRadius(50);
         circle_marker.openPopup();
       }else{
@@ -508,8 +509,8 @@
             startpointHist= L.marker(Coordinates[0]).addTo(mymap);
             finalpointHist= L.circleMarker(Coordinates[Coordinates.length-1],{ color: '#FFB242' }).addTo(mymap);
           }
-          circle_marker.removeFrom(mymap);
-          circle.removeFrom(mymap);
+          circle_marker.closePopup();
+          circle_marker.setRadius(0);
           circle.setRadius(0);
         },500)
 
