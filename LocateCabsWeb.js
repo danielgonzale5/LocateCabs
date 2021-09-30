@@ -150,8 +150,7 @@ setInterval(function () {
     });
   });
 }, 3000);
-//{limit: '100mb'}
-app.use(express.json());
+app.use(express.json({limit: '500mb'}));
 app.post('/historic', function (req, res) {
   console.log("Historics sended")
   console.log(req.body);
@@ -185,11 +184,5 @@ app.post('/historic', function (req, res) {
         DataTimeStamp: DataTimeStamp
       });
     });
-  });
-
-  res.json({
-
-    status: 'recibido'
-
   });
 });

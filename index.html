@@ -300,9 +300,8 @@
           body: JSON.stringify(info)
         };
 
-        const res= await fetch('/historic', options);
-        const confirm= await res.json();
-        console.log('data found.')
+        fetch('/historic', options);
+
       }
     
    
