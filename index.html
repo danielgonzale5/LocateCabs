@@ -442,14 +442,16 @@
      var Coordinates = [];
      Coordinates = dataTS.DataTimeStamp;
      console.log(Coordinates)
-     polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
-
-    });
-    if (sw2) {  clearpolyhist() ;     }
-     else {
      
+    
+     if (sw2) {  clearpolyhist() ;     }
+     else {
+      polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+      mymap.fitBounds(polylineHistoric.getBounds());
      }  
 
+    });
+ 
   </script>
 
 </body>
