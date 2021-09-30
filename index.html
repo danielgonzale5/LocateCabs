@@ -320,7 +320,6 @@
         
         const info = {datausua, datainicio, datafin};
         const options = {
-
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -546,9 +545,9 @@
               startpointHist= L.marker(Coordinates[0]).addTo(mymap);
               finalpointHist= L.circleMarker(Coordinates[Coordinates.length-1],{ color: '#FFB242' }).addTo(mymap);
             }
-            circle_marker.closePopup();
-            circle_marker.setRadius(0);
-            circle.setRadius(0);
+            circle_marker.openPopup();
+            circle_marker.setRadius(10);
+            circle.setRadius(50);
           },500)
 
         }
