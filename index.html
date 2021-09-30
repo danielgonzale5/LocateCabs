@@ -17,7 +17,7 @@
       font-style: normal;
       font-size: 120%;
       display: inline-block;
-      width: 150px;
+      width: 70px;
       text-align: center;
     }
 
@@ -35,11 +35,11 @@
     }
 
     #mapid {
-      height: 650px; width:900px;  float: left
+      height: 650px; width:1000px;  float: left
     }
 
     button {
-      background-color: rgb(76, 175, 80);
+      background-color: rgb(221, 204, 47);
       border: none;
       color: white;
       padding: 12px 27px;
@@ -51,12 +51,12 @@
 
     button:hover {
 
-      background-color: rgb(62, 142, 65)
+      background-color: rgb(221, 204, 47);
     }
 
     button:active {
 
-      background-color: rgb(62, 142, 65);
+      background-color: rgb(221, 204, 47);
       /* box-shadow: 0 5px #666; */
       transform: translateY(4px);
 
@@ -98,7 +98,7 @@
 
     #switch:checked+.sw {
       left: 0px;
-      background-color: rgb(62, 142, 65);
+      background-color: rgb(221, 204, 47);
     }
 
     #switch {
@@ -111,7 +111,7 @@
 
     #switch2:checked+.sw {
       left: 0px;
-      background-color: rgb(62, 142, 65);
+      background-color: rgb(221, 204, 47);
     }
 
     #switch2 {
@@ -119,16 +119,17 @@
     }
     
     .divSquare{
-        width:200; padding: 5px 50px 0px 5px;
+        width:100; padding: 5px 50px 0px 5px;
     }
+    
     .CenterButton{
-        width:200; padding: 5px 50px 5px 5px;
+        width:100; padding: 5px 50px 5px 5px;
     }
     .HistoricButton{
-        width:200; padding: 5px 50px 5px 5px;
+        width:100; padding: 5px 50px 5px 5px;
     }
     .Historics{
-        width:200; padding: 5px 50px 5px 5px;
+        width:100; padding: 5px 50px 5px 5px;
     }
     
     #CenterBS {
@@ -159,6 +160,10 @@
   <div>
     <header style="text-align: center"><b><i>LocateCabs</b></i></header>
   </div>
+
+
+
+  
   <div id="mapid"></div>
 
   <div class="divSquare">
@@ -220,7 +225,7 @@
       </div>
       <div id= "S2" class="switch-container;">
         <input type="Checkbox" id="switch2">
-        <label for="switch2" onclick="" class="sw"></label>
+        <label for="switch2" onclick="enviarhist();" class="sw"></label>
       </div>
   </div>
 
@@ -232,7 +237,7 @@
 
   <script>
 
-    let lat = 10.984719;
+   let lat = 10.984719;
     let long = -74.811302;
     var polylinePoints;
     var polyline;
@@ -240,11 +245,18 @@
     var startpoint_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
-
+    var Coordinates = [];
+    var polylineHistoric; 
+    var sw2 = document.getElementById('switch2').checked;
    
-    
+    function clearpolyhist() {
+      polylineHistoric.removeFrom(mymap) ; 
+    }
+
     
     function enviarhist ()  {
+     
+      if (sw2==false) {           
       var datausua = document.getElementById('iname').value;
       var datainicio = document.getElementById('IHist').value ;
       var datafin = document.getElementById('FHist').value;
@@ -252,10 +264,7 @@
       datafin = new Date(datafin).valueOf() ;
       datainicio = datainicio.toString() ; 
       datafin = datafin.toString() ; 
-      console.log(datausua);
-      console.log(datainicio); 
-      console.log(datafin);   
-      
+
       const info = {datausua, datainicio, datafin};
       const options = {
 
@@ -267,10 +276,12 @@
         body: JSON.stringify(info)
       };
     
-      fetch('/historic', options);
+      fetch('/historic', options);   }
+
     }
     
    
+
     function MapsetUbication() { mymap.setView(new L.LatLng(lat, long)); }
 
 
@@ -308,9 +319,10 @@
       }    
 
     }
-
+//al
     function clearpoly() {
-      polyline.removeFrom(mymap)
+      polyline.removeFrom(mymap)  
+      
     }
 
 
@@ -359,12 +371,14 @@
         setInterval(setMarker, 1000);
 
         valor = document.getElementById('switch').checked;
+
         if (valor) {
           
           setInterval(latlngsTemp = [lat, long], 1000);
           setInterval(latlngs.push(latlngsTemp), 1000);
         } else {
           latlngs = [];
+
         }
 
 
@@ -387,8 +401,8 @@
 
 
       });
-
     });
+
 
     function condicional() {
 
@@ -417,20 +431,30 @@
         
         setInterval(function () {
           setMarker();
-          addPolyline();
-        }
+          addPolyline();     }
           , 1000);
 
       }
 
     }
+
     io().on('timestamp', function (dataTS) {
-     var Coordinates = [];
      Coordinates = dataTS.DataTimeStamp;
      console.log(Coordinates)
-     var polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
-     mymap.fitBounds(polylineHistoric.getBounds());
+     
+
     });
+
+    if (sw2) {  
+      setTimeout(function(){ 
+        clearpolyhist();
+      }, 100)    
+    }
+     else {
+       polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+       mymap.fitBounds(polylineHistoric.getBounds());
+     }  
+
   </script>
 
 </body>
