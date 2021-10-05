@@ -374,9 +374,7 @@
       } else {
         mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
       }
-      if (document.getElementById('switch3').checked) {
         mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
-      }
     }
     function setMarker() {
       if (lat != null && isNaN(lat) == false && long != null && isNaN(long) == false) {
@@ -497,6 +495,9 @@
           }, 500)
         }
       }
+    }
+    if (document.getElementById('switch3').checked=true){
+      MapAutoCenter();
     }
   </script>
 </body>
