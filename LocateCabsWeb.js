@@ -177,6 +177,7 @@ app.post('/historicact', function (req, res) {
   con.query("SELECT * FROM gps WHERE TimeStamp BETWEEN ('" + TSactant + "') AND ('" + TSact + "');", function (err, rows) {
     if (err) throw err;
     var HistDataact = JSON.parse(JSON.stringify(rows))
+    console.log(HistDataact)
     var DataHistact = Object.values(HistDataact)
     var ActConverArray = []
     var CCoordinatesArr = []
