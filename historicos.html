@@ -155,7 +155,7 @@
     left: 0px;
     background-color: rgb(184, 194, 42);
   }
-  #switch3 {
+  #switch2 {
     display: none;
   }
   #switch3:checked+.sw::after {
@@ -247,7 +247,7 @@
     <h2 style="text-align: center; margin-top: 15px;">Consultar ubicación</h2>
     <div></div>
     <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Fecha y Hora:</label>
-    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00"
+    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="CHist" onchange="" name="CurrentHistoric" value="2021-06-01T00:00"
       min="2021-06-01T00:00" max="2044-06-0 1T00:00">
     <div></div>
     <div class="switch-container;" style="text-align: center; margin-top: 5px;">
@@ -406,7 +406,6 @@
     });
     //Funciones de los switches al trazar histórico
     function condicional2() {
-      if (document.getElementById('switch2').disabled != true) {
         valor = document.getElementById('switch2').checked;
         if (valor) {
           if (hist_was_set == 1) {
@@ -418,9 +417,7 @@
           circle_marker.setRadius(10);
           circle.setRadius(50);
           circle_marker.openPopup();
-          document.getElementById('switch3').disabled = false;
         } else {
-          document.getElementById('switch3').disabled = true;
           enviarhist();
           setTimeout(function () {
             startPolyline2();
@@ -434,7 +431,6 @@
           }, 500)
         }
       }
-    }
   </script>
 </body>
 
