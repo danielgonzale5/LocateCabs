@@ -261,11 +261,11 @@
     let Coordinates = [];
 
     //Condición de Calendario
-
     window.addEventListener('load',function(){
       datainicio = document.getElementById('IHist')
 
       datainicio.addEventListener('change',function() {
+        var uno = new Date(this.value).valueOf()
         console.log(this.value);  
         document.getElementById('FHist').value = this.value ; 
       });
@@ -276,7 +276,6 @@
         }
       });
     });
-
 
     function changehist(){
       valor = document.getElementById('switch2').checked;
@@ -308,7 +307,6 @@
     }
     
     async function enviarhist()  {
-
         datausua = document.getElementById('iname').value;
         datainicio = document.getElementById('IHist').value ;
         datafin = document.getElementById('FHist').value;
@@ -440,7 +438,6 @@
 
         document.getElementById('FechaID').innerHTML = datofecha;
         document.getElementById('HoraID').innerHTML = formattedTime;
-
         lat = data.DataLat;
         long = data.DataLong;
 

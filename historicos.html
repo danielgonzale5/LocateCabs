@@ -168,6 +168,12 @@
   #switch3 {
     display: none;
   }
+
+  #aparece{
+  display : none ; 
+  }
+  
+
   @media (max-width: 952px){
     label.logo{
       font-size: 30px;
@@ -181,6 +187,8 @@
     .checkbtn{
       display: block;
     }
+   
+
     ul{
       position: fixed;
       width: 100%;
@@ -206,12 +214,18 @@
     #check:checked ~ ul{
       left: 0;
     }
+    
+
+   
   }
   section{
     background: url(bg1.jpg) no-repeat;
     background-size: cover;
     height: calc(100vh - 80px);
   }
+
+
+
 </style>
 <body>
   <nav>
@@ -231,13 +245,18 @@
     <div></div>
     <h2 style="text-align: center; margin-top: 15px;">Consultar trayecto</h2>
     <div></div>
+
+
     <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Inicio:</label>
     <input class="inlineclass" style="text-align: center;" type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00"
       min="2021-06-01T00:00" max="2044-06-01T00:00">
-    <div></div>
-    <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="FHist">Fin:</label>
+    
+     <div></div>
+     <div id ='aparece'> 
+    <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="FHist" id = "labf" >Fin:</label>
     <input class="inlineclass" style="text-align: center;" type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00"
       min="2021-06-01T00:00" max="2044-06-01T00:00">
+    </div>
     <div></div>
     <div class="switch-container;" style="text-align: center; margin-top: 5px;">
       <input type="Checkbox" id="switch2">
@@ -278,20 +297,26 @@
     let Coordinates = [];
     let CCoordinates = [];
     //Condición de Calendario
-    window.addEventListener('load', function () {
+
+    window.addEventListener('load', function (){
+
       datainicio = document.getElementById('IHist')
       datainicio.addEventListener('change', function () {
-        var uno = new Date(this.value).valueOf()
-        console.log(this.value);
         document.getElementById('FHist').value = this.value;
+        document.getElementById('aparece').style.display = 'block' ; 
       });
-      datafin = document.getElementById('FHist')
-      datafin.addEventListener('change', function () {
-        if (document.getElementById('IHist').value > this.value) {
-          this.value = document.getElementById('IHist').value;
+
+          datafin = document.getElementById('FHist')
+          datafin.addEventListener('load', function () {
+          if (document.getElementById('IHist').value > this.value) {
+            document.getElementById('IHist').value = this.value; 
         }
       });
+
     });
+
+
+
     //Función de consulta de histórico
     function changehist() {
       valor = document.getElementById('switch2').checked;
