@@ -6,7 +6,6 @@
   <meta charset="utf-8">
   <title>LocateCabs Página Principal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel='stylesheet' type="text/css" href="styles/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -16,7 +15,204 @@
     crossorigin="">
     </script>
 </head>
-
+<style>
+  *{
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+  }
+  body{
+    font-family: Arial;
+    background-color: #F4D03F;
+  }
+  label {
+    margin:5px;
+    font-size: 120%;
+    display: inline-block;
+  }
+  button {
+    background-color: #F4D03F;
+    border: none;
+    color: black;
+    padding: 12px 29px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 100%;
+  }
+  button:hover {
+    background-color: #F4D03F;
+  }
+  button:active {
+    background-color: #F4D03F;
+    /* box-shadow: 0 5px #666; */
+    transform: translateY(4px);
+  }
+  nav{
+    background: black;
+    height: 80px;
+    width: 100%;
+  }
+  label.logo{
+    color: white;
+    font-size: 35px;
+    line-height: 80px;
+    padding: 0 100px;
+    font-weight: bold;
+  }
+  nav ul{
+    float: right;
+    margin-right: 20px;
+  }
+  nav ul li{
+    display: inline-block;
+    line-height: 80px;
+    margin: 0 5px;
+  }
+  nav ul li a{
+    color: white;
+    font-size: 17px;
+    padding: 7px 13px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  a.active,a:hover{
+    background: rgb(152, 148, 35);
+    transition: .5s;
+  }
+  .checkbtn{
+    font-size: 30px;
+    color: white;
+    float: right;
+    line-height: 80px;
+    margin-right: 40px;
+    cursor: pointer;
+    display: none;
+  }
+  #check{
+    display: none;
+  }
+  #mapid {
+    margin: 15px;
+    height: 650px;
+    width: 60%;
+    float: left;
+    border: 5px solid black;
+  }
+  #container {
+    background-color: #F7DC6F;
+    margin: 15px;
+    height: 650px;
+    width: 35%;
+    float: left;
+    border: 5px solid black;
+  }
+  .inlineclass {
+    display: inline-block;
+  }
+  .CenterButton {
+    width: 200;
+    padding: 5px 50px 5px 5px;
+  }
+  .sw {
+    display: inline-block;
+    width: 100px;
+    height: 35px;
+    background: darkgray;
+    border-radius: 100px;
+    cursor: pointer;
+    position: relative;
+    transition: .2s;
+  }
+  .sw::after {
+    content: "";
+    display: block;
+    width: 25px;
+    height: 25px;
+    background-color: snow;
+    border-radius: 100px;
+    position: absolute;
+    top: 5px;
+    left: 4px;
+    transition: .2s;
+  }
+  #switch:checked+.sw::after {
+    left: 70px;
+  }
+  #switch:checked+.sw {
+    left: 0px;
+    background-color: rgb(184, 194, 42);
+  }
+  #switch {
+    display: none;
+  }
+  #switch2:checked+.sw::after {
+    left: 70px;
+  }
+  #switch2:checked+.sw {
+    left: 0px;
+    background-color: rgb(184, 194, 42);
+  }
+  #switch3 {
+    display: none;
+  }
+  #switch3:checked+.sw::after {
+    left: 70px;
+  }
+  #switch3:checked+.sw {
+    left: 0px;
+    background-color: rgb(184, 194, 42);
+  }
+  #switch3 {
+    display: none;
+  }
+  @media (max-width: 952px){
+    label.logo{
+      font-size: 30px;
+      padding-left: 50px;
+    }
+    nav ul li a{
+      font-size: 16px;
+    }
+  }
+  @media (max-width: 858px){
+    .checkbtn{
+      display: block;
+    }
+    ul{
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      background: #2c3e50;
+      top: 80px;
+      left: -100%;
+      text-align: center;
+      transition: all .5s;
+    }
+    nav ul li{
+      display: block;
+      margin: 50px 0;
+      line-height: 30px;
+    }
+    nav ul li a{
+      font-size: 20px;
+    }
+    a:hover,a.active{
+      background: none;
+      color: #0082e6;
+    }
+    #check:checked ~ ul{
+      left: 0;
+    }
+  }
+  section{
+    background: url(bg1.jpg) no-repeat;
+    background-size: cover;
+    height: calc(100vh - 80px);
+  }
+</style>
 <body>
   <nav>
     <input type="checkbox" id="check">
