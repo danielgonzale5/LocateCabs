@@ -260,225 +260,319 @@ section{
     let long = -74.811302;
     var polylinePoints;
     var polyline;
+    var datausua;
     var datainicio;
     var datafin;
     var polylineHistoric;
-    var polyline_set = 0;
+    var polyline_set=0;
     var startpoint;
     var startpointHist;
     var finalpointHist;
-    var startpoint_was_set = 0;
-    var hist_was_set = 0;
+    var startpoint_was_set=0;
+    var hist_was_set=0;
     let latlngs = [];
     let latlngsTemp = [];
     let Coordinates = [];
+
     //Condición de Calendario
-    window.addEventListener('load', function () {
+    window.addEventListener('load',function(){
       datainicio = document.getElementById('IHist')
-      datainicio.addEventListener('change', function () {
+
+      datainicio.addEventListener('change',function() {
         var uno = new Date(this.value).valueOf()
-        console.log(this.value);
-        document.getElementById('FHist').value = this.value;
+        console.log(this.value);  
+        document.getElementById('FHist').value = this.value ; 
       });
       datafin = document.getElementById('FHist')
-      datafin.addEventListener('change', function () {
-        if (document.getElementById('IHist').value > this.value) {
-          this.value = document.getElementById('IHist').value;
+      datafin.addEventListener('change',function() {
+        if (document.getElementById('IHist').value>this.value) {
+          this.value = document.getElementById('IHist').value ; 
         }
       });
     });
-    //Función de consulta de histórico
-    function changehist() {
+
+    function changehist(){
       valor = document.getElementById('switch2').checked;
       if (valor) {
         enviarhist();
-        setTimeout(function () {
-          if (Coordinates.length != 0) {
-            if (hist_was_set == 1) {
-              polylineHistoric.setLatLngs(Coordinates);
-              startpointHist.setLatLng(Coordinates[0]);
-              finalpointHist.setLatLng(Coordinates[Coordinates.length - 1]);
-              mymap.fitBounds(Coordinates);
+
+        setTimeout(function(){
+            if (Coordinates.length!=0){
+              if (hist_was_set==1){
+                  polylineHistoric.setLatLngs(Coordinates);
+                  startpointHist.setLatLng(Coordinates[0]);
+                  finalpointHist.setLatLng(Coordinates[Coordinates.length-1]);
+                  mymap.fitBounds(Coordinates);
+                
+              } else {
+                startPolyline2();
+                startpointHist= L.marker(Coordinates[0]).addTo(mymap);
+                finalpointHist= L.circleMarker(Coordinates[Coordinates.length-1],{ color: '#FFB242' }).addTo(mymap);
+
+              }
             } else {
-              startPolyline2();
-              startpointHist = L.marker(Coordinates[0]).addTo(mymap);
-              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
+
+              console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
+
             }
-          } else {
-            console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
-          }
         }, 1000)
+
       }
     }
-    //Función de coneión Frontend-Backend del histórico
-    async function enviarhist() {
-      datainicio = document.getElementById('IHist').value;
-      datafin = document.getElementById('FHist').value;
-      datainicio = new Date(datainicio).valueOf();
-      datafin = new Date(datafin).valueOf();
-      datainicio = datainicio.toString();
-      datafin = datafin.toString();
-      console.log('datainicio= ' + datainicio);
-      console.log('datafina= ' + datafin);
-      const info = { datainicio, datafin };
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(info)
-      };
-      await fetch('/historic', options);
+    
+    async function enviarhist()  {
+        datausua = document.getElementById('iname').value;
+        datainicio = document.getElementById('IHist').value ;
+        datafin = document.getElementById('FHist').value;
+        datainicio = new Date(datainicio).valueOf();
+        datafin = new Date(datafin).valueOf() ;
+        datainicio = datainicio.toString() ; 
+        datafin = datafin.toString() ; 
+        console.log('datausua= '+datausua);
+        console.log('datainicio= '+datainicio); 
+        console.log('datafina= '+datafin);   
+        
+        const info = {datausua, datainicio, datafin};
+        const options = {
+
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+
+
+          body: JSON.stringify(info)
+        };
+        
+        await fetch('/historic', options);
+
+      }
+    
+   
+    function MapsetUbication() { 
+      mymap.setView(new L.LatLng(lat, long)); 
     }
-    //Serie de funciones para el mapa
-    function MapsetUbication() {
-      mymap.setView(new L.LatLng(lat, long));
-    }
-    function MapAutoCenter() {
-      if (document.getElementById('switch').checked) {
-        if (startpoint_was_set == 1) {
+
+    function MapAutoCenter() { 
+      if (document.getElementById('switch').checked){
+        if (startpoint_was_set==1){
           mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
         }
       } else {
         mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
-      }
+      }   
     }
+
     function setMarker() {
-      if (lat != null && isNaN(lat) == false && long != null && isNaN(long) == false) {
+      if(lat!=null && isNaN(lat)==false && long!=null && isNaN(long)==false){
         circle_marker.setLatLng(new L.LatLng(lat, long));
         circle.setLatLng(new L.LatLng(lat, long));
       }
     }
+
     function Markerlabel() {
       circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
     }
-    function createStartPoint() {
-      startpoint = L.marker([lat, long]).addTo(mymap);
+
+    function createStartPoint() { 
+      startpoint= L.marker([lat,long]).addTo(mymap);
     }
+
     function startPolyline() {
-      if (isNaN(latlngs) == false) {
-        polyline = L.polyline(latlngs).addTo(mymap);
-        polyline_set = 1;
+      if (isNaN(latlngs)==false){
+        polyline = L.polyline(latlngs).addTo(mymap); 
+        polyline_set=1;
       }
     }
+
     function startPolyline2() {
-      if (Coordinates.length != 0) {
-        polylineHistoric = L.polyline(Coordinates, { color: 'red' }).addTo(mymap);
+      if (Coordinates.length!=0){
+        polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
         mymap.fitBounds(Coordinates);
-        hist_was_set = 1;
+        hist_was_set=1;
       } else {
+
         console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
+
       }
     }
+
     function addPolyline() {
-      if ((polyline_set == 1)) {
-        polyline.setLatLngs(latlngs)
-        if (!polyline.isEmpty() && polyline.getLatLngs().length == 1 && startpoint_was_set == 0) {
+      if ((polyline_set==1)){
+        polyline.setLatLngs(latlngs) 
+        if (!polyline.isEmpty() && polyline.getLatLngs().length==1 && startpoint_was_set==0){
           setTimeout(createStartPoint(), 1000)
-          startpoint_was_set = 1;
-        }
+          startpoint_was_set=1;
+        }    
       }
     }
+
     function clearpoly() {
-      if (polyline_set == 1) {
+      if (polyline_set==1){
         polyline.removeFrom(mymap)
       }
     }
     function clearpoly2() {
-      polylineHistoric.removeFrom(mymap)
-      hist_was_set = 0;
+        polylineHistoric.removeFrom(mymap)
+        hist_was_set=0;
+
     }
+
     let mymap = L.map('mapid').setView([lat, long], 18);
     var circle = L.circle([lat, long], { radius: 50, color: '#FCFF42' }).addTo(mymap);
     var circle_marker = L.circleMarker([lat, long], { color: '#CA2049' }).bindPopup("No Data", { autoPan: false }).addTo(mymap);
     circle_marker.openPopup();
+
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);
-    //Recepción y traducción de información del Backend
+
+
+
     document.addEventListener('DOMContentLoaded', function () {
       old_user = "-";
+ 
       io().on('change', function (data) {
+     
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
+
         var date = new Date(parseFloat(data.DataTime));
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         var month = months[date.getMonth()];
         var hours = date.toLocaleTimeString();
         var minutes = "0" + date.getMinutes();
         var seconds = "0" + date.getSeconds();
-        var formattedTime = hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-        var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
+        var formattedTime = hours.substr(0,2) +':'+ minutes.substr(-2) + ':' + seconds.substr(-2);
+
+        var datofecha =  date.getDate()+"/"+  month+"/"+date.getFullYear() ;
+
         document.getElementById('FechaID').innerHTML = datofecha;
         document.getElementById('HoraID').innerHTML = formattedTime;
         lat = data.DataLat;
         long = data.DataLong;
+
+
         usuario = data.DataUsu;
         finallong = data.DataLong;
         finallat = data.DataLat;
+
         setInterval(setMarker, 1000);
+
         valor = document.getElementById('switch').checked;
         if (valor) {
+          
           setInterval(latlngsTemp = [lat, long], 1000);
           setInterval(latlngs.push(latlngsTemp), 1000);
         } else {
           latlngs = [];
         }
+
+
         if (old_user != usuario) {
           setTimeout(function () {
             MapsetUbication();
             Markerlabel();
             if (valor) {
               latlngs = [];
-              if (startpoint_was_set == 1) {
+              if (startpoint_was_set==1){
                 startpoint.removeFrom(mymap);
-                startpoint_was_set = 0;
+                startpoint_was_set=0;
               }
               clearpoly();
               startPolyline();
             }
           }
             , 1000);
+
           old_user = usuario;
         }
+
+
       });
+
+
     });
-    //Funciones de los switches al trazar linea en vivo
+
     function condicional() {
-      if (document.getElementById('switch').disabled != true) {
+      if (document.getElementById('switch').disabled != true){
         valor = document.getElementById('switch').checked;
+
         if (valor) {
-          setTimeout(function () {
+
+          setTimeout(function(){
             clearpoly();
             circle.setRadius(50);
             circle_marker.openPopup();
-            if (startpoint_was_set == 1) {
+            if (startpoint_was_set==1){
               startpoint.removeFrom(mymap);
-              startpoint_was_set = 0;
+              startpoint_was_set=0;
             }
           }
             , 100)
-          document.getElementById('switch2').disabled = false;
+            document.getElementById('switch2').disabled = false;
         }
+
         else {
-          console.log('latlngs=' + latlngs.length)
+          console.log('latlngs='+ latlngs.length)
           document.getElementById('switch2').disabled = true;
-          setTimeout(function () {
+          setTimeout(function(){
             circle.setRadius(0);
             startPolyline();
           }
             , 1000);
+          
           setInterval(function () {
             setMarker();
             addPolyline();
           }
             , 1000);
+
+        }
+      }
+    }
+
+    io().on('timestamp', function (dataTS) {
+        Coordinates = dataTS.DataTimeStamp;
+        console.log('io-on-timestamp Coordinates= '+Coordinates)
+      });
+    
+    function condicional2() {
+      if (document.getElementById('switch2').disabled != true){
+        valor = document.getElementById('switch2').checked; 
+        if (valor) {
+          if (hist_was_set==1){
+            clearpoly2();
+            startpointHist.removeFrom(mymap);
+            finalpointHist.removeFrom(mymap);
+          }
+          setMarker();
+          circle_marker.setRadius(10);
+          circle.setRadius(50);
+          circle_marker.openPopup();
+          document.getElementById('switch').disabled = false;
+        }else{
+          document.getElementById('switch').disabled = true;
+          enviarhist();
+          setTimeout(function(){
+            startPolyline2();
+            if (Coordinates.length!=0){
+              startpointHist= L.marker(Coordinates[0]).addTo(mymap);
+              finalpointHist= L.circleMarker(Coordinates[Coordinates.length-1],{ color: '#FFB242' }).addTo(mymap);
+            }
+            circle_marker.closePopup();
+            circle_marker.setRadius(0);
+            circle.setRadius(0);
+          },500)
+
         }
       }
     }
   </script>
+
 </body>
 
 </html>
