@@ -170,7 +170,7 @@ app.post('/historicact', function (req, res) {
   var HisDatact = req.body;
   var TSact = HisDatact.dataactual.toString();
   console.log(TSact)
-  con.query("SELECT * FROM gps WHERE TimeStamp = ?);",[TSact], function (err, rows) {
+  con.query("SELECT * FROM gps WHERE TimeStamp = ?",[TSact], function (err, rows) {
     if (err) throw err;
     var HistDataact = JSON.parse(JSON.stringify(rows))
     var DataHistact = Object.values(HistDataact)
