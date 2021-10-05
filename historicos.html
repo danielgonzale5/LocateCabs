@@ -309,7 +309,7 @@
           datafin = document.getElementById('FHist')
           datafin.addEventListener('change', function () {
           if (document.getElementById('IHist').value > this.value) {
-            document.getElementById('IHist').value = this.value; 
+            this.value =  document.getElementById('IHist').value ;
         }
       });
 
