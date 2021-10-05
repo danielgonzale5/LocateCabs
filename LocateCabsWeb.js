@@ -185,7 +185,7 @@ app.post('/historicact', function (req, res) {
       ActConverArray.push(Object.values(DataHistact[i]))
     }
     console.log(ActConverArray)
-    CCoordinatesArr=[ActConverArray[ActConverArray.length-1][2],ActConverArray[ActConverArray.length-1][3]]
+    CCoordinatesArr=[ActConverArray[DataHistact.length-1][2],ActConverArray[DataHistact.length-1][3]]
     var CurrentDataTimeStamp = CCoordinatesArr
     console.log(CurrentDataTimeStamp)
     io.emit('ctimestamp', {
