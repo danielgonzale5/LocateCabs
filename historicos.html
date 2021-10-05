@@ -31,32 +31,34 @@
   </nav>
   <div class="inlineclass" id="mapid"></div>
   <div class="inlineclass" id="container">
-    <h1 style="text-align: center; padding-top: 15px;">INFORMACIÓN DEL TAXI</h1>
+    <h1 style="text-align: center; padding-top: 15px;">CONSULTA DE HISTÓRICOS</h1>
     <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Usuario</label>
-    <label class="inlineclass" id="UsuID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+    <h2 style="text-align: center; margin-top: 15px;">Consultar trayecto</h2>
     <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Latitud</label>
-    <label class="inlineclass" id="LatID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+    <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Inicio:</label>
+    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00"
+      min="2021-06-01T00:00" max="2044-06-01T00:00">
     <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Longitud</label>
-    <label class="inlineclass" id="LongID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+    <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="FHist">Fin:</label>
+    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00"
+      min="2021-06-01T00:00" max="2044-06-01T00:00">
     <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Fecha</label>
-    <label class="inlineclass" id="FechaID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
-    <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Hora</label>
-    <label class="inlineclass" id="HoraID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
-    <div></div>
-    <h2 style="text-align: center; margin-top: 15px;">Trazar recorrido</h2>
     <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-      <input type="Checkbox" id="switch">
-      <label for="switch" onclick="condicional();" class="sw"></label>
+      <input type="Checkbox" id="switch3">
+      <label for="switch3" onclick="condicional2();" class="sw"></label>
     </div>
-    <div class="CenterButton;" style="text-align: center; margin-top: 15px;">
-      <button onclick="MapAutoCenter(), Markerlabel()"
-        style="border: 1px solid black; border-radius: 8px; width: 250px;">Auto-center Camera</button>
+    <div></div>
+    <h2 style="text-align: center; margin-top: 15px;">Consultar ubicación</h2>
+    <div></div>
+    <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Fecha y Hora:</label>
+    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00"
+      min="2021-06-01T00:00" max="2044-06-0 1T00:00">
+    <div></div>
+    <div class="switch-container;" style="text-align: center; margin-top: 5px;">
+      <input type="Checkbox" id="switch3">
+      <label for="switch3" onclick="condicional3();" class="sw"></label>
     </div>
+
   </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -201,85 +203,39 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);
-    //Recepción y traducción de información del Backend
-    document.addEventListener('DOMContentLoaded', function () {
-      old_user = "-";
-      io().on('change', function (data) {
-        document.getElementById('UsuID').innerHTML = data.DataUsu;
-        document.getElementById('LatID').innerHTML = data.DataLat;
-        document.getElementById('LongID').innerHTML = data.DataLong;
-        var date = new Date(parseFloat(data.DataTime));
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var month = months[date.getMonth()];
-        var hours = date.toLocaleTimeString();
-        var minutes = "0" + date.getMinutes();
-        var seconds = "0" + date.getSeconds();
-        var formattedTime = hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-        var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
-        document.getElementById('FechaID').innerHTML = datofecha;
-        document.getElementById('HoraID').innerHTML = formattedTime;
-        lat = data.DataLat;
-        long = data.DataLong;
-        usuario = data.DataUsu;
-        finallong = data.DataLong;
-        finallat = data.DataLat;
-        setInterval(setMarker, 1000);
-        valor = document.getElementById('switch').checked;
-        if (valor) {
-          setInterval(latlngsTemp = [lat, long], 1000);
-          setInterval(latlngs.push(latlngsTemp), 1000);
-        } else {
-          latlngs = [];
-        }
-        if (old_user != usuario) {
-          setTimeout(function () {
-            MapsetUbication();
-            Markerlabel();
-            if (valor) {
-              latlngs = [];
-              if (startpoint_was_set == 1) {
-                startpoint.removeFrom(mymap);
-                startpoint_was_set = 0;
-              }
-              clearpoly();
-              startPolyline();
-            }
-          }
-            , 1000);
-          old_user = usuario;
-        }
-      });
+    //Recepción de información del Backend
+    io().on('timestamp', function (dataTS) {
+      Coordinates = dataTS.DataTimeStamp;
+      console.log('io-on-timestamp Coordinates= ' + Coordinates)
     });
-    //Funciones de los switches al trazar linea en vivo
-    function condicional() {
-      if (document.getElementById('switch').disabled != true) {
-        valor = document.getElementById('switch').checked;
+    //Funciones de los switches al trazar histórico
+    function condicional2() {
+      if (document.getElementById('switch2').disabled != true) {
+        valor = document.getElementById('switch2').checked;
         if (valor) {
+          if (hist_was_set == 1) {
+            clearpoly2();
+            startpointHist.removeFrom(mymap);
+            finalpointHist.removeFrom(mymap);
+          }
+          setMarker();
+          circle_marker.setRadius(10);
+          circle.setRadius(50);
+          circle_marker.openPopup();
+          document.getElementById('switch').disabled = false;
+        } else {
+          document.getElementById('switch').disabled = true;
+          enviarhist();
           setTimeout(function () {
-            clearpoly();
-            circle.setRadius(50);
-            circle_marker.openPopup();
-            if (startpoint_was_set == 1) {
-              startpoint.removeFrom(mymap);
-              startpoint_was_set = 0;
+            startPolyline2();
+            if (Coordinates.length != 0) {
+              startpointHist = L.marker(Coordinates[0]).addTo(mymap);
+              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
             }
-          }
-            , 100)
-          document.getElementById('switch2').disabled = false;
-        }
-        else {
-          console.log('latlngs=' + latlngs.length)
-          document.getElementById('switch2').disabled = true;
-          setTimeout(function () {
+            circle_marker.closePopup();
+            circle_marker.setRadius(0);
             circle.setRadius(0);
-            startPolyline();
-          }
-            , 1000);
-          setInterval(function () {
-            setMarker();
-            addPolyline();
-          }
-            , 1000);
+          }, 500)
         }
       }
     }
