@@ -170,7 +170,7 @@ app.post('/historicact', function (req, res) {
   var HisDatact = req.body;
   var TSact = HisDatact.dataactual.toString();
   console.log(TSact)
-  var TSactant = parseInt(TSact)-600000;
+  var TSactant = parseInt(TSact)-100000;
   console.log(TSactant)
   var TSactant = TSactant.toString();
   console.log(TSactant)
