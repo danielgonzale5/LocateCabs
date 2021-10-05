@@ -182,7 +182,7 @@ app.post('/historicact', function (req, res) {
     var CCoordinatesArr = []
     console.log(DataHistact)
     for (var i = 0; i < DataHistact.length; i++) {
-      ActConverArray.push(Object.values(DataHist[i]))
+      ActConverArray.push(Object.values(DataHistact[i]))
     }
     console.log(ActConverArray)
     CCoordinatesArr=[ActConverArray[ActConverArray.length-1][2],ActConverArray[ActConverArray.length-1][3]]
