@@ -19,6 +19,9 @@ app.get('/', function (req, res) {
 app.get('/routing', function (req, res) {
   res.sendfile(dir + '/index_routingmachine.html');
 });
+app.get('/historicos', function (req, res) {
+  res.sendfile(dir + '/historicos.html');
+});
 //Conexión al puerto establecido
 server.listen(port, function (error) {
   if (error) {
