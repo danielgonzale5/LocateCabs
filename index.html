@@ -15,7 +15,9 @@
     crossorigin="">
     </script>
 </head>
-<style>*{
+<style>
+
+*{
   padding: 0;
   margin: 0;
   text-decoration: none;
@@ -167,6 +169,11 @@ a.active,a:hover{
 #switch3 {
   display: none;
 }
+#wrapper {
+  width: 100%;
+  border: 1px solid black;
+  overflow: auto;
+}
 @media (max-width: 952px){
   label.logo{
     font-size: 30px;
@@ -224,33 +231,35 @@ section{
       <li><a href="../historicos">Históricos</a></li>
     </ul>
   </nav>
-  <div class="inlineclass" id="mapid"></div>
-  <div class="inlineclass" id="container">
-    <h1 style="text-align: center; padding-top: 15px;">INFORMACIÓN DEL TAXI</h1>
-    <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Usuario</label>
-    <label class="inlineclass" id="UsuID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
-    <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Latitud</label>
-    <label class="inlineclass" id="LatID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
-    <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Longitud</label>
-    <label class="inlineclass" id="LongID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
-    <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Fecha</label>
-    <label class="inlineclass" id="FechaID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
-    <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Hora</label>
-    <label class="inlineclass" id="HoraID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
-    <div></div>
-    <h2 style="text-align: center; margin-top: 15px;">Trazar recorrido</h2>
-    <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-      <input type="Checkbox" id="switch">
-      <label for="switch" onclick="condicional();" class="sw"></label>
-    </div>
-    <div class="CenterButton;" style="text-align: center; margin-top: 15px;">
-      <button onclick="MapAutoCenter(), Markerlabel()"
-        style="border: 1px solid black; border-radius: 8px; width: 250px;">Auto-center Camera</button>
+  <div id="wrapper">
+    <div class="inlineclass" id="mapid"></div>
+    <div class="inlineclass" id="container">
+      <h1 style="text-align: center; padding-top: 15px;">INFORMACIÓN DEL TAXI</h1>
+      <div></div>
+      <label class="inlineclass" style="width: 100px; padding-left: 10px;">Usuario</label>
+      <label class="inlineclass" id="UsuID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+      <div></div>
+      <label class="inlineclass" style="width: 100px; padding-left: 10px;">Latitud</label>
+      <label class="inlineclass" id="LatID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+      <div></div>
+      <label class="inlineclass" style="width: 100px; padding-left: 10px;">Longitud</label>
+      <label class="inlineclass" id="LongID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+      <div></div>
+      <label class="inlineclass" style="width: 100px; padding-left: 10px;">Fecha</label>
+      <label class="inlineclass" id="FechaID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+      <div></div>
+      <label class="inlineclass" style="width: 100px; padding-left: 10px;">Hora</label>
+      <label class="inlineclass" id="HoraID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+      <div></div>
+      <h2 style="text-align: center; margin-top: 15px;">Trazar recorrido</h2>
+      <div class="switch-container;" style="text-align: center; margin-top: 5px;">
+        <input type="Checkbox" id="switch">
+        <label for="switch" onclick="condicional();" class="sw"></label>
+      </div>
+      <div class="CenterButton;" style="text-align: center; margin-top: 15px;">
+        <button onclick="MapAutoCenter(), Markerlabel()"
+          style="border: 1px solid black; border-radius: 8px; width: 250px;">Auto-center Camera</button>
+      </div>
     </div>
   </div>
   <script src="/socket.io/socket.io.js"></script>
