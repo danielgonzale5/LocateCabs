@@ -15,202 +15,217 @@
     crossorigin="">
     </script>
 </head>
-<style>*{
-  padding: 0;
-  margin: 0;
-  text-decoration: none;
-  list-style: none;
-  box-sizing: border-box;
-}
-body{
-  font-family: Arial;
-  background-color: #F4D03F;
-}
-label {
-  margin:5px;
-  font-size: 120%;
-  display: inline-block;
-}
-button {
-  background-color: #F4D03F;
-  border: none;
-  color: black;
-  padding: 12px 29px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 100%;
-}
-button:hover {
-  background-color: #F4D03F;
-}
-button:active {
-  background-color: #F4D03F;
-  /* box-shadow: 0 5px #666; */
-  transform: translateY(4px);
-}
-nav{
-  background: black;
-  height: 80px;
-  width: 100%;
-}
-label.logo{
-  color: white;
-  font-size: 35px;
-  line-height: 80px;
-  padding: 0 100px;
-  font-weight: bold;
-}
-nav ul{
-  float: right;
-  margin-right: 20px;
-}
-nav ul li{
-  display: inline-block;
-  line-height: 80px;
-  margin: 0 5px;
-}
-nav ul li a{
-  color: white;
-  font-size: 17px;
-  padding: 7px 13px;
-  border-radius: 3px;
-  text-transform: uppercase;
-}
-a.active,a:hover{
-  background: rgb(152, 148, 35);
-  transition: .5s;
-}
-.checkbtn{
-  font-size: 30px;
-  color: white;
-  float: right;
-  line-height: 80px;
-  margin-right: 40px;
-  cursor: pointer;
-  display: none;
-}
-#check{
-  display: none;
-}
-#mapid {
-  margin: 15px;
-  height: 650px;
-  width: 60%;
-  float: left;
-  border: 5px solid black;
-}
-#container {
-  background-color: #F7DC6F;
-  margin: 15px;
-  height: 650px;
-  width: 35%;
-  float: left;
-  border: 5px solid black;
-}
-.inlineclass {
-  display: inline-block;
-}
-.CenterButton {
-  width: 200;
-  padding: 5px 50px 5px 5px;
-}
-.sw {
-  display: inline-block;
-  width: 100px;
-  height: 35px;
-  background: darkgray;
-  border-radius: 100px;
-  cursor: pointer;
-  position: relative;
-  transition: .2s;
-}
-.sw::after {
-  content: "";
-  display: block;
-  width: 25px;
-  height: 25px;
-  background-color: snow;
-  border-radius: 100px;
-  position: absolute;
-  top: 5px;
-  left: 4px;
-  transition: .2s;
-}
-#switch:checked+.sw::after {
-  left: 70px;
-}
-#switch:checked+.sw {
-  left: 0px;
-  background-color: rgb(184, 194, 42);
-}
-#switch {
-  display: none;
-}
-#switch2:checked+.sw::after {
-  left: 70px;
-}
-#switch2:checked+.sw {
-  left: 0px;
-  background-color: rgb(184, 194, 42);
-}
-#switch2 {
-  display: none;
-}
-#switch3:checked+.sw::after {
-  left: 70px;
-}
-#switch3:checked+.sw {
-  left: 0px;
-  background-color: rgb(184, 194, 42);
-}
-#switch3 {
-  display: none;
-}
-@media (max-width: 952px){
-  label.logo{
-    font-size: 30px;
-    padding-left: 50px;
+<style>
+  *{
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
   }
-  nav ul li a{
-    font-size: 16px;
+  body{
+    font-family: Arial;
+    background-color: #F4D03F;
   }
-}
-@media (max-width: 858px){
-  .checkbtn{
-    display: block;
+  label {
+    margin:5px;
+    font-size: 120%;
+    display: inline-block;
   }
-  ul{
-    position: fixed;
-    width: 100%;
-    height: 100vh;
-    background: #2c3e50;
-    top: 80px;
-    left: -100%;
+  button {
+    background-color: #F4D03F;
+    border: none;
+    color: black;
+    padding: 12px 29px;
     text-align: center;
-    transition: all .5s;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 100%;
+  }
+  button:hover {
+    background-color: #F4D03F;
+  }
+  button:active {
+    background-color: #F4D03F;
+    /* box-shadow: 0 5px #666; */
+    transform: translateY(4px);
+  }
+  nav{
+    background: black;
+    height: 80px;
+    width: 100%;
+  }
+  label.logo{
+    color: white;
+    font-size: 35px;
+    line-height: 80px;
+    padding: 0 100px;
+    font-weight: bold;
+  }
+  nav ul{
+    float: right;
+    margin-right: 20px;
   }
   nav ul li{
-    display: block;
-    margin: 50px 0;
-    line-height: 30px;
+    display: inline-block;
+    line-height: 80px;
+    margin: 0 5px;
   }
   nav ul li a{
-    font-size: 20px;
+    color: white;
+    font-size: 17px;
+    padding: 7px 13px;
+    border-radius: 3px;
+    text-transform: uppercase;
   }
-  a:hover,a.active{
-    background: none;
-    color: #0082e6;
+  a.active,a:hover{
+    background: rgb(152, 148, 35);
+    transition: .5s;
   }
-  #check:checked ~ ul{
-    left: 0;
+  .checkbtn{
+    font-size: 30px;
+    color: white;
+    float: right;
+    line-height: 80px;
+    margin-right: 40px;
+    cursor: pointer;
+    display: none;
   }
-}
-section{
-  background: url(bg1.jpg) no-repeat;
-  background-size: cover;
-  height: calc(100vh - 80px);
-}
+  #check{
+    display: none;
+  }
+  #mapid {
+    margin: 15px;
+    height: 650px;
+    width: 60%;
+    float: left;
+    border: 5px solid black;
+  }
+  #container {
+    background-color: #F7DC6F;
+    margin: 15px;
+    height: 650px;
+    width: 35%;
+    float: left;
+    border: 5px solid black;
+  }
+  .inlineclass {
+    display: inline-block;
+  }
+  .CenterButton {
+    width: 200;
+    padding: 5px 50px 5px 5px;
+  }
+  .sw {
+    display: inline-block;
+    width: 100px;
+    height: 35px;
+    background: darkgray;
+    border-radius: 100px;
+    cursor: pointer;
+    position: relative;
+    transition: .2s;
+  }
+  .sw::after {
+    content: "";
+    display: block;
+    width: 25px;
+    height: 25px;
+    background-color: snow;
+    border-radius: 100px;
+    position: absolute;
+    top: 5px;
+    left: 4px;
+    transition: .2s;
+  }
+  #switch:checked+.sw::after {
+    left: 70px;
+  }
+  #switch:checked+.sw {
+    left: 0px;
+    background-color: rgb(184, 194, 42);
+  }
+  #switch {
+    display: none;
+  }
+  #switch2:checked+.sw::after {
+    left: 70px;
+  }
+  #switch2:checked+.sw {
+    left: 0px;
+    background-color: rgb(184, 194, 42);
+  }
+  #switch2 {
+    display: none;
+  }
+  #switch3:checked+.sw::after {
+    left: 70px;
+  }
+  #switch3:checked+.sw {
+    left: 0px;
+    background-color: rgb(184, 194, 42);
+  }
+  #switch3 {
+    display: none;
+  }
+
+  #aparece{
+  display : none ; 
+  }
+  
+
+  @media (max-width: 952px){
+    label.logo{
+      font-size: 30px;
+      padding-left: 50px;
+    }
+    nav ul li a{
+      font-size: 16px;
+    }
+  }
+  @media (max-width: 858px){
+    .checkbtn{
+      display: block;
+    }
+   
+
+    ul{
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      background: #2c3e50;
+      top: 80px;
+      left: -100%;
+      text-align: center;
+      transition: all .5s;
+    }
+    nav ul li{
+      display: block;
+      margin: 50px 0;
+      line-height: 30px;
+    }
+    nav ul li a{
+      font-size: 20px;
+    }
+    a:hover,a.active{
+      background: none;
+      color: #0082e6;
+    }
+    #check:checked ~ ul{
+      left: 0;
+    }
+    
+
+   
+  }
+  section{
+    background: url(bg1.jpg) no-repeat;
+    background-size: cover;
+    height: calc(100vh - 80px);
+  }
+
+
+
 </style>
 <body>
   <nav>
@@ -226,32 +241,39 @@ section{
   </nav>
   <div class="inlineclass" id="mapid"></div>
   <div class="inlineclass" id="container">
-    <h1 style="text-align: center; padding-top: 15px;">INFORMACIÓN DEL TAXI</h1>
+    <h1 style="text-align: center; padding-top: 15px;">CONSULTA DE HISTÓRICOS</h1>
     <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Usuario</label>
-    <label class="inlineclass" id="UsuID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+    <h2 style="text-align: center; margin-top: 15px;">Consultar trayecto</h2>
     <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Latitud</label>
-    <label class="inlineclass" id="LatID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+
+
+    <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Inicio:</label>
+    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00"
+      min="2021-06-01T00:00" max="2044-06-01T00:00">
+    
+     <div></div>
+     <div id ='aparece'> 
+    <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="FHist" id = "labf" >Fin:</label>
+    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00"
+      min="2021-06-01T00:00" max="2044-06-01T00:00">
+    </div>
     <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Longitud</label>
-    <label class="inlineclass" id="LongID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
-    <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Fecha</label>
-    <label class="inlineclass" id="FechaID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
-    <div></div>
-    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Hora</label>
-    <label class="inlineclass" id="HoraID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
-    <div></div>
-    <h2 style="text-align: center; margin-top: 15px;">Trazar recorrido</h2>
     <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-      <input type="Checkbox" id="switch">
-      <label for="switch" onclick="condicional();" class="sw"></label>
+      <input type="Checkbox" id="switch2">
+      <label for="switch2" onclick="condicional2();" class="sw"></label>
     </div>
-    <div class="CenterButton;" style="text-align: center; margin-top: 15px;">
-      <button onclick="MapAutoCenter(), Markerlabel()"
-        style="border: 1px solid black; border-radius: 8px; width: 250px;">Auto-center Camera</button>
+    <div></div>
+    <h2 style="text-align: center; margin-top: 15px;">Consultar ubicación</h2>
+    <div></div>
+    <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Fecha y Hora:</label>
+    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="CHist" onchange="changehistact()" name="CurrentHistoric" value="2021-06-01T00:00"
+      min="2021-06-01T00:00" max="2044-06-0 1T00:00">
+    <div></div>
+    <div class="switch-container;" style="text-align: center; margin-top: 5px;">
+      <input type="Checkbox" id="switch3">
+      <label for="switch3" onclick="condicional3();" class="sw"></label>
     </div>
+
   </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -267,26 +289,34 @@ section{
     var startpoint;
     var startpointHist;
     var finalpointHist;
+    var currentpointHist;
     var startpoint_was_set = 0;
     var hist_was_set = 0;
     let latlngs = [];
     let latlngsTemp = [];
     let Coordinates = [];
+    let CCoordinates = [];
     //Condición de Calendario
-    window.addEventListener('load', function () {
+
+    window.addEventListener('load', function (){
+
       datainicio = document.getElementById('IHist')
       datainicio.addEventListener('change', function () {
-        var uno = new Date(this.value).valueOf()
-        console.log(this.value);
         document.getElementById('FHist').value = this.value;
+        document.getElementById('aparece').style.display = 'block' ; 
       });
-      datafin = document.getElementById('FHist')
-      datafin.addEventListener('change', function () {
-        if (document.getElementById('IHist').value > this.value) {
-          this.value = document.getElementById('IHist').value;
+
+          datafin = document.getElementById('FHist')
+          datafin.addEventListener('change', function () {
+          if (document.getElementById('IHist').value > this.value) {
+            document.getElementById('IHist').value = this.value; 
         }
       });
+
     });
+
+
+
     //Función de consulta de histórico
     function changehist() {
       valor = document.getElementById('switch2').checked;
@@ -330,6 +360,33 @@ section{
       };
       await fetch('/historic', options);
     }
+
+
+    //Función de consulta de histórico actual
+    function changehistact() {
+      valor = document.getElementById('switch3').checked;
+      if (valor) {
+        enviarhistact();
+      }
+    }
+    //Función de coneión Frontend-Backend del histórico actual
+    async function enviarhistact() {
+      dataactual = document.getElementById('CHist').value;
+      dataactual = new Date(dataactual).valueOf();
+      dataactual = dataactual.toString();
+      console.log('dataactual= ' + dataactual);
+      const info = { dataactual };
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(info)
+      };
+      await fetch('/historicact', options);
+    }
+
+
     //Serie de funciones para el mapa
     function MapsetUbication() {
       mymap.setView(new L.LatLng(lat, long));
@@ -341,6 +398,9 @@ section{
         }
       } else {
         mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
+      }
+      if (document.getElementById('switch3').checked) {
+        mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
       }
     }
     function setMarker() {
@@ -396,83 +456,72 @@ section{
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);
-    //Recepción y traducción de información del Backend
-    document.addEventListener('DOMContentLoaded', function () {
-      old_user = "-";
-      io().on('change', function (data) {
-        document.getElementById('UsuID').innerHTML = data.DataUsu;
-        document.getElementById('LatID').innerHTML = data.DataLat;
-        document.getElementById('LongID').innerHTML = data.DataLong;
-        var date = new Date(parseFloat(data.DataTime));
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var month = months[date.getMonth()];
-        var hours = date.toLocaleTimeString();
-        var minutes = "0" + date.getMinutes();
-        var seconds = "0" + date.getSeconds();
-        var formattedTime = hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-        var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
-        document.getElementById('FechaID').innerHTML = datofecha;
-        document.getElementById('HoraID').innerHTML = formattedTime;
-        lat = data.DataLat;
-        long = data.DataLong;
-        usuario = data.DataUsu;
-        finallong = data.DataLong;
-        finallat = data.DataLat;
-        setInterval(setMarker, 1000);
-        valor = document.getElementById('switch').checked;
-        if (valor) {
-          setInterval(latlngsTemp = [lat, long], 1000);
-          setInterval(latlngs.push(latlngsTemp), 1000);
-        } else {
-          latlngs = [];
-        }
-        if (old_user != usuario) {
-          setTimeout(function () {
-            MapsetUbication();
-            Markerlabel();
-            if (valor) {
-              latlngs = [];
-              if (startpoint_was_set == 1) {
-                startpoint.removeFrom(mymap);
-                startpoint_was_set = 0;
-              }
-              clearpoly();
-              startPolyline();
-            }
-          }
-            , 1000);
-          old_user = usuario;
-        }
-      });
+    //Recepción de información del Backend
+    io().on('timestamp', function (dataTS) {
+      Coordinates = dataTS.DataTimeStamp;
+      console.log('io-on-timestamp Coordinates= ' + Coordinates)
     });
-    //Funciones de los switches al trazar linea en vivo
-    function condicional() {
-        valor = document.getElementById('switch').checked;
+    //Funciones de los switches al trazar histórico
+    function condicional2() {
+      if (document.getElementById('switch2').disabled != true) {
+        valor = document.getElementById('switch2').checked;
         if (valor) {
+          if (hist_was_set == 1) {
+            clearpoly2();
+            startpointHist.removeFrom(mymap);
+            finalpointHist.removeFrom(mymap);
+          }
+          setMarker();
+          circle_marker.setRadius(10);
+          circle.setRadius(50);
+          circle_marker.openPopup();
+          document.getElementById('switch3').disabled = false;
+        } else {
+          document.getElementById('switch3').disabled = true;
+          enviarhist();
           setTimeout(function () {
-            clearpoly();
-            circle.setRadius(50);
-            circle_marker.openPopup();
-            if (startpoint_was_set == 1) {
-              startpoint.removeFrom(mymap);
-              startpoint_was_set = 0;
+            startPolyline2();
+            if (Coordinates.length != 0) {
+              startpointHist = L.marker(Coordinates[0]).addTo(mymap);
+              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
             }
-          }
-            , 100)
-        }
-        else {
-          console.log('latlngs=' + latlngs.length)
-          setTimeout(function () {
+            circle_marker.closePopup();
+            circle_marker.setRadius(0);
             circle.setRadius(0);
-            startPolyline();
-          }
-            , 1000);
-          setInterval(function () {
-            setMarker();
-            addPolyline();
-          }
-            , 1000);
+          }, 500)
         }
+      }
+    }
+    io().on('ctimestamp', function (dataCTS) {
+      CCoordinates = dataCTS.CurrentDataTimeStamp;
+      console.log('io-on-current timestamp Coordinates= ' + CCoordinates)
+    });
+    function condicional3() {
+      if (document.getElementById('switch3').disabled != true) {
+        valor = document.getElementById('switch3').checked;
+        if (valor) {
+          if (hist_was_set == 1) {
+            clearpoly2();
+            startpointHist.removeFrom(mymap);
+            finalpointHist.removeFrom(mymap);
+          }
+          setMarker();
+          circle_marker.setRadius(10);
+          circle.setRadius(50);
+          circle_marker.openPopup();
+          currentpointHist.removeFrom(mymap);
+          document.getElementById('switch2').disabled = false;
+        } else {
+          document.getElementById('switch2').disabled = true;
+          enviarhistact();
+          setTimeout(function () {
+            currentpointHist = L.marker(CCoordinates).addTo(mymap);
+            circle_marker.closePopup();
+            circle_marker.setRadius(0);
+            circle.setRadius(0);
+          }, 500)
+        }
+      }
     }
   </script>
 </body>
