@@ -1,564 +1,480 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="en" dir="ltr">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <title>LocateCabs Página Principal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LocateCabs</title>
-  <style>
-    div {
-      margin-bottom: 10px;
-      text-align: center;
-    }
-
-    label {
-      font-family: Arial;
-      font-style: normal;
-      font-size: 120%;
-      display: inline-block;
-      width: 150px;
-      text-align: center;
-    }
-
-    input {
-      font-size: 120%;
-    }
-
-    header {
-      /*color: rgb(76, 175, 80);*/
-      font-family: Arial;
-      font-style: normal;
-      font-size: 300%;
-      text-align: left;
-      margin-bottom: 50px;
-    }
-
-    #mapid {
-      height: 750px; width:950px;  float: left
-    }
-
-    button {
-      background-color: rgb(184, 194, 42);
-      border: none;
-      color: white;
-      padding: 12px 29px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 100%;
-    }
-
-    button:hover {
-
-      background-color: rgb(184, 194, 42);
-    }
-
-    button:active {
-
-      background-color: rgb(155, 163, 44);
-      /* box-shadow: 0 5px #666; */
-      transform: translateY(4px);
-
-    }
-
-    .sw {
-      display: inline-block;
-      width: 100px;
-      height: 35px;
-      background: darkgray;
-      border-radius: 100px;
-      cursor: pointer;
-      position: relative;
-      transition: .2s;
-
-
-
-    }
-
-    .sw::after {
-      content: "";
-      display: block;
-      width: 25px;
-      height: 25px;
-      background-color: snow;
-      border-radius: 100px;
-      position: absolute;
-      top: 5px;
-      left: 4px;
-      transition: .2s;
-
-
-
-    }
-
-    #switch:checked+.sw::after {
-      left: 70px;
-    }
-
-    #switch:checked+.sw {
-      left: 0px;
-      background-color: rgb(184, 194, 42);
-    }
-
-    #switch {
-      display: none;
-    }
-    
-    #switch2:checked+.sw::after {
-      left: 70px;
-    }
-
-    #switch2:checked+.sw {
-      left: 0px;
-      background-color: rgb(184, 194, 42);
-    }
-
-    #switch2 {
-      display: none;
-      content: "Trazar";
-      position: relative;
-    }
-    
-    .divSquare{
-        width:200; padding: 5px 50px 0px 5px;
-    }
-    .CenterButton{
-        width:200; padding: 5px 50px 5px 5px;
-    }
-    .HistoricButton{
-        width:200; padding: 5px 20px 5px 5px;
-    }
-    
-    
-    #CenterBS {
-      padding: 5px 5px 5px 5px;     
-      display: inline-block;
-    }
-    
-    #B2 {
-      margin-right: 10px;
-      display: inline;
-    }
-    
-    #S2 {
-      display: inline;
-    }
-        
-    input:checked:not([disabled]){   
-      background-color: #2196F3; 
-    }
-
-  </style>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin="" />
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>
+    crossorigin="">
+    </script>
 </head>
-
-<body style="background-color:white;">
-  <div>
-    <header style="text-align: center"><b><i>LocateCabs</b></i></header>
-  </div>
-  <div id="mapid"></div>
-
-  <div class="divSquare">
-      <h1>Información de Geolocalización</h1>
-  </div>
-
-  <div class="divSquare">
-    <label>Usuario</label>
-    <label id="UsuID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
-  </div>
-  <div class="divSquare">
-    <label>Latitud</label>
-    <label id="LatID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
-  </div>
-  <div class="divSquare">
-    <label>Longitud</label>
-    <label id="LongID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
-  </div>
-  <div class="divSquare">
-    <label>Fecha</label>
-    <label id="FechaID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
-  </div>
-  <div class="divSquare">
-    <label>Hora</label>
-    <label id="HoraID" style="border: 1px solid black; border-radius: 8px; width: 300px;">-</label>
-  </div>
-  <div class="CenterButton;">
-    <button onclick="MapAutoCenter(), Markerlabel()" style="border: 1px solid black; border-radius: 8px; width: 250px;">Auto-center Camera</button>
-  </div>
-
-  <center>
-    <h3>Polilinea en vivo</h3>
-  </center>
-
-  <div class="switch-container;">
-    <input type="Checkbox" id="switch">
-    <label for="switch" onclick="condicional();" class="sw"></label>
-  </div>
-
-  <center>
-    <h3>Consulta de Historicos</h3>
-  </center>
-
-  <div class="divSquare">
-        <label for="IHist">Inicio:</label>
-        <input type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
-        <div></div>
-        <label for="FHist">Fin:</label>
-        <input type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00" min="2021-06-01T00:00" max="2044-06-01T00:00">
-
-  </div>
-
-  <center>
-
-  <div class="divSquare">
-
-    <label for="iname">Usuario</label>
-    <input type="text" id="iname" onchange="changehist()" name="Usuario" style="border: 1px solid black; border-radius: 8px; width: 200px;"/>
-  </center>
-
-  </div>
-
-  <center>
-      <h3>Trazar Históricos</h3>
-
-      <div id= "S2" class="switch-container;">
-        <input type="Checkbox" id="switch2">
-        <label for="switch2" onclick="condicional2();" class="sw"></label>
-      </div>
+<style>*{
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+}
+body{
+  font-family: Arial;
+  background-color: #F4D03F;
+}
+label {
+  margin:5px;
+  font-size: 120%;
+  display: inline-block;
+}
+button {
+  background-color: #F4D03F;
+  border: none;
+  color: black;
+  padding: 12px 29px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 100%;
+}
+button:hover {
+  background-color: #F4D03F;
+}
+button:active {
+  background-color: #F4D03F;
+  /* box-shadow: 0 5px #666; */
+  transform: translateY(4px);
+}
+nav{
+  background: black;
+  height: 80px;
+  width: 100%;
+}
+label.logo{
+  color: white;
+  font-size: 35px;
+  line-height: 80px;
+  padding: 0 100px;
+  font-weight: bold;
+}
+nav ul{
+  float: right;
+  margin-right: 20px;
+}
+nav ul li{
+  display: inline-block;
+  line-height: 80px;
+  margin: 0 5px;
+}
+nav ul li a{
+  color: white;
+  font-size: 17px;
+  padding: 7px 13px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+a.active,a:hover{
+  background: rgb(152, 148, 35);
+  transition: .5s;
+}
+.checkbtn{
+  font-size: 30px;
+  color: white;
+  float: right;
+  line-height: 80px;
+  margin-right: 40px;
+  cursor: pointer;
+  display: none;
+}
+#check{
+  display: none;
+}
+#mapid {
+  margin: 15px;
+  height: 650px;
+  width: 60%;
+  float: left;
+  border: 5px solid black;
+}
+#container {
+  background-color: #F7DC6F;
+  margin: 15px;
+  height: 650px;
+  width: 35%;
+  float: left;
+  border: 5px solid black;
+}
+.inlineclass {
+  display: inline-block;
+}
+.CenterButton {
+  width: 200;
+  padding: 5px 50px 5px 5px;
+}
+.sw {
+  display: inline-block;
+  width: 100px;
+  height: 35px;
+  background: darkgray;
+  border-radius: 100px;
+  cursor: pointer;
+  position: relative;
+  transition: .2s;
+}
+.sw::after {
+  content: "";
+  display: block;
+  width: 25px;
+  height: 25px;
+  background-color: snow;
+  border-radius: 100px;
+  position: absolute;
+  top: 5px;
+  left: 4px;
+  transition: .2s;
+}
+#switch:checked+.sw::after {
+  left: 70px;
+}
+#switch:checked+.sw {
+  left: 0px;
+  background-color: rgb(184, 194, 42);
+}
+#switch {
+  display: none;
+}
+#switch2:checked+.sw::after {
+  left: 70px;
+}
+#switch2:checked+.sw {
+  left: 0px;
+  background-color: rgb(184, 194, 42);
+}
+#switch2 {
+  display: none;
+}
+#switch3:checked+.sw::after {
+  left: 70px;
+}
+#switch3:checked+.sw {
+  left: 0px;
+  background-color: rgb(184, 194, 42);
+}
+#switch3 {
+  display: none;
+}
+@media (max-width: 952px){
+  label.logo{
+    font-size: 30px;
+    padding-left: 50px;
+  }
+  nav ul li a{
+    font-size: 16px;
+  }
+}
+@media (max-width: 858px){
+  .checkbtn{
+    display: block;
+  }
+  ul{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #2c3e50;
+    top: 80px;
+    left: -100%;
+    text-align: center;
+    transition: all .5s;
+  }
+  nav ul li{
+    display: block;
+    margin: 50px 0;
+    line-height: 30px;
+  }
+  nav ul li a{
+    font-size: 20px;
+  }
+  a:hover,a.active{
+    background: none;
+    color: #0082e6;
+  }
+  #check:checked ~ ul{
+    left: 0;
+  }
+}
+section{
+  background: url(bg1.jpg) no-repeat;
+  background-size: cover;
+  height: calc(100vh - 80px);
+}
+</style>
+<body>
+  <nav>
+    <input type="checkbox" id="check">
+    <label for="check" class="checkbtn">
+      <i class="fas fa-bars"></i>
+    </label>
+    <label class="logo">LocateCabs</label>
+    <ul>
+      <li><a href="../">Página Principal</a></li>
+      <li><a href="../historicos">Históricos</a></li>
+    </ul>
+  </nav>
+  <div class="inlineclass" id="mapid"></div>
+  <div class="inlineclass" id="container">
+    <h1 style="text-align: center; padding-top: 15px;">INFORMACIÓN DEL TAXI</h1>
+    <div></div>
+    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Usuario</label>
+    <label class="inlineclass" id="UsuID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+    <div></div>
+    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Latitud</label>
+    <label class="inlineclass" id="LatID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+    <div></div>
+    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Longitud</label>
+    <label class="inlineclass" id="LongID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+    <div></div>
+    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Fecha</label>
+    <label class="inlineclass" id="FechaID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+    <div></div>
+    <label class="inlineclass" style="width: 100px; padding-left: 10px;">Hora</label>
+    <label class="inlineclass" id="HoraID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+    <div></div>
+    <h2 style="text-align: center; margin-top: 15px;">Trazar recorrido</h2>
+    <div class="switch-container;" style="text-align: center; margin-top: 5px;">
+      <input type="Checkbox" id="switch">
+      <label for="switch" onclick="condicional();" class="sw"></label>
     </div>
-
-  </center>
-
-  
+    <div class="CenterButton;" style="text-align: center; margin-top: 15px;">
+      <button onclick="MapAutoCenter(), Markerlabel()"
+        style="border: 1px solid black; border-radius: 8px; width: 250px;">Auto-center Camera</button>
+    </div>
+  </div>
   <script src="/socket.io/socket.io.js"></script>
-
-
   <script>
-
+    //Declaración de Variables Globales
     let lat = 10.984719;
     let long = -74.811302;
     var polylinePoints;
     var polyline;
-    var datausua;
     var datainicio;
     var datafin;
     var polylineHistoric;
-    var polyline_set=0;
+    var polyline_set = 0;
     var startpoint;
     var startpointHist;
     var finalpointHist;
-    var startpoint_was_set=0;
-    var hist_was_set=0;
+    var startpoint_was_set = 0;
+    var hist_was_set = 0;
     let latlngs = [];
     let latlngsTemp = [];
     let Coordinates = [];
-
     //Condición de Calendario
-    window.addEventListener('load',function(){
+    window.addEventListener('load', function () {
       datainicio = document.getElementById('IHist')
-
-      datainicio.addEventListener('change',function() {
+      datainicio.addEventListener('change', function () {
         var uno = new Date(this.value).valueOf()
-        console.log(this.value);  
-        document.getElementById('FHist').value = this.value ; 
+        console.log(this.value);
+        document.getElementById('FHist').value = this.value;
       });
       datafin = document.getElementById('FHist')
-      datafin.addEventListener('change',function() {
-        if (document.getElementById('IHist').value>this.value) {
-          this.value = document.getElementById('IHist').value ; 
+      datafin.addEventListener('change', function () {
+        if (document.getElementById('IHist').value > this.value) {
+          this.value = document.getElementById('IHist').value;
         }
       });
     });
-
-    function changehist(){
+    //Función de consulta de histórico
+    function changehist() {
       valor = document.getElementById('switch2').checked;
       if (valor) {
         enviarhist();
-
-        setTimeout(function(){
-            if (Coordinates.length!=0){
-              if (hist_was_set==1){
-                  polylineHistoric.setLatLngs(Coordinates);
-                  startpointHist.setLatLng(Coordinates[0]);
-                  finalpointHist.setLatLng(Coordinates[Coordinates.length-1]);
-                  mymap.fitBounds(Coordinates);
-                
-              } else {
-                startPolyline2();
-                startpointHist= L.marker(Coordinates[0]).addTo(mymap);
-                finalpointHist= L.circleMarker(Coordinates[Coordinates.length-1],{ color: '#FFB242' }).addTo(mymap);
-
-              }
+        setTimeout(function () {
+          if (Coordinates.length != 0) {
+            if (hist_was_set == 1) {
+              polylineHistoric.setLatLngs(Coordinates);
+              startpointHist.setLatLng(Coordinates[0]);
+              finalpointHist.setLatLng(Coordinates[Coordinates.length - 1]);
+              mymap.fitBounds(Coordinates);
             } else {
-
-              console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
-
+              startPolyline2();
+              startpointHist = L.marker(Coordinates[0]).addTo(mymap);
+              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
             }
+          } else {
+            console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
+          }
         }, 1000)
-
       }
     }
-    
-    async function enviarhist()  {
-        datausua = document.getElementById('iname').value;
-        datainicio = document.getElementById('IHist').value ;
-        datafin = document.getElementById('FHist').value;
-        datainicio = new Date(datainicio).valueOf();
-        datafin = new Date(datafin).valueOf() ;
-        datainicio = datainicio.toString() ; 
-        datafin = datafin.toString() ; 
-        console.log('datausua= '+datausua);
-        console.log('datainicio= '+datainicio); 
-        console.log('datafina= '+datafin);   
-        
-        const info = {datausua, datainicio, datafin};
-        const options = {
-
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-
-
-          body: JSON.stringify(info)
-        };
-        
-        await fetch('/historic', options);
-
-      }
-    
-   
-    function MapsetUbication() { 
-      mymap.setView(new L.LatLng(lat, long)); 
+    //Función de coneión Frontend-Backend del histórico
+    async function enviarhist() {
+      datainicio = document.getElementById('IHist').value;
+      datafin = document.getElementById('FHist').value;
+      datainicio = new Date(datainicio).valueOf();
+      datafin = new Date(datafin).valueOf();
+      datainicio = datainicio.toString();
+      datafin = datafin.toString();
+      console.log('datainicio= ' + datainicio);
+      console.log('datafina= ' + datafin);
+      const info = { datainicio, datafin };
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(info)
+      };
+      await fetch('/historic', options);
     }
-
-    function MapAutoCenter() { 
-      if (document.getElementById('switch').checked){
-        if (startpoint_was_set==1){
+    //Serie de funciones para el mapa
+    function MapsetUbication() {
+      mymap.setView(new L.LatLng(lat, long));
+    }
+    function MapAutoCenter() {
+      if (document.getElementById('switch').checked) {
+        if (startpoint_was_set == 1) {
           mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
         }
       } else {
         mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
-      }   
+      }
     }
-
     function setMarker() {
-      if(lat!=null && isNaN(lat)==false && long!=null && isNaN(long)==false){
+      if (lat != null && isNaN(lat) == false && long != null && isNaN(long) == false) {
         circle_marker.setLatLng(new L.LatLng(lat, long));
         circle.setLatLng(new L.LatLng(lat, long));
       }
     }
-
     function Markerlabel() {
       circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
     }
-
-    function createStartPoint() { 
-      startpoint= L.marker([lat,long]).addTo(mymap);
+    function createStartPoint() {
+      startpoint = L.marker([lat, long]).addTo(mymap);
     }
-
     function startPolyline() {
-      if (isNaN(latlngs)==false){
-        polyline = L.polyline(latlngs).addTo(mymap); 
-        polyline_set=1;
+      if (isNaN(latlngs) == false) {
+        polyline = L.polyline(latlngs).addTo(mymap);
+        polyline_set = 1;
       }
     }
-
     function startPolyline2() {
-      if (Coordinates.length!=0){
-        polylineHistoric = L.polyline(Coordinates, {color: 'red'}).addTo(mymap);
+      if (Coordinates.length != 0) {
+        polylineHistoric = L.polyline(Coordinates, { color: 'red' }).addTo(mymap);
         mymap.fitBounds(Coordinates);
-        hist_was_set=1;
+        hist_was_set = 1;
       } else {
-
         console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
-
       }
     }
-
     function addPolyline() {
-      if ((polyline_set==1)){
-        polyline.setLatLngs(latlngs) 
-        if (!polyline.isEmpty() && polyline.getLatLngs().length==1 && startpoint_was_set==0){
+      if ((polyline_set == 1)) {
+        polyline.setLatLngs(latlngs)
+        if (!polyline.isEmpty() && polyline.getLatLngs().length == 1 && startpoint_was_set == 0) {
           setTimeout(createStartPoint(), 1000)
-          startpoint_was_set=1;
-        }    
+          startpoint_was_set = 1;
+        }
       }
     }
-
     function clearpoly() {
-      if (polyline_set==1){
+      if (polyline_set == 1) {
         polyline.removeFrom(mymap)
       }
     }
     function clearpoly2() {
-        polylineHistoric.removeFrom(mymap)
-        hist_was_set=0;
-
+      polylineHistoric.removeFrom(mymap)
+      hist_was_set = 0;
     }
-
     let mymap = L.map('mapid').setView([lat, long], 18);
     var circle = L.circle([lat, long], { radius: 50, color: '#FCFF42' }).addTo(mymap);
     var circle_marker = L.circleMarker([lat, long], { color: '#CA2049' }).bindPopup("No Data", { autoPan: false }).addTo(mymap);
     circle_marker.openPopup();
-
-
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);
-
-
-
+    //Recepción y traducción de información del Backend
     document.addEventListener('DOMContentLoaded', function () {
       old_user = "-";
- 
       io().on('change', function (data) {
-     
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
-
         var date = new Date(parseFloat(data.DataTime));
-        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var month = months[date.getMonth()];
         var hours = date.toLocaleTimeString();
         var minutes = "0" + date.getMinutes();
         var seconds = "0" + date.getSeconds();
-        var formattedTime = hours.substr(0,2) +':'+ minutes.substr(-2) + ':' + seconds.substr(-2);
-
-        var datofecha =  date.getDate()+"/"+  month+"/"+date.getFullYear() ;
-
+        var formattedTime = hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+        var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
         document.getElementById('FechaID').innerHTML = datofecha;
         document.getElementById('HoraID').innerHTML = formattedTime;
         lat = data.DataLat;
         long = data.DataLong;
-
-
         usuario = data.DataUsu;
         finallong = data.DataLong;
         finallat = data.DataLat;
-
         setInterval(setMarker, 1000);
-
         valor = document.getElementById('switch').checked;
         if (valor) {
-          
           setInterval(latlngsTemp = [lat, long], 1000);
           setInterval(latlngs.push(latlngsTemp), 1000);
         } else {
           latlngs = [];
         }
-
-
         if (old_user != usuario) {
           setTimeout(function () {
             MapsetUbication();
             Markerlabel();
             if (valor) {
               latlngs = [];
-              if (startpoint_was_set==1){
+              if (startpoint_was_set == 1) {
                 startpoint.removeFrom(mymap);
-                startpoint_was_set=0;
+                startpoint_was_set = 0;
               }
               clearpoly();
               startPolyline();
             }
           }
             , 1000);
-
           old_user = usuario;
         }
-
-
       });
-
-
     });
-
+    //Funciones de los switches al trazar linea en vivo
     function condicional() {
-      if (document.getElementById('switch').disabled != true){
         valor = document.getElementById('switch').checked;
-
         if (valor) {
-
-          setTimeout(function(){
+          setTimeout(function () {
             clearpoly();
             circle.setRadius(50);
             circle_marker.openPopup();
-            if (startpoint_was_set==1){
+            if (startpoint_was_set == 1) {
               startpoint.removeFrom(mymap);
-              startpoint_was_set=0;
+              startpoint_was_set = 0;
             }
           }
             , 100)
-            document.getElementById('switch2').disabled = false;
         }
-
         else {
-          console.log('latlngs='+ latlngs.length)
-          document.getElementById('switch2').disabled = true;
-          setTimeout(function(){
+          console.log('latlngs=' + latlngs.length)
+          setTimeout(function () {
             circle.setRadius(0);
             startPolyline();
           }
             , 1000);
-          
           setInterval(function () {
             setMarker();
             addPolyline();
           }
             , 1000);
-
         }
-      }
-    }
-
-    io().on('timestamp', function (dataTS) {
-        Coordinates = dataTS.DataTimeStamp;
-        console.log('io-on-timestamp Coordinates= '+Coordinates)
-      });
-    
-    function condicional2() {
-      if (document.getElementById('switch2').disabled != true){
-        valor = document.getElementById('switch2').checked; 
-        if (valor) {
-          if (hist_was_set==1){
-            clearpoly2();
-            startpointHist.removeFrom(mymap);
-            finalpointHist.removeFrom(mymap);
-          }
-          setMarker();
-          circle_marker.setRadius(10);
-          circle.setRadius(50);
-          circle_marker.openPopup();
-          document.getElementById('switch').disabled = false;
-        }else{
-          document.getElementById('switch').disabled = true;
-          enviarhist();
-          setTimeout(function(){
-            startPolyline2();
-            if (Coordinates.length!=0){
-              startpointHist= L.marker(Coordinates[0]).addTo(mymap);
-              finalpointHist= L.circleMarker(Coordinates[Coordinates.length-1],{ color: '#FFB242' }).addTo(mymap);
-            }
-            circle_marker.closePopup();
-            circle_marker.setRadius(0);
-            circle.setRadius(0);
-          },500)
-
-        }
-      }
     }
   </script>
-
 </body>
 
 </html>
