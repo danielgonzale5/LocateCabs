@@ -475,6 +475,7 @@
       if (document.getElementById('switch3').disabled != true) {
         valor = document.getElementById('switch3').checked;
         if (valor) {
+          MapAutoCenter();
           if (hist_was_set == 1) {
             clearpoly2();
             startpointHist.removeFrom(mymap);
@@ -494,7 +495,6 @@
             circle_marker.closePopup();
             circle_marker.setRadius(0);
             circle.setRadius(0);
-            MapAutoCenter();
           }, 500)
         }
       }
