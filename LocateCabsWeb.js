@@ -164,3 +164,36 @@ app.post('/historic', function (req, res) {
     status: 'received'
   });
 });
+app.post('/historicact', function (req, res) {
+  console.log("Actual Historic sended")
+  console.log(req.body);
+  var HisDatact = req.body;
+  var TSact = HisDatact.dataactual.toString();
+  console.log(TSact)
+  con.query("SELECT * FROM gps WHERE TimeStamp = ('" + TSact + "');", function (err, rows) {
+    if (err) throw err;
+    var HistDataact = JSON.parse(JSON.stringify(rows))
+    var DataHistact = Object.values(HistDataact)
+    var ActConverArray = []
+    var CCoordinatesArr = []
+    console.log(DataHistact)
+    for (var i = 0; i < DataHistact.length; i++) {
+      ActConverArray.push(Object.values(DataHist[i]))
+    }
+    console.log(ActConverArray)
+    CCoordinatesArr=[ActConverArray[ActConverArray.length-1][2],ActConverArray[ActConverArray.length-1][3]]
+    var CurrentDataTimeStamp = CCoordinatesArr
+    console.log(CurrentDataTimeStamp)
+    io.emit('ctimestamp', {
+      CurrentDataTimeStamp: CurrentDataTimeStamp,
+    });
+    io.on('connection', function (socket) {
+      socket.emit('ctimestamp', {
+        CurrentDataTimeStamp: CurrentDataTimeStamp
+      });
+    });
+  });
+  res.json({
+    status: 'received'
+  });
+});

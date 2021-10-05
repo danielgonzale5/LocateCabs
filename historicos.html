@@ -247,7 +247,7 @@
     <h2 style="text-align: center; margin-top: 15px;">Consultar ubicación</h2>
     <div></div>
     <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Fecha y Hora:</label>
-    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="CHist" onchange="" name="CurrentHistoric" value="2021-06-01T00:00"
+    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="CHist" onchange="changehistact()" name="CurrentHistoric" value="2021-06-01T00:00"
       min="2021-06-01T00:00" max="2044-06-0 1T00:00">
     <div></div>
     <div class="switch-container;" style="text-align: center; margin-top: 5px;">
@@ -270,6 +270,7 @@
     var startpoint;
     var startpointHist;
     var finalpointHist;
+    var currentpointHist;
     var startpoint_was_set = 0;
     var hist_was_set = 0;
     let latlngs = [];
@@ -333,6 +334,33 @@
       };
       await fetch('/historic', options);
     }
+
+
+    //Función de consulta de histórico actual
+    function changehistact() {
+      valor = document.getElementById('switch3').checked;
+      if (valor) {
+        enviarhistact();
+      }
+    }
+    //Función de coneión Frontend-Backend del histórico actual
+    async function enviarhistact() {
+      dataactual = document.getElementById('CHist').value;
+      dataactual = new Date(dataactual).valueOf();
+      dataactual = dataactual.toString();
+      console.log('dataactual= ' + dataactual);
+      const info = { dataactual };
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(info)
+      };
+      await fetch('/historicact', options);
+    }
+
+
     //Serie de funciones para el mapa
     function MapsetUbication() {
       mymap.setView(new L.LatLng(lat, long));
@@ -428,6 +456,36 @@
               startpointHist = L.marker(Coordinates[0]).addTo(mymap);
               finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
             }
+            circle_marker.closePopup();
+            circle_marker.setRadius(0);
+            circle.setRadius(0);
+          }, 500)
+        }
+      }
+    }
+    io().on('ctimestamp', function (dataCTS) {
+      CCoordinates = dataCTS.CurrentDataTimeStamp;
+      console.log('io-on-current timestamp Coordinates= ' + CCoordinates)
+    });
+    function condicional3() {
+      if (document.getElementById('switch3').disabled != true) {
+        valor = document.getElementById('switch3').checked;
+        if (valor) {
+          if (hist_was_set == 1) {
+            clearpoly2();
+            startpointHist.removeFrom(mymap);
+            finalpointHist.removeFrom(mymap);
+          }
+          setMarker();
+          circle_marker.setRadius(10);
+          circle.setRadius(50);
+          circle_marker.openPopup();
+          document.getElementById('switch2').disabled = false;
+        } else {
+          document.getElementById('switch2').disabled = true;
+          enviarhist();
+          setTimeout(function () {
+            currentpointHist = L.marker(CCoordinates).addTo(mymap);
             circle_marker.closePopup();
             circle_marker.setRadius(0);
             circle.setRadius(0);
