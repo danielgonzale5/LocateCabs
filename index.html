@@ -98,8 +98,8 @@ a.active,a:hover{
 #mapid {
   margin: 15px;
   height: 650px;
-  width: 40%;
-  float: center;
+  width: 60%;
+  float: left;
   border: 5px solid black;
 }
 #container {
@@ -169,10 +169,11 @@ a.active,a:hover{
 #switch3 {
   display: none;
 }
-#wrapper {
+.wrapper {
+  display: flex;
   width: 100%;
-  height: auto;
-  border: 7px solid black;
+  align-items: center;
+  justify-content: center;
   float: center;
 }
 @media (max-width: 952px){
@@ -232,7 +233,7 @@ section{
       <li><a href="../historicos">Históricos</a></li>
     </ul>
   </nav>
-  <div id="wrapper">
+  <div class="wrapper">
     <div class="inlineclass" id="mapid"></div>
     <div class="inlineclass" id="container">
       <h1 style="text-align: center; padding-top: 15px;">INFORMACIÓN DEL TAXI</h1>
