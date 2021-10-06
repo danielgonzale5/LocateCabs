@@ -105,9 +105,10 @@
     background-color: #F7DC6F;
     margin: 15px;
     height: 650px;
-    width: 35%;
+    width: auto;
     float: left;
     border: 5px solid black;
+    overflow: hidden;
   }
   .inlineclass {
     display: inline-block;
@@ -168,6 +169,13 @@
   #switch3 {
     display: none;
   }
+  .wrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  float: center;
+}
   @media (max-width: 952px){
     label.logo{
       font-size: 30px;
@@ -225,36 +233,38 @@
       <li><a href="../historicos">Históricos</a></li>
     </ul>
   </nav>
-  <div class="inlineclass" id="mapid"></div>
-  <div class="inlineclass" id="container">
-    <h1 style="text-align: center; padding-top: 15px;">CONSULTA DE HISTÓRICOS</h1>
-    <div></div>
-    <h2 style="text-align: center; margin-top: 15px;">Consultar trayecto</h2>
-    <div></div>
-    <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Inicio:</label>
-    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00"
-      min="2021-06-01T00:00" max="2044-06-01T00:00">
-    <div></div>
-    <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="FHist">Fin:</label>
-    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00"
-      min="2021-06-01T00:00" max="2044-06-01T00:00">
-    <div></div>
-    <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-      <input type="Checkbox" id="switch2">
-      <label for="switch2" onclick="condicional2();" class="sw"></label>
-    </div>
-    <div></div>
-    <h2 style="text-align: center; margin-top: 15px;">Consultar ubicación</h2>
-    <div></div>
-    <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Fecha y Hora:</label>
-    <input class="inlineclass" style="text-align: center;" type="datetime-local" id="CHist" onchange="changehistact()" name="CurrentHistoric" value="2021-06-01T00:00"
-      min="2021-06-01T00:00" max="2044-06-0 1T00:00">
-    <div></div>
-    <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-      <input type="Checkbox" id="switch3">
-      <label for="switch3" onclick="condicional3();" class="sw"></label>
-    </div>
+  <div class="wrapper">
+    <div class="inlineclass" id="mapid"></div>
+    <div class="inlineclass" id="container">
+      <h1 style="text-align: center; padding-top: 15px;">CONSULTA DE HISTÓRICOS</h1>
+      <div></div>
+      <h2 style="text-align: center; margin-top: 15px;">Consultar trayecto</h2>
+      <div></div>
+      <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Inicio:</label>
+      <input class="inlineclass" style="text-align: center;" type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00"
+        min="2021-06-01T00:00" max="2044-06-01T00:00">
+      <div></div>
+      <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="FHist">Fin:</label>
+      <input class="inlineclass" style="text-align: center;" type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00"
+        min="2021-06-01T00:00" max="2044-06-01T00:00">
+      <div></div>
+      <div class="switch-container;" style="text-align: center; margin-top: 5px;">
+        <input type="Checkbox" id="switch2">
+        <label for="switch2" onclick="condicional2();" class="sw"></label>
+      </div>
+      <div></div>
+      <h2 style="text-align: center; margin-top: 15px;">Consultar ubicación</h2>
+      <div></div>
+      <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Fecha y Hora:</label>
+      <input class="inlineclass" style="text-align: center;" type="datetime-local" id="CHist" onchange="changehistact()" name="CurrentHistoric" value="2021-06-01T00:00"
+        min="2021-06-01T00:00" max="2044-06-0 1T00:00">
+      <div></div>
+      <div class="switch-container;" style="text-align: center; margin-top: 5px;">
+        <input type="Checkbox" id="switch3">
+        <label for="switch3" onclick="condicional3();" class="sw"></label>
+      </div>
 
+    </div>
   </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
