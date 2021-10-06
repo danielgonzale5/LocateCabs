@@ -578,6 +578,7 @@
       if (document.getElementById('switch3').disabled != true) {
         valor = document.getElementById('switch3').checked;
         if (valor) {
+          document.getElementById('switch2').disabled = false;
           if (hist_was_set == 1) {
             clearpoly2();
             startpointHist.removeFrom(mymap);
@@ -596,7 +597,6 @@
             circle_marker.openPopup();
             currentpointHist.removeFrom(mymap);
           }
-          document.getElementById('switch2').disabled = false;
         } else {
           document.getElementById('switch2').disabled = true;
           enviarhistact();
