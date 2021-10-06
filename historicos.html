@@ -544,6 +544,7 @@
       if (document.getElementById('switch2').disabled != true) {
         valor = document.getElementById('switch2').checked;
         if (valor) {
+          document.getElementById('switch3').disabled = false;
           if (hist_was_set == 1) {
             clearpoly2();
             startpointHist.removeFrom(mymap);
@@ -552,8 +553,7 @@
           setMarker();
           circle_marker.setRadius(10);
           circle.setRadius(50);
-          circle_marker.openPopup();
-          document.getElementById('switch3').disabled = false;
+          circle_marker.bindPopup("No hay históricos", { autoPan: false }).openPopup();
         } else {
           document.getElementById('switch3').disabled = true;
           enviarhist();
