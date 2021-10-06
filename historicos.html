@@ -583,11 +583,19 @@
             startpointHist.removeFrom(mymap);
             finalpointHist.removeFrom(mymap);
           }
-          setMarker();
-          circle_marker.setRadius(10);
-          circle.setRadius(50);
-          circle_marker.openPopup();
-          currentpointHist.removeFrom(mymap);
+          if (CCoordinates=[10.9847191,-74.811302]) {
+            setMarker();
+            circle_marker.setRadius(10);
+            circle.setRadius(50);
+            circle_marker.closePopup();
+            currentpointHist.removeFrom(mymap);
+          } else {
+            setMarker();
+            circle_marker.setRadius(10);
+            circle.setRadius(50);
+            circle_marker.openPopup();
+            currentpointHist.removeFrom(mymap);
+          }
           document.getElementById('switch2').disabled = false;
         } else {
           document.getElementById('switch2').disabled = true;
