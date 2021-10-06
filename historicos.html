@@ -596,6 +596,7 @@
           document.getElementById('switch2').disabled = true;
           enviarhistact();
           setTimeout(function () {
+            MapsetUbication();
             currentpointHist = L.marker(CCoordinates).addTo(mymap);
             circle_marker.closePopup();
             circle_marker.setRadius(0);
