@@ -4,7 +4,8 @@
 
 <head>
   <meta charset="utf-8">
-  <title>LocateCabs Página Principal</title>
+  <title>LocateCabs Históricos</title>
+  <link rel="icon" href="/favicon.ico"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -23,9 +24,18 @@
     list-style: none;
     box-sizing: border-box;
   }
+  h1:hover{
+    cursor: default;
+  }
+  h2:hover{
+    cursor: default;
+  }
   body{
     font-family: sans-serif;
-    background-color: #F4D03F;
+    background-image: url('/bg.png');
+    height: 100%;
+    margin: 0;
+    padding: 0;
   }
   label {
     margin:5px;
@@ -51,16 +61,25 @@
     transform: translateY(4px);
   }
   nav{
-    background: black;
+    background: rgba(255, 212, 20, 0.8);
     height: 80px;
     width: 100%;
   }
-  label.logo{
-    color: white;
-    font-size: 35px;
-    line-height: 80px;
-    padding: 0 100px;
-    font-weight: bold;
+  .padre{
+    position: relative;
+  }
+  .cabecera{
+    position: relative;
+    z-index: 2;
+  }
+  .logo{
+    display: inline-block;
+    margin-top: 2px;
+    padding: 0 40px;
+  }
+  #logoimg{
+      height: 70px;
+      width: 380px;
   }
   nav ul{
     float: right;
@@ -69,24 +88,26 @@
   nav ul li{
     display: inline-block;
     line-height: 80px;
-    margin: 0 5px;
   }
   nav ul li a{
-    color: white;
+    color: rgb(17, 17, 17);
     font-size: 17px;
+    font-weight: bold;
     padding: 30px 13px; 
     text-transform: uppercase;
   }
-  a.active,a:hover{
-    background: rgb(152, 148, 35);
-    transition: .5s;
+  a.menulink.active,a.menulink:hover{
+    background: rgb(19, 19, 19);
+    color: rgb(255, 255, 255); 
+    transition: .2s;
+    border-bottom:4px solid rgb(0, 130, 230);
   }
   .checkbtn{
     font-size: 30px;
-    color: white;
-    float: right;
+    color: rgb(15, 15, 15);
+    float: left;
     line-height: 80px;
-    margin-right: 40px;
+    margin-left: 15px;
     cursor: pointer;
     display: none;
   }
@@ -94,20 +115,19 @@
     display: none;
   }
   #mapid {
-    margin: 15px;
+    margin: 5px;
     height: 650px;
     width: 60%;
     float: left;
-    border: 5px solid black;
+    border: 5px solid rgb(12, 12, 12);
     border-radius: 15px;
   }
   #container {
-    background-color: #F7DC6F;
-    margin: 15px;
+    background-color: rgba(255, 212, 20, .8);
+    margin: 1px;
     height: 650px;
     width: auto;
-    float: left;
-    border: 5px solid black;
+    border: 5px solid rgba(12, 12, 12, .8);
     border-radius: 15px;
     overflow: hidden;
   }
@@ -122,11 +142,11 @@
     display: inline-block;
     width: 100px;
     height: 35px;
-    background: darkgray;
+    background: rgb(19, 19, 19);
     border-radius: 100px;
     cursor: pointer;
     position: relative;
-    transition: .2s;
+    transition: 1.2s;
   }
   .sw::after {
     content: "";
@@ -177,25 +197,46 @@
     justify-content: center;
     float: center;
     margin-top: 5%;
+    position: relative;
+    z-index: 1;
   }
   @media (max-width: 952px){
-    label.logo{
-      font-size: 30px;
-      padding-left: 50px;
+    .logo{
+      margin-top: 20px;
+      padding-left: 5px;
+    }
+    #logoimg{
+      height: 50px;
+      width: 240px;
     }
     nav ul li a{
       font-size: 16px;
     }
+    .wrapper {
+      display: table-row;
+    }
+    #mapid {
+      height: 300px;
+      width: 90%;
+      border-radius: 15px;
+
+    }
+    #container {
+      height: auto;
+      width: 90%;
+      
+    }
+
   }
   @media (max-width: 858px){
     .checkbtn{
       display: block;
     }
     ul{
-      position: fixed;
-      width: 100%;
-      height: 100vh;
-      background: #2c3e50;
+      position: absolute;
+      width: 65%;
+      height: auto;
+      background: rgba(58, 58, 58, 0.9);
       top: 80px;
       left: -100%;
       text-align: center;
@@ -203,15 +244,15 @@
     }
     nav ul li{
       display: block;
-      margin: 50px 0;
+      margin: 65px 0;
       line-height: 30px;
     }
     nav ul li a{
       font-size: 20px;
     }
-    a:hover,a.active{
+    a.menulink:hover,a.menulink.active{
       background: none;
-      color: #0082e6;
+      color: rgb(0, 130, 230);
     }
     #check:checked ~ ul{
       left: 0;
@@ -222,51 +263,104 @@
     background-size: cover;
     height: calc(100vh - 80px);
   }
+
+  footer{
+    position: relative;
+    background:rgba(17, 17, 17, 0.9);
+    height: auto;
+    width: 100%;
+    bottom: 0px;
+    font-family: "Open Sans";
+    color:rgb(255, 255, 255);
+    z-index: 1;
+  }
+  .footer-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+  }
+  .footer-content h3{
+    font-size: 1.8rem;
+    font-weight: 400;
+    text-transform: capitalize;
+    line-height: 3rem;
+  }
+  .footer-content p{
+    margin: 2px auto;
+    line-height: 28px;
+    font-size: 14px;
+  }
+  .footer-bottom{
+    background: rgba(17, 17, 17, 0.96);
+    width: 100%;
+    padding: 5px 0;
+    text-align: center;
+  }
+  .footer-bottom span{
+    color:rgba(255, 212, 20);
+    text-transform: uppercase;
+    font-weight: 200;
+  }
 </style>
 <body>
-  <nav>
-    <input type="checkbox" id="check">
-    <label for="check" class="checkbtn">
-      <i class="fas fa-bars"></i>
-    </label>
-    <label class="logo">LocateCabs</label>
-    <ul>
-      <li><a href="../">Página Principal</a></li>
-      <li><a href="#" style="background: rgb(152, 148, 35);">Históricos</a></li>
-    </ul>
-  </nav>
-  <div class="wrapper">
-    <div class="inlineclass" id="mapid"></div>
-    <div class="inlineclass" id="container">
-      <h1 style="text-align: center; padding-top: 15px;">CONSULTA DE HISTÓRICOS</h1>
-      <div></div>
-      <h2 style="text-align: center; margin-top: 15px;">Consultar trayecto</h2>
-      <div></div>
-      <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Inicio:</label>
-      <input class="inlineclass" style="text-align: center;" type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00"
-        min="2021-06-01T00:00" max="2044-06-01T00:00">
-      <div></div>
-      <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="FHist">Fin:</label>
-      <input class="inlineclass" style="text-align: center;" type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00"
-        min="2021-06-01T00:00" max="2044-06-01T00:00">
-      <div></div>
-      <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-        <input type="Checkbox" id="switch2">
-        <label for="switch2" onclick="condicional2();" class="sw"></label>
-      </div>
-      <div></div>
-      <h2 style="text-align: center; margin-top: 15px;">Consultar ubicación</h2>
-      <div></div>
-      <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Fecha y Hora:</label>
-      <input class="inlineclass" style="text-align: center;" type="datetime-local" id="CHist" onchange="changehistact()" name="CurrentHistoric" value="2021-06-01T00:00"
-        min="2021-06-01T00:00" max="2044-06-0 1T00:00">
-      <div></div>
-      <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-        <input type="Checkbox" id="switch3">
-        <label for="switch3" onclick="condicional3();" class="sw"></label>
-      </div>
-
+  <div class="padre">
+    <div class="cabecera">
+      <nav>
+        <input type="checkbox" id="check">
+        <label for="check" class="checkbtn">
+          <i class="fas fa-bars"></i>
+        </label>
+        <a href="/" class="logo"><img src="/logo.png" id="logoimg" /></a>
+        <ul>
+          <li><a class="menulink" href="../">Página Principal</a></li>
+          <li><a class="menulink" href="#" style="background: rgb(19, 19, 19); color: rgb(255, 255, 255); border-bottom:4px solid rgb(0, 130, 230);">Históricos</a></li>
+        </ul>
+      </nav>
     </div>
+    <div class="wrapper">
+      <div class="inlineclass" id="mapid"></div>
+      <div class="inlineclass" id="container">
+        <h1 style="text-align: center; padding-top: 15px;">CONSULTA DE HISTÓRICOS</h1>
+        <div></div>
+        <h2 style="text-align: center; margin-top: 15px;">Consultar trayecto</h2>
+        <div></div>
+        <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Inicio:</label>
+        <input class="inlineclass" style="text-align: center;" type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00"
+          min="2021-06-01T00:00" max="2044-06-01T00:00">
+        <div></div>
+        <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="FHist">Fin:</label>
+        <input class="inlineclass" style="text-align: center;" type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00"
+          min="2021-06-01T00:00" max="2044-06-01T00:00">
+        <div></div>
+        <div class="switch-container;" style="text-align: center; margin-top: 5px;">
+          <input type="Checkbox" id="switch2">
+          <label for="switch2" onclick="condicional2();" class="sw"></label>
+        </div>
+        <div></div>
+        <h2 style="text-align: center; margin-top: 15px;">Consultar ubicación</h2>
+        <div></div>
+        <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Fecha y Hora:</label>
+        <input class="inlineclass" style="text-align: center;" type="datetime-local" id="CHist" onchange="changehistact()" name="CurrentHistoric" value="2021-06-01T00:00"
+          min="2021-06-01T00:00" max="2044-06-0 1T00:00">
+        <div></div>
+        <div class="switch-container;" style="text-align: center; margin-top: 5px;">
+          <input type="Checkbox" id="switch3">
+          <label for="switch3" onclick="condicional3();" class="sw"></label>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="footer-content">
+        <h3>LocateCABS</h3>
+        <p>Repositorio</p>
+        <li><a href="https://github.com/danielgonzale5/LocateCabs" target="_blank"><img src="/github.svg" id="gitimg" style="width: 45px;"/></a></li>
+        <div class="footer-bottom">
+          <p style="font-weight: bold; text-shadow: 2px 2px 8px #ffffff;">Copyright &copy;2021-2022 LocateCABS. designed by: <span>DanielG LeonardoC BozidarY JuanM & JorgeR</span></p>
+        </div>
+      </div>
+    </footer>
   </div>
   <script src="/socket.io/socket.io.js"></script>
   <script>
