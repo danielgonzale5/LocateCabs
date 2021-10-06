@@ -16,6 +16,18 @@ app.post('/github', function (req, res) {
 app.get('/', function (req, res) {
   res.sendfile(dir + '/index.html');
 });
+app.get('/logo.png', function (req, res) {
+  res.sendfile(dir + '/logo.png');
+});
+app.get('/favicon.ico', function (req, res) {
+  res.sendfile(dir + '/favicon.ico');
+});
+app.get('/bg.png', function (req, res) {
+  res.sendfile(dir + '/bg.png');
+});
+app.get('/github.svg', function (req, res) {
+  res.sendfile(dir + '/github.svg');
+});
 app.get('/routing', function (req, res) {
   res.sendfile(dir + '/index_routingmachine.html');
 });
@@ -126,7 +138,9 @@ setInterval(function () {
     });
   });
 }, 3000);
+
 app.use(express.json({ limit: '500mb' }));
+
 app.post('/historic', function (req, res) {
   console.log("Historics sended")
   console.log(req.body);
@@ -186,7 +200,11 @@ app.post('/historicact', function (req, res) {
       ActConverArray.push(Object.values(DataHistact[i]))
     }
     console.log(ActConverArray)
-    CCoordinatesArr=[ActConverArray[DataHistact.length-1][2],ActConverArray[DataHistact.length-1][3]]
+    if (HistDataact == 0) {
+      CCoordinatesArr=[10.9847191,-74.811302]
+    } else {
+      CCoordinatesArr=[ActConverArray[DataHistact.length-1][2],ActConverArray[DataHistact.length-1][3]]
+    }
     var CurrentDataTimeStamp = CCoordinatesArr
     console.log(CurrentDataTimeStamp)
     io.emit('ctimestamp', {
