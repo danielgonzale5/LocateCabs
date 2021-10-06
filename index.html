@@ -79,10 +79,10 @@
     padding: 30px 13px; 
     text-transform: uppercase;
   }
-  a.menulink:hover{
+  a.menulink.active,a.menulink:hover{
     background: rgb(43, 43, 37);
     transition: .2s;
-    border-bottom:4px solid #f00
+    border-bottom:4px solid rgb(235, 192, 0);
   }
   .checkbtn{
     font-size: 30px;
@@ -237,7 +237,7 @@
     </label>
     <a href="/" class="logo"><img src="/logo.png" id="logoimg" /></a>
     <ul>
-        <li><a class="menulink" href="#" style="background: rgb(152, 148, 35);">Página Principal</a></li>
+        <li><a href="#" style="background: rgb(43, 43, 37);">Página Principal</a></li>
         <li><a class="menulink" href="../historicos/">Históricos</a></li>
     </ul>
   </nav>
