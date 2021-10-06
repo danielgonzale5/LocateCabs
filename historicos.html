@@ -598,12 +598,13 @@
               circle_marker.closePopup();
               circle_marker.setRadius(0);
               circle.setRadius(0);
-            }
+            } else {
             currentpointHist = L.marker(CCoordinates).addTo(mymap);
             mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
             circle_marker.closePopup();
             circle_marker.setRadius(0);
             circle.setRadius(0);
+            }
           }, 500)
         }
       }
