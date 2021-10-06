@@ -170,12 +170,17 @@
     display: none;
   }
   .wrapper {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  float: center;
-}
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    float: center;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
   @media (max-width: 952px){
     label.logo{
       font-size: 30px;
