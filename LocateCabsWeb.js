@@ -16,6 +16,18 @@ app.post('/github', function (req, res) {
 app.get('/', function (req, res) {
   res.sendfile(dir + '/index.html');
 });
+app.get('/logo.png', function (req, res) {
+  res.sendfile(dir + '/logo.png');
+});
+app.get('/favicon.ico', function (req, res) {
+  res.sendfile(dir + '/favicon.ico');
+});
+app.get('/bg.png', function (req, res) {
+  res.sendfile(dir + '/bg.png');
+});
+app.get('/github.svg', function (req, res) {
+  res.sendfile(dir + '/github.svg');
+});
 app.get('/routing', function (req, res) {
   res.sendfile(dir + '/index_routingmachine.html');
 });
