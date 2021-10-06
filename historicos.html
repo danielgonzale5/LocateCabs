@@ -595,7 +595,7 @@
           setTimeout(function () {
             if (CCoordinates=[10.9847191,-74.811302]) {
               mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
-              circle_marker.closePopup();
+              circle_marker.bindPopup("No hay históricos", { autoPan: false }).openPopup();
               circle_marker.setRadius(0);
               circle.setRadius(0);
             } else {
