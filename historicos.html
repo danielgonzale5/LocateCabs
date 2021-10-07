@@ -560,14 +560,16 @@
           circle_marker.setRadius(10);
           circle.setRadius(50);
           circle_marker.bindPopup("No Data", { autoPan: false }).openPopup();
+
         } else {
           document.getElementById('switch3').disabled = true;
           enviarhist();
           setTimeout(function () {
             startPolyline2();
             if (Coordinates.length != 0) {
-              startpointHist = L.marker(Coordinates[0]).addTo(mymap);
-              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
+         
+              startpointHist = L.bindPopup("start",Coordinates[0]).addTo(mymap);
+              finalpointHist = L.circleMarker("final",Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
             }
             circle_marker.closePopup();
             circle_marker.setRadius(0);
@@ -576,6 +578,7 @@
         }
       }
     }
+
     io().on('ctimestamp', function (dataCTS) {
       CCoordinates = dataCTS.CurrentDataTimeStamp;
       console.log('io-on-current timestamp Coordinates= ' + CCoordinates)
