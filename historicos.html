@@ -568,7 +568,7 @@
             startPolyline2();
             if (Coordinates.length != 0) {
               
-              startpointHist = L.marker(Coordinates[0]).bindPopup("Inicio", { autoPan: false }).addTo(mymap);
+              startpointHist = L.marker(Coordinates[0], { color: 'Red' }).bindPopup("Inicio", { autoPan: false }).addTo(mymap);
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).bindPopup("Fin", { autoPan: false }).addTo(mymap);
             }
             circle_marker.closePopup();
