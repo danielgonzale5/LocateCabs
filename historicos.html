@@ -600,10 +600,6 @@
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
               finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
               startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
-              polylineHistoric.on('click',(e)=>{
-                let info = "Ubicación: " + e.latlng.toString();
-                L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
-              })
             }
           }, 500)
         }
