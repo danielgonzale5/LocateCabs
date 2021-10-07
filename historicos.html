@@ -576,19 +576,21 @@
           enviarhist();
           setTimeout(function () {
             startPolyline2();
+            circle_marker.setRadius(0);
+            circle.setRadius(0);
             if (Coordinates.length != 0) {
               startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).addTo(mymap);
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
               finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
               startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
-              for (var i = 0; i < Coordinates.length; i++) {
+              polyline.on('click',(e)=>{
+                for (var i = 0; i < Coordinates.length; i++) {
                 var Coordinatespopups = Coordinates[i]
                 circle_marker.setLatLng(Coordinatespopups)
                 circle_marker.bindPopup("Ubicación: " + Coordinatespopups.toString(), { autoPan: false }).openPopup()
               }
+              })
             }
-            circle_marker.setRadius(0);
-            circle.setRadius(0);
           }, 500)
         }
       }
