@@ -429,7 +429,7 @@
               mymap.fitBounds(Coordinates);
               polylineHistoric.on('click',(e)=>{
                 let label = "Ubicación " + e.latlng.toString();
-                L.popup().setLatLng(e.latlng).setContent(label).openOn(mymap);
+                L.openPopup().setLatLng(e.latlng).setContent(label).openOn(mymap);
               })
             } else {
               startPolyline2();
@@ -437,7 +437,7 @@
               finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
               polylineHistoric.on('click',(e)=>{
                 let label = "Ubicación " + e.latlng.toString();
-                L.popup().setLatLng(e.latlng).setContent(label).openOn(mymap);
+                L.openPopup().setLatLng(e.latlng).setContent(label).openOn(mymap);
               })
             }
           } else {
