@@ -583,8 +583,10 @@ var greenIcon = new L.Icon({
             startPolyline2();
             if (Coordinates.length != 0) {
               
-              startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).bindPopup("Inicio", { autoPan: false }).openPopup().addTo(mymap);
-              finalpointHist = L.marker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).bindPopup("Fin", { autoPan: false }).openPopup().addTo(mymap);
+              startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).bindPopup("Inicio", { autoPan: false }).addTo(mymap);
+              finalpointHist = L.marker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).bindPopup("Fin", { autoPan: false }).addTo(mymap);
+              startpointHist.openPopup()
+              finalpointHist.openPopup()
             }
             circle_marker.closePopup();
             circle_marker.setRadius(0);
