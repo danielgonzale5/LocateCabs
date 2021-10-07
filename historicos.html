@@ -428,13 +428,10 @@
               finalpointHist.setLatLng(Coordinates[Coordinates.length - 1]);
               mymap.fitBounds(Coordinates);
               polylineHistoric.on('click',(e)=>{
-                for (var i = 0; i < e.latlng.length; i++) {
-                var Coordinatespopups = e.latlng[i]
-                circle_marker.setLatLng(Coordinatespopups)
-                circle_marker.bindPopup("Ubicación: " + Coordinatespopups.toString(), { autoPan: false }).openPopup()
-              }
+                const target = parseFloat(e.latlng.lat);
+                let label = "You clicked the map at " + e.latlng.toString();
+                L.openPopup().setLatLng(e.latlng).setContent(label).openOn(mymap);
               })
-
             } else {
               startPolyline2();
               startpointHist = L.marker(Coordinates[0]).addTo(mymap);
