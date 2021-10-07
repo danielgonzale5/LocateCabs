@@ -556,13 +556,14 @@
       Coordinates = dataTS.DataTimeStamp;
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
 
-      polyline.on('click',(e)=>{
-        for (var i = 0; i < e.LatLng.length; i++) {
-        var Coordinatespopups = e.LatLng[i]
+      polylineHistoric.on('click',(e)=>{
+        for (var i = 0; i < e.latlng.length; i++) {
+        var Coordinatespopups = e.latlng[i]
         circle_marker.setLatLng(Coordinatespopups)
         circle_marker.bindPopup("Ubicación: " + Coordinatespopups.toString(), { autoPan: false }).openPopup()
       }
       })
+
     });
     //Funciones de los switches al trazar histórico
     function condicional2() {
