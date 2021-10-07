@@ -383,41 +383,20 @@
     let latlngsTemp = [];
     let Coordinates = [];
     let CCoordinates = [];
-
-   
-   
-var greenIcon = new L.Icon({
-  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-
-   
-
-
     //Condición de Calendario
     window.addEventListener('load', function () {
       datainicio = document.getElementById('IHist')
       datainicio.addEventListener('change', function () {
-      
-      
-        if (document.getElementById('FHist').value < this.value) { 
+        var uno = new Date(this.value).valueOf()
+        console.log(this.value);
         document.getElementById('FHist').value = this.value;
-        }
-
       });
-
-
       datafin = document.getElementById('FHist')
       datafin.addEventListener('change', function () {
         if (document.getElementById('IHist').value > this.value) {
           this.value = document.getElementById('IHist').value;
         }
       });
-
     });
     //Función de consulta de histórico
     function changehist() {
@@ -555,7 +534,7 @@ var greenIcon = new L.Icon({
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);
-    //Recepción de información del Backend 
+    //Recepción de información del Backend
     io().on('timestamp', function (dataTS) {
       Coordinates = dataTS.DataTimeStamp;
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
@@ -575,33 +554,22 @@ var greenIcon = new L.Icon({
           circle_marker.setRadius(10);
           circle.setRadius(50);
           circle_marker.bindPopup("No Data", { autoPan: false }).openPopup();
-
         } else {
           document.getElementById('switch3').disabled = true;
           enviarhist();
           setTimeout(function () {
             startPolyline2();
             if (Coordinates.length != 0) {
-              
-              startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).addTo(mymap);
-              finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
-              finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
-              startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup() 
-              
-              
+              startpointHist = L.marker(Coordinates[0]).addTo(mymap);
+              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
             }
             circle_marker.closePopup();
             circle_marker.setRadius(0);
             circle.setRadius(0);
           }, 500)
-         
-
-
-
         }
       }
     }
-//
     io().on('ctimestamp', function (dataCTS) {
       CCoordinates = dataCTS.CurrentDataTimeStamp;
       console.log('io-on-current timestamp Coordinates= ' + CCoordinates)
