@@ -586,20 +586,20 @@ var greenIcon = new L.Icon({
               startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).bindPopup("Inicio", { autoPan: false }).addTo(mymap);
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).bindPopup("Fin", { autoPan: false }).addTo(mymap);
               finalpointHist.openPopup()
-              startpointHist.openPopup()
+              
               
             }
             circle_marker.closePopup();
             circle_marker.setRadius(0);
             circle.setRadius(0);
           }, 500)
-          
+          setInterval(function () { startpointHist.openPopup() },1000);}
 
 
 
         }
       }
-    }
+    
 //
     io().on('ctimestamp', function (dataCTS) {
       CCoordinates = dataCTS.CurrentDataTimeStamp;
