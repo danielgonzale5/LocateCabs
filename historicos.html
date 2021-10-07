@@ -428,6 +428,7 @@
               finalpointHist.setLatLng(Coordinates[Coordinates.length - 1]);
               mymap.fitBounds(Coordinates);
               polylineHistoric.on('click',(e)=>{
+                console.log(e.latlng)
                 const target = parseFloat(e.latlng.lat);
                 let label = "You clicked the map at " + e.latlng.toString();
                 L.openPopup().setLatLng(e.latlng).setContent(label).openOn(mymap);
