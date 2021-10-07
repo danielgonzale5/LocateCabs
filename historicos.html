@@ -585,8 +585,7 @@ var greenIcon = new L.Icon({
               
               startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).addTo(mymap);
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
-              finalpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
-              startpointHist.bindPopup("Fin", { autoPan: false }).openPopup() 
+
               
               
             }
@@ -595,7 +594,8 @@ var greenIcon = new L.Icon({
             circle.setRadius(0);
           }, 500)
          
-
+              finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
+              startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup() 
 
 
         }
