@@ -427,10 +427,6 @@
               startpointHist.setLatLng(Coordinates[0]);
               finalpointHist.setLatLng(Coordinates[Coordinates.length - 1]);
               mymap.fitBounds(Coordinates);
-              polylineHistoric.on('click',(e)=>{
-                let label = "Ubicación " + e.latlng.toString();
-                L.openPopup().setLatLng(e.latlng).setContent(label).openOn(mymap);
-              })
             } else {
               startPolyline2();
               startpointHist = L.marker(Coordinates[0]).addTo(mymap);
@@ -591,6 +587,10 @@
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
               finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
               startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
+              polylineHistoric.on('click',(e)=>{
+                let label = "Ubicación " + e.latlng.toString();
+                L.openPopup().setLatLng(e.latlng).setContent(label).openOn(mymap);
+              })
             }
           }, 500)
         }
