@@ -623,6 +623,20 @@
         }
       }
     }
+    polyline.on('click', (e) => {
+                var counts =[];
+                for ( var j=0;j<latlngs.length;j++ ){
+                    counts.push(latlngs[j][0]);
+                };
+                goal = parseFloat(e.latlng.lat);
+                var closest = counts.reduce(
+                                function(prev, curr) {
+                                    return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
+                                });
+                console.log(counts.indexOf(closest));
+                var index = counts.indexOf(closest);
+                L.popup().setLatLng(e.latlng).setContent("Posición: " + e.latlng.toString()).openOn(mymap);
+            })
   </script>
 </body>
 
