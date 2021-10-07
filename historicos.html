@@ -582,7 +582,7 @@
               finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
               startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
 
-              console.log(latlngs.lat)
+              console.log(LatLngs.lat)
                 polyline.on('click', (e) => {
                 console.log(latlngs.lat)
                 const target = parseFloat(e.latlngs.lat);
@@ -594,7 +594,7 @@
                 L.popup().setLatLng(e.latlngs).setContent(label).openOn(mymap);
               });
               } 
-              
+
             circle_marker.closePopup();
             circle_marker.setRadius(0);
             circle.setRadius(0);
