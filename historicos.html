@@ -623,20 +623,17 @@
         }
       }
     }
+    console.log()
     polyline.on('click', (e) => {
-                var counts =[];
-                for ( var j=0;j<latlngs.length;j++ ){
-                    counts.push(latlngs[j][0]);
-                };
-                goal = parseFloat(e.latlng.lat);
-                var closest = counts.reduce(
-                                function(prev, curr) {
-                                    return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
-                                });
-                console.log(counts.indexOf(closest));
-                var index = counts.indexOf(closest);
-                L.popup().setLatLng(e.latlng).setContent("Posición: " + e.latlng.toString()).openOn(mymap);
-            })
+      const target = parseFloat(e.latlngs.lon);
+      let cercano = longitudes.reduce(
+        function(prev, curr) {
+          return (Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev);
+          });
+      const index = longitudes.indexOf(cercano);
+      let label = "You clicked the map at " + e.latlngs.toString();
+      L.popup().setLatLng(e.latlngs).setContent(label).openOn(mymap);
+     });
   </script>
 </body>
 
