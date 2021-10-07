@@ -389,7 +389,7 @@
       datainicio.addEventListener('change', function () {
       
       
-        if (document.getElementById('FHist').value < this.value) { 
+        if (document.getElementById('FHist').value > this.value) { 
         document.getElementById('FHist').value = this.value;
         }
       });
@@ -401,7 +401,7 @@
           this.value = document.getElementById('IHist').value;
         }
       });
-      
+
     });
     //Función de consulta de histórico
     function changehist() {
