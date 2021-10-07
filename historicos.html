@@ -427,12 +427,9 @@
               startpointHist.setLatLng(Coordinates[0]);
               finalpointHist.setLatLng(Coordinates[Coordinates.length - 1]);
               mymap.fitBounds(Coordinates);
-              console.log("Hola")
               polylineHistoric.on('click',(e)=>{
-                console.log(e.latlng)
-                const target = parseFloat(e.latlng.lat);
-                let label = "You clicked the map at " + e.latlng.toString();
-                L.openPopup().setLatLng(e.latlng).setContent(label).openOn(mymap);
+                let label = "Ubicación " + e.latlng.toString();
+                L.popup().setLatLng(e.latlng).setContent(label).openOn(mymap);
               })
             } else {
               startPolyline2();
