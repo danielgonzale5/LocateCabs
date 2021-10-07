@@ -452,7 +452,6 @@
         }, 1000)
       }
     }
-    
     //Función de coneión Frontend-Backend del histórico
     async function enviarhist() {
       datainicio = document.getElementById('IHist').value;
@@ -473,7 +472,7 @@
       };
       await fetch('/historic', options);
     }
-    //Declación de funciones para el mapa
+    //Serie de funciones para el mapa
     function MapsetUbication() {
       mymap.setView(new L.LatLng(lat, long));
     }
@@ -539,7 +538,6 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);
-
     //Recepción y traducción de información del Backend
     document.addEventListener('DOMContentLoaded', function () {
       old_user = "-";
@@ -589,7 +587,6 @@
         }
       });
     });
-
     //Funciones de los switches al trazar linea en vivo
     function condicional() {
         valor = document.getElementById('switch').checked;
