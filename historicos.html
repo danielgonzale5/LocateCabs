@@ -427,10 +427,18 @@
               startpointHist.setLatLng(Coordinates[0]);
               finalpointHist.setLatLng(Coordinates[Coordinates.length - 1]);
               mymap.fitBounds(Coordinates);
+              polylineHistoric.on('click',(e)=>{
+                let label = "Ubicación " + e.latlng.toString();
+                L.popup().setLatLng(e.latlng).setContent(label).openOn(mymap);
+              })
             } else {
               startPolyline2();
               startpointHist = L.marker(Coordinates[0]).addTo(mymap);
               finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
+              polylineHistoric.on('click',(e)=>{
+                let label = "Ubicación " + e.latlng.toString();
+                L.popup().setLatLng(e.latlng).setContent(label).openOn(mymap);
+              })
             }
           } else {
             console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
@@ -555,10 +563,6 @@
     io().on('timestamp', function (dataTS) {
       Coordinates = dataTS.DataTimeStamp;
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
-      polylineHistoric.on('click',(e)=>{
-                let label = "Ubicación " + e.latlng.toString();
-                L.popup().setLatLng(e.latlng).setContent(label).openOn(mymap);
-              })
     });
     //Funciones de los switches al trazar histórico
     function condicional2() {
