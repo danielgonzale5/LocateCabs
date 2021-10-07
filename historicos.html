@@ -444,6 +444,10 @@
               startPolyline2();
               startpointHist = L.marker(Coordinates[0]).addTo(mymap);
               finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
+              polylineHistoric.on('click',(e)=>{
+                let info = "Ubicación: " + e.latlng.toString();
+                L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
+              })
             }
           } else {
             console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
