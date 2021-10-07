@@ -555,7 +555,23 @@
     io().on('timestamp', function (dataTS) {
       Coordinates = dataTS.DataTimeStamp;
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
-    });
+      let latitudes = [];
+      Coordinates.forEach(coord => {  
+        polyline.addLatLng([parseFloat(coord.Latitud), parseFloat(coord.Longitud)]);
+        latitudes.push(parseFloat(coord.Latitud));
+      });        
+      console.log(latitudes)
+      console.log(latlngs)
+      polyline.on('click', (e) => {
+        const target = parseFloat(e.latlngs.lat);
+        let cercano = latitudes.reduce(function(prev, curr) {
+          return (Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev);
+        });
+        const index = latitudes.indexOf(cercano);
+        let label = "You clicked the map at " + e.latlngs.toString();
+        L.popup().setLatLng(e.latlngs).setContent(label).openOn(maphi);
+      });
+      });
     //Funciones de los switches al trazar histórico
     function condicional2() {
       if (document.getElementById('switch2').disabled != true) {
@@ -581,18 +597,6 @@
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
               finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
               startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
-              function forEachFeature(feature, polyline) {
-                polyline.on('click', (e) => {
-                console.log(latlngs.long)
-                const target = parseFloat(e.latlngs.long);
-                let cercano = longitudes.reduce(function(prev, curr) {
-                    return (Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev);
-                    });
-                const index = longitudes.indexOf(cercano);
-                let label = "Ubicación: " + e.latlngs.toString();
-                L.popup().setLatLng(e.latlngs).setContent(label).openOn(mymap);
-              });
-              } 
             }
             circle_marker.closePopup();
             circle_marker.setRadius(0);
@@ -635,23 +639,6 @@
         }
       }
     }
-    let latitudes = [];
-    info.forEach(coord => {  
-      polyline.addLatLng([parseFloat(coord.Latitud), parseFloat(coord.Longitud)]);
-      latitudes.push(parseFloat(coord.Latitud));
-    });        
-    console.log(latitudes)
-    console.log(Coordinates)
-    polyline.on('click', (e) => {
-      const target = parseFloat(e.Coordinates.lat);
-      let cercano = latitudes.reduce(function(prev, curr) {
-        return (Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev);
-      });
-      const index = latitudes.indexOf(cercano);
-      let label = "You clicked the map at " + e.Coordinates.toString() +"\n Fecha : "+ fechas[index] + " Hora : " + horas[index];
-      L.popup().setLatLng(e.Coordinates).setContent(label).openOn(maphi);
-    });
-    
   </script>
 </body>
 
