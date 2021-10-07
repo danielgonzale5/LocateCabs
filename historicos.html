@@ -569,7 +569,7 @@
             if (Coordinates.length != 0) {
               
               startpointHist = L.marker(Coordinates[0]).addTo(mymap);
-              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).bindPopup("Fin", { autoPan: false }).addTo(mymap);
+              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).bindPopup("Fin").addTo(mymap);
             }
             circle_marker.closePopup();
             circle_marker.setRadius(0);
