@@ -623,9 +623,9 @@
         }
       }
     }
-    console.log()
     polyline.on('click', (e) => {
-      const target = parseFloat(e.latlngs.lon);
+      console.log(latlngs.long)
+      const target = parseFloat(e.latlngs.long);
       let cercano = longitudes.reduce(
         function(prev, curr) {
           return (Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev);
