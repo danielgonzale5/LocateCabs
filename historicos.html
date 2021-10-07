@@ -390,6 +390,7 @@
     var startpointHist;
     var finalpointHist;
     var currentpointHist;
+    var currentpointHist_was_created=0;
     var startpoint_was_set = 0;
     var hist_was_set = 0;
     let latlngs = [];
@@ -626,7 +627,10 @@
           circle_marker.setRadius(10);
           circle.setRadius(50);
           circle_marker.openPopup();
-          currentpointHist.removeFrom(mymap);
+          if (currentpointHist_was_created==1){
+            currentpointHist.removeFrom(mymap);
+            currentpointHist_was_created=0;
+          }
           document.getElementById('switch2').disabled = false;
         } else {
           document.getElementById('switch2').disabled = true;
@@ -634,6 +638,7 @@
           setTimeout(function () {
             if ((CCoordinates[0] !== 10.9847191) && (CCoordinates[1] !== -74.811302)) {
               currentpointHist = L.marker(CCoordinates).addTo(mymap);
+              currentpointHist_was_created=1;
               mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
             } 
             circle_marker.closePopup();
