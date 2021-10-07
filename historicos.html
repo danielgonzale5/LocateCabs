@@ -555,6 +555,17 @@
     io().on('timestamp', function (dataTS) {
       Coordinates = dataTS.DataTimeStamp;
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
+      polyline.on('click', (e) => {
+      console.log(latlngs.long)
+      const target = parseFloat(e.latlngs.long);
+      let cercano = longitudes.reduce(
+        function(prev, curr) {
+          return (Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev);
+          });
+      const index = longitudes.indexOf(cercano);
+      let label = "You clicked the map at " + e.latlngs.toString();
+      L.popup().setLatLng(e.latlngs).setContent(label).openOn(mymap);
+     });
     });
     //Funciones de los switches al trazar histórico
     function condicional2() {
@@ -623,17 +634,6 @@
         }
       }
     }
-    polyline.on('click', (e) => {
-      console.log(latlngs.long)
-      const target = parseFloat(e.latlngs.long);
-      let cercano = longitudes.reduce(
-        function(prev, curr) {
-          return (Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev);
-          });
-      const index = longitudes.indexOf(cercano);
-      let label = "You clicked the map at " + e.latlngs.toString();
-      L.popup().setLatLng(e.latlngs).setContent(label).openOn(mymap);
-     });
   </script>
 </body>
 
