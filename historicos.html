@@ -579,12 +579,13 @@ var greenIcon = new L.Icon({
         } else {
           document.getElementById('switch3').disabled = true;
           enviarhist();
-          setTimeout(function a() {
+          setTimeout(function () {
             startPolyline2();
             if (Coordinates.length != 0) {
               
               startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).bindPopup("Inicio", { autoPan: false }).addTo(mymap);
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).bindPopup("Fin", { autoPan: false }).addTo(mymap);
+              finalpointHist.openPopup()
               startpointHist.openPopup()
               
             }
@@ -592,7 +593,7 @@ var greenIcon = new L.Icon({
             circle_marker.setRadius(0);
             circle.setRadius(0);
           }, 500)
-          setTimeout(function b() {finalpointHist.openPopup()}, 500)
+          
 
 
 
