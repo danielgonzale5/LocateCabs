@@ -612,7 +612,7 @@
           document.getElementById('switch2').disabled = true;
           enviarhistact();
           setTimeout(function () {
-            if (CCoordinates != [10.9847191,-74.811302]) {
+            if ((CCoordinates[0] !== 10.9847191) && (CCoordinates[1] !== -74.811302)) {
               currentpointHist = L.marker(CCoordinates).addTo(mymap);
               mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
             } 
