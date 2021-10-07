@@ -557,8 +557,8 @@
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
 
       polyline.on('click',(e)=>{
-        for (var i = 0; i < Coordinates.length; i++) {
-        var Coordinatespopups = Coordinates[i]
+        for (var i = 0; i < e.LatLng.length; i++) {
+        var Coordinatespopups = e.LatLng[i]
         circle_marker.setLatLng(Coordinatespopups)
         circle_marker.bindPopup("Ubicación: " + Coordinatespopups.toString(), { autoPan: false }).openPopup()
       }
