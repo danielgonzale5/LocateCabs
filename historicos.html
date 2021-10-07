@@ -409,8 +409,6 @@
     });
 
 
-
-
     //Condición de Calendario
     window.addEventListener('load', function () {
       datainicio = document.getElementById('IHist')
@@ -419,13 +417,13 @@
         document.getElementById('FHist').value = this.value;
         }
 
-      });
+      },3000);
       datafin = document.getElementById('FHist')
       datafin.addEventListener('change', function () {
         if (document.getElementById('IHist').value > this.value) {
           this.value = document.getElementById('IHist').value;
         }
-      });
+      },3000);
 
     });
 
@@ -476,8 +474,6 @@
       };
       await fetch('/historic', options);
     }
-
-
     //Función de consulta de histórico actual
     function changehistact() {
       valor = document.getElementById('switch3').checked;
