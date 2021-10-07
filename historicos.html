@@ -200,20 +200,21 @@
     position: relative;
     z-index: 1;
   }
-  @media (max-width: 952px){
+  @media (max-width: 860px){
     .logo{
       margin-top: 20px;
       padding-left: 5px;
     }
     #logoimg{
       height: 50px;
-      width: 240px;
-    }
-    nav ul li a{
-      font-size: 16px;
+      width: 210px;
     }
     .wrapper {
-      display: table-row;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
     }
     #mapid {
       height: 300px;
@@ -226,9 +227,6 @@
       width: 90%;
       
     }
-
-  }
-  @media (max-width: 858px){
     .checkbtn{
       display: block;
     }
@@ -257,6 +255,21 @@
     #check:checked ~ ul{
       left: 0;
     }
+  }
+  @media (max-width: 300px){
+    #logoimg{
+      height: 50px;
+      width: 20vh;
+
+    }
+
+  }
+  @media (max-width: 267px){
+    #logoimg{
+      display: none;
+
+    }
+    
   }
   section{
     background: url(bg1.jpg) no-repeat;
@@ -314,14 +327,14 @@
         </label>
         <a href="/" class="logo"><img src="/logo.png" id="logoimg" /></a>
         <ul>
-          <li><a class="menulink" href="../">Página Principal</a></li>
+          <li><a class="menulink" href="../">Home</a></li>
           <li><a class="menulink" href="#" style="background: rgb(19, 19, 19); color: rgb(255, 255, 255); border-bottom:4px solid rgb(0, 130, 230);">Históricos</a></li>
         </ul>
       </nav>
     </div>
     <div class="wrapper">
       <div class="inlineclass" id="mapid"></div>
-      <div class="inlineclass" id="container">
+      <div class="inlineclass" style="text-align: center;" id="container">
         <h1 style="text-align: center; padding-top: 15px;">CONSULTA DE HISTÓRICOS</h1>
         <div></div>
         <h2 style="text-align: center; margin-top: 15px;">Consultar trayecto</h2>
@@ -383,13 +396,28 @@
     let latlngsTemp = [];
     let Coordinates = [];
     let CCoordinates = [];
+
+
+    var greenIcon = new L.Icon({
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+    });
+
+
+
+
     //Condición de Calendario
     window.addEventListener('load', function () {
       datainicio = document.getElementById('IHist')
-      datainicio.addEventListener('change', function () {
-        var uno = new Date(this.value).valueOf()
-        console.log(this.value);
+      datainicio.addEventListener('change', function () { 
+        if (document.getElementById('FHist').value < this.value) { 
         document.getElementById('FHist').value = this.value;
+        }
+
       });
       datafin = document.getElementById('FHist')
       datafin.addEventListener('change', function () {
@@ -397,8 +425,10 @@
           this.value = document.getElementById('IHist').value;
         }
       });
+
     });
-    //Función de consulta de histórico
+
+    //Función de consulta de histórico o
     function changehist() {
       valor = document.getElementById('switch2').checked;
       if (valor) {
@@ -480,9 +510,6 @@
       } else {
         mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
       }
-      if (document.getElementById('switch3').checked) {
-        mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
-      }
     }
     function setMarker() {
       if (lat != null && isNaN(lat) == false && long != null && isNaN(long) == false) {
@@ -562,13 +589,18 @@
           enviarhist();
           setTimeout(function () {
             startPolyline2();
-            if (Coordinates.length != 0) {
-              startpointHist = L.marker(Coordinates[0]).addTo(mymap);
-              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
-            }
-            circle_marker.closePopup();
             circle_marker.setRadius(0);
             circle.setRadius(0);
+            if (Coordinates.length != 0) {
+              startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).addTo(mymap);
+              finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
+              finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
+              startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
+              polylineHistoric.on('click',(e)=>{
+                let info = "Ubicación: " + e.latlng.toString();
+                L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
+              })
+            }
           }, 500)
         }
       }
@@ -596,7 +628,10 @@
           document.getElementById('switch2').disabled = true;
           enviarhistact();
           setTimeout(function () {
-            currentpointHist = L.marker(CCoordinates).addTo(mymap);
+            if ((CCoordinates[0] !== 10.9847191) && (CCoordinates[1] !== -74.811302)) {
+              currentpointHist = L.marker(CCoordinates).addTo(mymap);
+              mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
+            } 
             circle_marker.closePopup();
             circle_marker.setRadius(0);
             circle.setRadius(0);
