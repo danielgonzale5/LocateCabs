@@ -433,7 +433,7 @@
               finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
               polylineHistoric.on('click',(e)=>{
                 let label = "Ubicación: " + e.latlng.toString();
-                L.setLatLng(e.latlng).setContent(label).openPopup();
+                L.popup().setLatLng(e.latlng).setContent(label).openPopup();
               })
             }
           } else {
@@ -589,7 +589,7 @@
               startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
               polylineHistoric.on('click',(e)=>{
                 let label = "Ubicación " + e.latlng.toString();
-                L.openPopup().setLatLng(e.latlng).setContent(label).openOn(mymap);
+                L.popup().setLatLng(e.latlng).setContent(label).openOn(mymap);
               })
             }
           }, 500)
