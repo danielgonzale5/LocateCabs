@@ -138,7 +138,9 @@ setInterval(function () {
     });
   });
 }, 3000);
+
 app.use(express.json({ limit: '500mb' }));
+
 app.post('/historic', function (req, res) {
   console.log("Historics sended")
   console.log(req.body);
@@ -198,7 +200,11 @@ app.post('/historicact', function (req, res) {
       ActConverArray.push(Object.values(DataHistact[i]))
     }
     console.log(ActConverArray)
-    CCoordinatesArr=[ActConverArray[DataHistact.length-1][2],ActConverArray[DataHistact.length-1][3]]
+    if (HistDataact == 0) {
+      CCoordinatesArr=[10.9847191,-74.811302]
+    } else {
+      CCoordinatesArr=[ActConverArray[DataHistact.length-1][2],ActConverArray[DataHistact.length-1][3]]
+    }
     var CurrentDataTimeStamp = CCoordinatesArr
     console.log(CurrentDataTimeStamp)
     io.emit('ctimestamp', {
@@ -214,4 +220,3 @@ app.post('/historicact', function (req, res) {
     status: 'received'
   });
 });
-// hola, como estas
