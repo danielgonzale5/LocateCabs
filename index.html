@@ -222,23 +222,23 @@
     position: relative;
     z-index: 1;
   }
-  @media (max-width: 952px){
+  @media (max-width: 860px){
     .logo{
       margin-top: 20px;
       padding-left: 5px;
     }
     #logoimg{
       height: 50px;
-      width: 240px;
-    }
-    nav ul li a{
-      font-size: 16px;
+      width: 210px;
     }
     .wrapper {
-      display: table-row;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
     }
     #mapid {
-
       height: 300px;
       width: 90%;
       border-radius: 15px;
@@ -249,10 +249,6 @@
       width: 90%;
       
     }
-
-  }
-  
-  @media (max-width: 858px){
     .checkbtn{
       display: block;
     }
@@ -281,7 +277,21 @@
     #check:checked ~ ul{
       left: 0;
     }
+  }
+  @media (max-width: 300px){
+    #logoimg{
+      height: 50px;
+      width: 20vh;
 
+    }
+
+  }
+  @media (max-width: 267px){
+    #logoimg{
+      display: none;
+
+    }
+    
   }
   section{
     background: url(bg1.jpg) no-repeat;
@@ -339,7 +349,7 @@
         </label>
         <a href="/" class="logo"><img src="/logo.png" id="logoimg" /></a>
         <ul>
-            <li><a class="menulink" href="#" style="background: rgb(19, 19, 19); color: rgb(255, 255, 255); border-bottom:4px solid rgb(0, 130, 230);">Página Principal</a></li>
+            <li><a class="menulink" href="#" style="background: rgb(19, 19, 19); color: rgb(255, 255, 255); border-bottom:4px solid rgb(0, 130, 230);">Home</a></li>
             <li><a class="menulink" href="../historicos/">Históricos</a></li>
         </ul>
       </nav>
