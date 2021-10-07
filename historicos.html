@@ -497,9 +497,6 @@
       } else {
         mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
       }
-      if (document.getElementById('switch3').checked) {
-        mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
-      }
     }
     function setMarker() {
       if (lat != null && isNaN(lat) == false && long != null && isNaN(long) == false) {
@@ -615,7 +612,10 @@
           document.getElementById('switch2').disabled = true;
           enviarhistact();
           setTimeout(function () {
-            currentpointHist = L.marker(CCoordinates).addTo(mymap);
+            if (CCoordinates != [10.9847191,-74.811302]) {
+              currentpointHist = L.marker(CCoordinates).addTo(mymap);
+              mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
+            } 
             circle_marker.closePopup();
             circle_marker.setRadius(0);
             circle.setRadius(0);
