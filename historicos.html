@@ -389,12 +389,12 @@
       datainicio.addEventListener('change', function () {
       
       
-        if (document.getElementById('FHist').value > this.value) { 
+        if (document.getElementById('FHist').value < this.value) { 
         document.getElementById('FHist').value = this.value;
         }
       });
 
-      
+
       datafin = document.getElementById('FHist')
       datafin.addEventListener('change', function () {
         if (document.getElementById('IHist').value > this.value) {
