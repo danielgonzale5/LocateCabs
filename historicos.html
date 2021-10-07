@@ -386,13 +386,12 @@
     //Condición de Calendario
     window.addEventListener('load', function () {
       datainicio = document.getElementById('IHist')
-      datainicio.addEventListener('change', function () {
-      
+      datainicio.addEventListener('change', function () { 
         if (document.getElementById('FHist').value < this.value) { 
         document.getElementById('FHist').value = this.value;
         }
-      });
 
+      });
       datafin = document.getElementById('FHist')
       datafin.addEventListener('change', function () {
         if (document.getElementById('IHist').value > this.value) {
@@ -401,7 +400,6 @@
       });
 
     });
-
 
     //Función de consulta de histórico
     function changehist() {
@@ -568,12 +566,8 @@
           setTimeout(function () {
             startPolyline2();
             if (Coordinates.length != 0) {
-              startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).addTo(mymap);
-              finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
-              finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
-              startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup() 
-           
-           
+              startpointHist = L.marker(Coordinates[0]).addTo(mymap);
+              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
             }
             circle_marker.closePopup();
             circle_marker.setRadius(0);
