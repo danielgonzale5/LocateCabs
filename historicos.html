@@ -555,7 +555,15 @@
     io().on('timestamp', function (dataTS) {
       Coordinates = dataTS.DataTimeStamp;
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
-      });
+
+      polyline.on('click',(e)=>{
+        for (var i = 0; i < Coordinates.length; i++) {
+        var Coordinatespopups = Coordinates[i]
+        circle_marker.setLatLng(Coordinatespopups)
+        circle_marker.bindPopup("Ubicación: " + Coordinatespopups.toString(), { autoPan: false }).openPopup()
+      }
+      })
+    });
     //Funciones de los switches al trazar histórico
     function condicional2() {
       if (document.getElementById('switch2').disabled != true) {
@@ -583,13 +591,6 @@
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
               finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
               startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
-              polyline.on('click',(e)=>{
-                for (var i = 0; i < Coordinates.length; i++) {
-                var Coordinatespopups = Coordinates[i]
-                circle_marker.setLatLng(Coordinatespopups)
-                circle_marker.bindPopup("Ubicación: " + Coordinatespopups.toString(), { autoPan: false }).openPopup()
-              }
-              })
             }
           }, 500)
         }
