@@ -555,22 +555,6 @@
     io().on('timestamp', function (dataTS) {
       Coordinates = dataTS.DataTimeStamp;
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
-      let latitudes = [];
-      Coordinates.forEach(coord => {  
-        polyline.addLatLng([parseFloat(coord.Latitud), parseFloat(coord.Longitud)]);
-        latitudes.push(parseFloat(coord.Latitud));
-      });        
-      console.log(latitudes)
-      console.log(latlngs)
-      polyline.on('click', (e) => {
-        const target = parseFloat(e.latlngs.lat);
-        let cercano = latitudes.reduce(function(prev, curr) {
-          return (Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev);
-        });
-        const index = latitudes.indexOf(cercano);
-        let label = "You clicked the map at " + e.latlngs.toString();
-        L.popup().setLatLng(e.latlngs).setContent(label).openOn(maphi);
-      });
       });
     //Funciones de los switches al trazar histórico
     function condicional2() {
@@ -597,8 +581,12 @@
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
               finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
               startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
+              for (var i = 0; i < Coordinates.length; i++) {
+                var Coordinatespopups = Coordinates[i]
+                circle_marker.setLatLng(Coordinatespopups)
+                circle_marker.bindPopup("Ubicación: " + Coordinatespopups.toString(), { autoPan: false }).openPopup()
+              }
             }
-            circle_marker.closePopup();
             circle_marker.setRadius(0);
             circle.setRadius(0);
           }, 500)
