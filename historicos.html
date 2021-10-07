@@ -389,9 +389,10 @@
       datainicio.addEventListener('change', function () {
       
       
-        if (document.getElementById('FHist').value > this.value) { 
+        if (document.getElementById('FHist').value < this.value) { 
         document.getElementById('FHist').value = this.value;
         }
+
       });
 
 
