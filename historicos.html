@@ -446,7 +446,7 @@
               finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
               polylineHistoric.on('click',(e)=>{
                 let info = "Ubicación: " + e.latlng.toString();
-                L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
+                L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap); 
               })
             }
           } else {
