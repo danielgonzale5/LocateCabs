@@ -28,12 +28,17 @@ app.get('/bg.png', function (req, res) {
 app.get('/github.svg', function (req, res) {
   res.sendfile(dir + '/github.svg');
 });
-app.get('/routing', function (req, res) {
-  res.sendfile(dir + '/index_routingmachine.html');
-});
 app.get('/historicos', function (req, res) {
   res.sendfile(dir + '/historicos.html');
 });
+
+app.get('/historicostest', function (req, res) {
+  res.sendfile(dir + '/historicos_test.html');
+});
+app.get('/indextest', function (req, res) {
+  res.sendfile(dir + '/index_text.html');
+});
+
 //Conexión al puerto establecido
 server.listen(port, function (error) {
   if (error) {
@@ -137,7 +142,7 @@ setInterval(function () {
       });
     });
   });
-}, 3000);
+}, 1500);
 
 app.use(express.json({ limit: '500mb' }));
 
@@ -155,64 +160,27 @@ app.post('/historic', function (req, res) {
     var ConverArray = []
     var CoordinatesArrTemp = []
     var CoordinatesArr = []
+    var UserData = []
     console.log(DataHist)
     for (var i = 0; i < DataHist.length; i++) {
       ConverArray.push(Object.values(DataHist[i]))
     }
     console.log(ConverArray)
     for (var j = 0; j < DataHist.length; j++) {
+      UserData.push(ConverArray[j][1]);
       CoordinatesArrTemp = [ConverArray[j][2], ConverArray[j][3]];
       CoordinatesArr.push(CoordinatesArrTemp);
     }
     var DataTimeStamp = CoordinatesArr
+    var DataUsuario = UserData
     io.emit('timestamp', {
-      DataTimeStamp: DataTimeStamp,
+      DataUsuario: DataUsuario,
+      DataTimeStamp: DataTimeStamp
     });
     io.on('connection', function (socket) {
       socket.emit('timestamp', {
+        DataUsuario: DataUsuario,
         DataTimeStamp: DataTimeStamp
-      });
-    });
-  });
-  res.json({
-    status: 'received'
-  });
-});
-app.post('/historicact', function (req, res) {
-  console.log("Actual Historic sended")
-  console.log(req.body);
-  var HisDatact = req.body;
-  var TSact = HisDatact.dataactual.toString();
-  console.log(TSact)
-  var TSactant = parseInt(TSact)-100000;
-  console.log(TSactant)
-  var TSactant = TSactant.toString();
-  console.log(TSactant)
-  con.query("SELECT * FROM gps WHERE TimeStamp BETWEEN ('" + TSactant + "') AND ('" + TSact + "');", function (err, rows) {
-    if (err) throw err;
-    var HistDataact = JSON.parse(JSON.stringify(rows))
-    console.log(HistDataact)
-    var DataHistact = Object.values(HistDataact)
-    var ActConverArray = []
-    var CCoordinatesArr = []
-    console.log(DataHistact)
-    for (var i = 0; i < DataHistact.length; i++) {
-      ActConverArray.push(Object.values(DataHistact[i]))
-    }
-    console.log(ActConverArray)
-    if (HistDataact == 0) {
-      CCoordinatesArr=[10.9847191,-74.811302]
-    } else {
-      CCoordinatesArr=[ActConverArray[DataHistact.length-1][2],ActConverArray[DataHistact.length-1][3]]
-    }
-    var CurrentDataTimeStamp = CCoordinatesArr
-    console.log(CurrentDataTimeStamp)
-    io.emit('ctimestamp', {
-      CurrentDataTimeStamp: CurrentDataTimeStamp,
-    });
-    io.on('connection', function (socket) {
-      socket.emit('ctimestamp', {
-        CurrentDataTimeStamp: CurrentDataTimeStamp
       });
     });
   });

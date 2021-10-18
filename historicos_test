@@ -352,16 +352,10 @@
           <label for="switch2" onclick="condicional2();" class="sw"></label>
         </div>
         <div></div>
-        <h2 style="text-align: center; margin-top: 15px;">Consultar ubicación</h2>
+        <h2 style="text-align: center; margin-top: 15px;">Inserte ID específica</h2>
+        <h4 style="text-align: center; margin-top: 15px;">"-" para observar todos los taxis</h4>
+        <input style="text-align: center; margin-top: 15px;" type="text" id="IDtxtID" name="IDtxt">
         <div></div>
-        <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Fecha y Hora:</label>
-        <input class="inlineclass" style="text-align: center;" type="datetime-local" id="CHist" onchange="changehistact()" name="CurrentHistoric" value="2021-06-01T00:00"
-          min="2021-06-01T00:00" max="2044-06-0 1T00:00">
-        <div></div>
-        <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-          <input type="Checkbox" id="switch3">
-          <label for="switch3" onclick="condicional3();" class="sw"></label>
-        </div>
       </div>
     </div>
     <footer>
@@ -380,7 +374,6 @@
     //Declaración de Variables Globales
     let lat = 10.984719;
     let long = -74.811302;
-    var polylinePoints;
     var polyline;
     var datainicio;
     var datafin;
@@ -395,6 +388,9 @@
     var hist_was_set = 0;
     let latlngs = [];
     let latlngsTemp = [];
+    let User = [];
+    let Cord1 = [];
+    let Cord2 = [];
     let Coordinates = [];
     let CCoordinates = [];
 
@@ -435,23 +431,81 @@
       if (valor) {
         enviarhist();
         setTimeout(function () {
-          if (Coordinates.length != 0) {
-            if (hist_was_set == 1) {
-              polylineHistoric.setLatLngs(Coordinates);
-              startpointHist.setLatLng(Coordinates[0]);
-              finalpointHist.setLatLng(Coordinates[Coordinates.length - 1]);
-              mymap.fitBounds(Coordinates);
+          if (document.getElementById('IDtxtID').innerHTML == 1) {
+            if (Cord1.length != 0) {
+              if (hist_was_set == 1) {
+                polylineHistoric1.setLatLngs(Cord1);
+                startpointHist1.setLatLng(Cord1[0]);
+                finalpointHist1.setLatLng(Cord1[Cord1.length - 1]);
+                mymap.fitBounds(Cord1);
+              } else {
+                startPolyline(Cord1);
+                startpointHist1 = L.marker(Cord1[0]).addTo(mymap);
+                finalpointHist1 = L.circleMarker(Cord1[Cord1.length - 1], { color: '#FFB242' }).addTo(mymap);
+                polylineHistoric1.on('click',(e)=>{
+                  let info = "Ubicación: " + e.latlng.toString();
+                  L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap); 
+                })
+              }
             } else {
-              startPolyline2();
-              startpointHist = L.marker(Coordinates[0]).addTo(mymap);
-              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
-              polylineHistoric.on('click',(e)=>{
-                let info = "Ubicación: " + e.latlng.toString();
-                L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap); 
-              })
+              console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
+            }
+          } else if (document.getElementById('IDtxtID').innerHTML == 2) {
+            if (Cord2.length != 0) {
+              if (hist_was_set == 1) {
+                polylineHistoric2.setLatLngs(Cord2);
+                startpointHist2.setLatLng(Cord2[0]);
+                finalpointHist2.setLatLng(Cord2[Cord2.length - 1]);
+                mymap.fitBounds(Cord2);
+              } else {
+                startPolyline(Cord2);
+                startpointHist2 = L.marker(Cord2[0]).addTo(mymap);
+                finalpointHist2 = L.circleMarker(Cord2[Cord2.length - 1], { color: '#FFB242' }).addTo(mymap);
+                polylineHistoric2.on('click',(e)=>{
+                  let info = "Ubicación: " + e.latlng.toString();
+                  L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap); 
+                })
+              }
+            } else {
+              console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
             }
           } else {
-            console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
+            if (Cord1.length != 0) {
+              if (hist_was_set == 1) {
+                polylineHistoric1.setLatLngs(Cord1);
+                startpointHist1.setLatLng(Cord1[0]);
+                finalpointHist1.setLatLng(Cord1[Cord1.length - 1]);
+                mymap.fitBounds(Cord1);
+              } else {
+                startPolyline(Cord1);
+                startpointHist1 = L.marker(Cord1[0]).addTo(mymap);
+                finalpointHist1 = L.circleMarker(Cord1[Cord1.length - 1], { color: '#FFB242' }).addTo(mymap);
+                polylineHistoric1.on('click',(e)=>{
+                  let info = "Ubicación: " + e.latlng.toString();
+                  L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap); 
+                })
+              }
+            } else {
+              console.log('El intervalo de tiempo para el carro de ID: 1, o el Usuario ingresado no es válido.');
+            }
+            if (Cord2.length != 0) {
+              if (hist_was_set == 1) {
+                polylineHistoric2.setLatLngs(Cord2);
+                startpointHist2.setLatLng(Cord2[0]);
+                finalpointHist2.setLatLng(Cord2[Cord2.length - 1]);
+                mymap.fitBounds(Cord2);
+              } else {
+                startPolyline(Cord2);
+                startpointHist2 = L.marker(Cord2[0]).addTo(mymap);
+                finalpointHist2 = L.circleMarker(Cord2[Cord2.length - 1], { color: '#FFB242' }).addTo(mymap);
+                polylineHistoric2.on('click',(e)=>{
+                  let info = "Ubicación: " + e.latlng.toString();
+                  L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap); 
+                })
+              }
+            } else {
+              console.log('El intervalo de tiempo para el carro de ID: 2, o el Usuario ingresado no es válido.');
+            }
           }
         }, 1000)
       }
@@ -477,101 +531,69 @@
       await fetch('/historic', options);
     }
 
-
-    //Función de consulta de histórico actual
-    function changehistact() {
-      valor = document.getElementById('switch3').checked;
-      if (valor) {
-        enviarhistact();
-        if ((CCoordinates[0] !== 10.9847191) && (CCoordinates[1] !== -74.811302) && currentpointHist_was_created==0) {
-              currentpointHist = L.marker(CCoordinates).addTo(mymap); //Crea marcador cuando sea necesario
-              currentpointHist_was_created=1;
-              mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
-        } 
-        else{
-
-           if ((CCoordinates[0] !== 10.9847191) && (CCoordinates[1] !== -74.811302) && currentpointHist_was_created==1) {
-              currentpointHist.setLatLng(CCoordinates); //Cambia las coordenadas del marcador
-              mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]));  //Centra hacia la posición actual consulta.
-          }
-        }
-         
-      }
-    }
-    //Función de coneión Frontend-Backend del histórico actual
-    async function enviarhistact() {
-      dataactual = document.getElementById('CHist').value;
-      dataactual = new Date(dataactual).valueOf();
-      dataactual = dataactual.toString();
-      console.log('dataactual= ' + dataactual);
-      const info = { dataactual };
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(info)
-      };
-      await fetch('/historicact', options);
-    }
-
-
     //Serie de funciones para el mapa
     function MapsetUbication() {
       mymap.setView(new L.LatLng(lat, long));
     }
-    function MapAutoCenter() {
-      if (document.getElementById('switch').checked) {
-        if (startpoint_was_set == 1) {
-          mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
+    function setMarker(ltlg) {
+      if (ltlg[0] != null && isNaN(ltlg[0]) == false && ltlg[1] != null && isNaN(ltlg[1]) == false) {
+        circle_marker.setLatLng(new L.LatLng(ltlg[0], ltlg[1]));
+        circle.setLatLng(new L.LatLng(ltlg[0], ltlg[1]));
+      }
+    }
+    function setMarkers(data) {
+        data.BMS.forEach(function (obj) {
+        if (!markers.hasOwnProperty(obj.id)) {
+            markers[obj.id] = new L.Marker([obj.lat, obj.long]).addTo(map);
+            markers[obj.id].previousLatLngs = [];
+        } else {
+            markers[obj.id].previousLatLngs.push(markers[obj.id].getLatLng());
+            markers[obj.id].setLatLng([obj.lat, obj.long]);
         }
+        });
+    }
+    function startPolyline(ltlgp) {
+      if (isNaN(ltlgp) == false) {
+        if (document.getElementById('IDtxtID').innerHTML == 1) {
+          if (Cord1.length != 0) {
+            polylineHistoric1 = L.polyline(Cord1, { color: 'red' }).addTo(mymap);
+            mymap.fitBounds(Cord1);
+            hist_was_set = 1;
+          } else {
+            console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
+          }
+      } else if (document.getElementById('IDtxtID').innerHTML == 2) {
+          if (Cord2.length != 0) {
+            polylineHistoric2 = L.polyline(Cord2, { color: 'red' }).addTo(mymap);
+            mymap.fitBounds(Cord2);
+            hist_was_set = 1;
+          } else {
+            console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
+          }
       } else {
-        mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
-      }
-    }
-    function setMarker() {
-      if (lat != null && isNaN(lat) == false && long != null && isNaN(long) == false) {
-        circle_marker.setLatLng(new L.LatLng(lat, long));
-        circle.setLatLng(new L.LatLng(lat, long));
-      }
-    }
-    function Markerlabel() {
-      circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
-    }
-    function createStartPoint() {
-      startpoint = L.marker([lat, long]).addTo(mymap);
-    }
-    function startPolyline() {
-      if (isNaN(latlngs) == false) {
-        polyline = L.polyline(latlngs).addTo(mymap);
-        polyline_set = 1;
-      }
-    }
-    function startPolyline2() {
-      if (Coordinates.length != 0) {
-        polylineHistoric = L.polyline(Coordinates, { color: 'red' }).addTo(mymap);
-        mymap.fitBounds(Coordinates);
-        hist_was_set = 1;
-      } else {
-        console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
-      }
-    }
-    function addPolyline() {
-      if ((polyline_set == 1)) {
-        polyline.setLatLngs(latlngs)
-        if (!polyline.isEmpty() && polyline.getLatLngs().length == 1 && startpoint_was_set == 0) {
-          setTimeout(createStartPoint(), 1000)
-          startpoint_was_set = 1;
+          if (Cord1.length != 0) {
+            polylineHistoric1 = L.polyline(Cord1, { color: 'red' }).addTo(mymap);
+            mymap.fitBounds(Cord1);
+            hist_was_set = 1;
+          } else {
+            console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
+          }
+          if (Cord2.length != 0) {
+            polylineHistoric2 = L.polyline(Cord2, { color: 'red' }).addTo(mymap);
+            mymap.fitBounds(Cord2);
+            hist_was_set = 1;
+          } else {
+            console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
+          }
         }
       }
     }
-    function clearpoly() {
-      if (polyline_set == 1) {
-        polyline.removeFrom(mymap)
-      }
+    function clearpoly1() {
+      polylineHistoric1.removeFrom(mymap)
+      hist_was_set = 0;
     }
     function clearpoly2() {
-      polylineHistoric.removeFrom(mymap)
+      polylineHistoric2.removeFrom(mymap)
       hist_was_set = 0;
     }
     let mymap = L.map('mapid').setView([lat, long], 18);
@@ -584,83 +606,117 @@
     }).addTo(mymap);
     //Recepción de información del Backend
     io().on('timestamp', function (dataTS) {
+      User = dataTS.DataUsuario;
       Coordinates = dataTS.DataTimeStamp;
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
     });
     //Funciones de los switches al trazar histórico
+    for (var i = 0; i < User.length; i++) {
+      if (User[i] = "1") {
+        Cord1.push(Coordinates[i]);
+      } else if (User[i] = "2") {
+        Cord2.push(Coordinates[i]);
+      }
+    }
     function condicional2() {
-      if (document.getElementById('switch2').disabled != true) {
         valor = document.getElementById('switch2').checked;
         if (valor) {
-          if (hist_was_set == 1) {
-            clearpoly2();
-            startpointHist.removeFrom(mymap);
-            finalpointHist.removeFrom(mymap);
+          if (document.getElementById('IDtxtID').innerHTML == 1) {
+            if (hist_was_set == 1) {
+              clearpoly1();
+              startpointHist1.removeFrom(mymap);
+              finalpointHist1.removeFrom(mymap);
+            }
+            setMarker(Cord1[Cord1.length-1]);
+            circle_marker.setRadius(10);
+            circle.setRadius(50);
+            circle_marker.openPopup();
+          } else if (document.getElementById('IDtxtID').innerHTML == 2) {
+            if (hist_was_set == 1) {
+              clearpoly2();
+              startpointHist2.removeFrom(mymap);
+              finalpointHist2.removeFrom(mymap);
+            }
+            setMarker(Cord2[Cord2.length-1]);
+            circle_marker.setRadius(10);
+            circle.setRadius(50);
+            circle_marker.openPopup();
+          } else {
+            if (hist_was_set == 1) {
+              clearpoly1();
+              startpointHist1.removeFrom(mymap);
+              finalpointHist1.removeFrom(mymap);
+              clearpoly2();
+              startpointHist2.removeFrom(mymap);
+              finalpointHist2.removeFrom(mymap);
+            }
+            setMarker(Cord1[Cord1.length-1]);
+            setMarker(Cord2[Cord2.length-1]);
+            circle_marker.setRadius(10);
+            circle.setRadius(50);
+            circle_marker.openPopup();
           }
-          setMarker();
-          circle_marker.setRadius(10);
-          circle.setRadius(50);
-          circle_marker.openPopup();
-          document.getElementById('switch3').disabled = false;
         } else {
-          document.getElementById('switch3').disabled = true;
           enviarhist();
           setTimeout(function () {
-            startPolyline2();
-            circle_marker.setRadius(0);
-            circle.setRadius(0);
-            if (Coordinates.length != 0) {
-              startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).addTo(mymap);
-              finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
-              finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
-              startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
-              polylineHistoric.on('click',(e)=>{
-                let info = "Ubicación: " + e.latlng.toString();
-                L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
-              })
+            if (document.getElementById('IDtxtID').innerHTML == 1) {
+              startPolyline(Cord1);
+              circle_marker.setRadius(0);
+              circle.setRadius(0);
+              if (Cord1.length != 0) {
+                startpointHist1 = L.marker(Cord1[0], {icon: greenIcon }).addTo(mymap);
+                finalpointHist1 = L.marker(Cord1[Cord1.length - 1]).addTo(mymap);
+                finalpointHist1.bindPopup("Fin", { autoPan: false }).openPopup()
+                startpointHist1.bindPopup("Inicio", { autoPan: false }).openPopup()
+                polylineHistoric1.on('click',(e)=>{
+                  let info = "Ubicación: " + e.latlng.toString();
+                  L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
+                })
+              }
+            } else if (document.getElementById('IDtxtID').innerHTML == 2) {
+              startPolyline(Cord2);
+              circle_marker.setRadius(0);
+              circle.setRadius(0);
+              if (Cord2.length != 0) {
+                startpointHist2 = L.marker(Cord2[0], {icon: greenIcon }).addTo(mymap);
+                finalpointHist2 = L.marker(Cord2[Cord2.length - 1]).addTo(mymap);
+                finalpointHist2.bindPopup("Fin", { autoPan: false }).openPopup()
+                startpointHist2.bindPopup("Inicio", { autoPan: false }).openPopup()
+                polylineHistoric2.on('click',(e)=>{
+                  let info = "Ubicación: " + e.latlng.toString();
+                  L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
+                })
+              }
+            } else {
+              startPolyline(Cord1);
+              startPolyline(Cord2);
+              circle_marker.setRadius(0);
+              circle.setRadius(0);
+              if (Cord1.length != 0) {
+                startpointHist1 = L.marker(Cord1[0], {icon: greenIcon }).addTo(mymap);
+                finalpointHist1 = L.marker(Cord1[Cord1.length - 1]).addTo(mymap);
+                finalpointHist1.bindPopup("Fin", { autoPan: false }).openPopup()
+                startpointHist1.bindPopup("Inicio", { autoPan: false }).openPopup()
+                polylineHistoric1.on('click',(e)=>{
+                  let info = "Ubicación: " + e.latlng.toString();
+                  L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
+                })
+              }
+              if (Cord2.length != 0) {
+                startpointHist2 = L.marker(Cord2[0], {icon: greenIcon }).addTo(mymap);
+                finalpointHist2 = L.marker(Cord2[Cord2.length - 1]).addTo(mymap);
+                finalpointHist2.bindPopup("Fin", { autoPan: false }).openPopup()
+                startpointHist2.bindPopup("Inicio", { autoPan: false }).openPopup()
+                polylineHistoric2.on('click',(e)=>{
+                  let info = "Ubicación: " + e.latlng.toString();
+                  L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
+                })
+              }
             }
           }, 500)
         }
-      }
     }
-    io().on('ctimestamp', function (dataCTS) {
-      CCoordinates = dataCTS.CurrentDataTimeStamp;
-      console.log('io-on-current timestamp Coordinates= ' + CCoordinates)
-    });
-    function condicional3() {
-      if (document.getElementById('switch3').disabled != true) {
-        valor = document.getElementById('switch3').checked;
-        if (valor) {
-          if (hist_was_set == 1) {
-            clearpoly2();
-            startpointHist.removeFrom(mymap);
-            finalpointHist.removeFrom(mymap);
-          }
-          setMarker();
-          circle_marker.setRadius(10);
-          circle.setRadius(50);
-          circle_marker.openPopup();
-          if (currentpointHist_was_created==1){
-            currentpointHist.removeFrom(mymap);
-            currentpointHist_was_created=0;
-          }
-          document.getElementById('switch2').disabled = false;
-        } else {
-          document.getElementById('switch2').disabled = true;
-          enviarhistact();
-          setTimeout(function () {
-            if ((CCoordinates[0] !== 10.9847191) && (CCoordinates[1] !== -74.811302) && currentpointHist_was_created==0) {
-              currentpointHist = L.marker(CCoordinates).addTo(mymap);
-              currentpointHist_was_created=1;
-              mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
-            } 
-            circle_marker.closePopup();
-            circle_marker.setRadius(0);
-            circle.setRadius(0);
-          }, 500)
-        }
-      }
-    }
+
   </script>
 </body>
 
