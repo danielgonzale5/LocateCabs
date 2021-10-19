@@ -142,7 +142,7 @@ setInterval(function () {
       });
     });
   });
-}, 500);
+}, 1);
 
 app.use(express.json({ limit: '500mb' }));
 
