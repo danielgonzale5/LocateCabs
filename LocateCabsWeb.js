@@ -180,8 +180,7 @@ app.post('/historic', function (req, res) {
 });
 
 app.post('/historicact', function (req, res) {
-  console.log("Actual Historic sended")
-  console.log(req.body);
+
   var HisDatact = req.body;
   var TSact = HisDatact.dataactual.toString();
   

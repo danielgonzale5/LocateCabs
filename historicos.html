@@ -513,10 +513,6 @@
     }
 
 
-
-
-
-
     //Serie de funciones para el mapa
     function MapsetUbication() {
       mymap.setView(new L.LatLng(lat, long));
@@ -588,7 +584,7 @@
     //Recepción de información del Backend
     io().on('timestamp', function (dataTS) {
       Coordinates = dataTS.DataTimeStamp;
-      console.log('io-on-timestamp Coordinates= ' + Coordinates)
+      
     });
 
 
