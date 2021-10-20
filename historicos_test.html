@@ -743,10 +743,10 @@
     }
     function changepoly() {
       var polypos = document.getElementById('SlidePoly').value;
-      if (document.getElementById('IDtxtID').innerHTML == 1) {
+      if (document.getElementById('IDtxtID').innerHTML == "1") {
         let infocp = "Ubicación: " + Cord1[polypos].toString();
         L.popup().setLatLng(Cord1[polypos]).setContent(infocp).openOn(mymap); 
-      } else if (document.getElementById('IDtxtID').innerHTML == 2){
+      } else if (document.getElementById('IDtxtID').innerHTML == "2"){
         let infocp = "Ubicación: " + Cord2[polypos].toString();
         L.popup().setLatLng(Cord2[polypos]).setContent(infocp).openOn(mymap); 
       } else {
