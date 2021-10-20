@@ -521,13 +521,17 @@
         } else if (document.getElementById('IDtxtID').value == "2") {
           polyline2 = L.polyline(ltlgp).addTo(mymap);
           polyline_set = 1;
-        } else {
-          polyline1 = L.polyline(ltlgp).addTo(mymap);
-          polyline2 = L.polyline(ltlgp).addTo(mymap);
-          polyline_set = 1;
         }
       }
     }
+    function start2Polyline(ltlgp1, ltlgp2) {
+      if (isNaN(ltlgp1) == false && isNaN(ltlgp2) == false) {
+        polyline1 = L.polyline(ltlgp1).addTo(mymap);
+        polyline2 = L.polyline(ltlgp2).addTo(mymap);
+        polyline_set = 1;
+      }
+    }
+
     function addPolyline(ltlgap) {
       if ((polyline_set == 1)) {
         if (document.getElementById('IDtxtID').value == "1") {
@@ -542,17 +546,20 @@
             setTimeout(createStartPoint2(ltlgap[0]), 1000)
             startpoint_was_set = 1;
           }
-        } else {
-          polyline1.setLatLngs(ltlgap)
-          if (!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0) {
-            setTimeout(createStartPoint1(ltlgap[0]), 1000)
-            startpoint_was_set = 1;
-          }
-          polyline2.setLatLngs(ltlgap)
-          if (!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0) {
-            setTimeout(createStartPoint2(ltlgap[0]), 1000)
-            startpoint_was_set = 1;
-          }
+        }
+      }
+    }
+    function add2Polyline(ltlgap1, ltlgap2) {
+      if ((polyline_set == 1)) {
+        polyline1.setLatLngs(ltlgap1)
+        if (!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0) {
+          setTimeout(createStartPoint1(ltlgap1[0]), 1000)
+          startpoint_was_set = 1;
+        }
+        polyline2.setLatLngs(ltlgap2)
+        if (!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0) {
+          setTimeout(createStartPoint2(ltlgap2[0]), 1000)
+          startpoint_was_set = 1;
         }
       }
     }
@@ -668,7 +675,7 @@
               }
               startpoint_was_set = 0;
             }
-          }, 1000)
+          }, 100)
         }
         else {
           if (document.getElementById('IDtxtID').value == "1") {
@@ -691,12 +698,10 @@
             console.log('latlngs1=' + latlngs1.length)
             console.log('latlngs2=' + latlngs2.length)
             setTimeout(function () {
-              startPolyline(latlngs1);
-              startPolyline(latlngs2);
+              start2Polyline(latlngs1, latlngs2);
             }, 1000);
             setInterval(function () {
-              addPolyline(latlngs1);
-              addPolyline(latlngs2);
+              add2Polyline(latlngs1, latlngs2);
             }, 1000);
           }
         }
