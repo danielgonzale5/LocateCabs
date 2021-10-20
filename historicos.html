@@ -463,7 +463,8 @@
       datafin = new Date(datafin).valueOf();
       datainicio = datainicio.toString();
       datafin = datafin.toString();
-
+      console.log('datainicio= ' + datainicio);
+      console.log('datafina= ' + datafin);
       const info = { datainicio, datafin };
       const options = {
         method: 'POST',
@@ -499,7 +500,7 @@
       dataactual = document.getElementById('CHist').value;
       dataactual = new Date(dataactual).valueOf();
       dataactual = dataactual.toString();
-     
+      console.log('dataactual= ' + dataactual);
       const info = { dataactual };
       const options = {
         method: 'POST',
@@ -583,7 +584,9 @@
     //Recepción de información del Backend
     io().on('timestamp', function (dataTS) {
       Coordinates = dataTS.DataTimeStamp;
-      
+      tiempo = dataTS.DatoTiempo;
+      console.log('prueba= ' + tiempo)
+      console.log('io-on-timestamp Coordinates= ' + Coordinates)
     });
 
 
@@ -623,7 +626,6 @@
         }
       }
     }
-    //hello
     io().on('ctimestamp', function (dataCTS) {
       CCoordinates = dataCTS.CurrentDataTimeStamp;
       console.log('io-on-current timestamp Coordinates= ' + CCoordinates)

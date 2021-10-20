@@ -164,13 +164,16 @@ app.post('/historic', function (req, res) {
       CoordinatesArrTemp = [ConverArray[j][2], ConverArray[j][3]];
       CoordinatesArr.push(CoordinatesArrTemp);
     }
+    var DatoTiempo = ConverArray
     var DataTimeStamp = CoordinatesArr
     io.emit('timestamp', {
       DataTimeStamp: DataTimeStamp,
+      DatoTiempo : DatoTiempo 
     });
     io.on('connection', function (socket) {
       socket.emit('timestamp', {
-        DataTimeStamp: DataTimeStamp
+        DataTimeStamp: DataTimeStamp,
+        DatoTiempo : DatoTiempo
       });
     });
   });
