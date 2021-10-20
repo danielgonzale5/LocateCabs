@@ -658,9 +658,9 @@
             clearpoly();
             circle_marker.openPopup();
             if (startpoint_was_set == 1) {
-              if (document.getElementById('IDtxtID').value == 1) {
+              if (document.getElementById('IDtxtID').innerHTML == "1") {
                 startpoint1.removeFrom(mymap);
-              } else if (document.getElementById('IDtxtID').value == 2) {
+              } else if (document.getElementById('IDtxtID').innerHTML == "2") {
                 startpoint2.removeFrom(mymap);
               } else {
                 startpoint1.removeFrom(mymap);
@@ -671,7 +671,7 @@
           }, 100)
         }
         else {
-          if (document.getElementById('IDtxtID').value == 1) {
+          if (document.getElementById('IDtxtID').innerHTML == "1") {
             console.log('latlngs1=' + latlngs1.length)
             setTimeout(function () {
               startPolyline(latlngs1);
@@ -679,7 +679,7 @@
             setInterval(function () {
               addPolyline(latlngs1);
             }, 1000);
-          } else if (document.getElementById('IDtxtID').value == 2) {
+          } else if (document.getElementById('IDtxtID').innerHTML == "2") {
             console.log('latlngs2=' + latlngs2.length)
             setTimeout(function () {
               startPolyline(latlngs2);
