@@ -178,6 +178,7 @@ app.post('/historic', function (req, res) {
     status: 'received'
   });
 });
+
 app.post('/historicact', function (req, res) {
   console.log("Actual Historic sended")
   console.log(req.body);
@@ -210,6 +211,7 @@ app.post('/historicact', function (req, res) {
     io.emit('ctimestamp', {
       CurrentDataTimeStamp: CurrentDataTimeStamp,
     });
+
     io.on('connection', function (socket) {
       socket.emit('ctimestamp', {
         CurrentDataTimeStamp: CurrentDataTimeStamp

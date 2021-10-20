@@ -491,6 +491,8 @@
         circle.setLatLng(new L.LatLng(lat, long));
       }
     }
+
+    
     function Markerlabel() {
       circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
     }
@@ -587,6 +589,7 @@
         }
       });
     });
+
     //Funciones de los switches al trazar linea en vivo
     function condicional() {
         valor = document.getElementById('switch').checked;
