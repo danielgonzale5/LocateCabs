@@ -613,29 +613,19 @@
           }
 
         if (usuario!=old_user){
-
             var [pos, isid]= containsID(Taxis, usuario) //Verifica si el array Taxis contiene el atributo id: "usuario"
-
-
             if (isid){
-
                 Taxis[pos].lat = data.DataLat;
                 Taxis[pos].long = data.DataLong;
-
             }else{
-
                 Taxis.push(new Object({
                     id: usuario,
                     lat: lat,
                     long: long
                 }));
-
                 console.log('Se creó el objeto con la ID: "'+usuario+'"');
-
             }
-
             setInterval(setMarkers(Taxis), 1000);;
-
         }
         
 
@@ -666,7 +656,6 @@
         if (valor) {
           setTimeout(function () {
             clearpoly();
-            circle.setRadius(50);
             circle_marker.openPopup();
             if (startpoint_was_set == 1) {
               if (document.getElementById('IDtxtID').value == "1") {
@@ -685,36 +674,29 @@
           if (document.getElementById('IDtxtID').value == "1") {
             console.log('latlngs1=' + latlngs1.length)
             setTimeout(function () {
-              circle.setRadius(0);
               startPolyline(latlngs1);
             }, 1000);
             setInterval(function () {
-              setMarker(latlngs1[latlngs1.length-1]);
-              addPolyline(latlngs1[latlngs1.length-1]);
+              addPolyline(latlngs1);
             }, 1000);
           } else if (document.getElementById('IDtxtID').value == "2") {
             console.log('latlngs2=' + latlngs2.length)
             setTimeout(function () {
-              circle.setRadius(0);
-              startPolyline(latlngs2[latlngs2.length-1]);
+              startPolyline(latlngs2);
             }, 1000);
             setInterval(function () {
-              setMarker(latlngs2[latlngs2.length-1]);
-              addPolyline(latlngs2[latlngs2.length-1]);
+              addPolyline(latlngs2);
             }, 1000);
           } else {
             console.log('latlngs1=' + latlngs1.length)
             console.log('latlngs2=' + latlngs2.length)
             setTimeout(function () {
-              circle.setRadius(0);
-              startPolyline(latlngs1[latlngs1.length-1]);
-              startPolyline(latlngs2[latlngs2.length-1]);
+              startPolyline(latlngs1);
+              startPolyline(latlngs2);
             }, 1000);
             setInterval(function () {
-              setMarker(latlngs1[latlngs1.length-1]);
-              setMarker(latlngs2[latlngs2.length-1]);
-              addPolyline(latlngs1[latlngs1.length-1]);
-              addPolyline(latlngs2[latlngs2.length-1]);
+              addPolyline(latlngs1);
+              addPolyline(latlngs2);
             }, 1000);
           }
         }
