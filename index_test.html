@@ -376,7 +376,7 @@
         <div></div>
         <h2 style="text-align: center; margin-top: 15px;">Inserte ID específica</h2>
         <h4 style="text-align: center; margin-top: 15px;">"-" para observar todos los taxis</h4>
-        <input style="text-align: center; margin-top: 15px;" type="text" id="IDtxtID" name="IDtxt">
+        <input style="text-align: center; margin-top: 15px;" type="text" id="IDtxtID" name="IDtxt" value="-">
         <h2 style="text-align: center; margin-top: 15px;">Trazar recorrido</h2>
         <div class="switch-container;" style="text-align: center; margin-top: 5px;">
           <input type="Checkbox" id="switch">
@@ -598,6 +598,20 @@
         lat = data.DataLat;
         long = data.DataLong;
 
+        valor = document.getElementById('switch').checked;
+          if (valor) {
+              if (usuario == "1") {
+                  setInterval(latlngsTemp1 = [lat, long], 1000);
+                  setInterval(latlngs1.push(latlngsTemp1), 1000);
+              } else if (usuario == "2") {
+                  setInterval(latlngsTemp2 = [lat, long], 1000);
+                  setInterval(latlngs2.push(latlngsTemp2), 1000);
+              }
+          } else {
+            latlngs1 = [];
+            latlngs2 = [];
+          }
+
         if (usuario!=old_user){
 
             var [pos, isid]= containsID(Taxis, usuario) //Verifica si el array Taxis contiene el atributo id: "usuario"
@@ -621,19 +635,6 @@
             }
 
             setInterval(setMarkers(Taxis), 1000);;
-            valor = document.getElementById('switch').checked;
-            if (valor) {
-                if (usuario == "1") {
-                    setInterval(latlngsTemp1 = [lat, long], 1000);
-                    setInterval(latlngs1.push(latlngsTemp1), 1000);
-                } else if (usuario == "2") {
-                    setInterval(latlngsTemp2 = [lat, long], 1000);
-                    setInterval(latlngs2.push(latlngsTemp2), 1000);
-                }
-            } else {
-              latlngs1 = [];
-              latlngs2 = [];
-            }
 
         }
         
@@ -668,9 +669,9 @@
             circle.setRadius(50);
             circle_marker.openPopup();
             if (startpoint_was_set == 1) {
-              if (document.getElementById('IDtxtID').innerHTML == 1) {
+              if (document.getElementById('IDtxtID').value == "1") {
                 startpoint1.removeFrom(mymap);
-              } else if (document.getElementById('IDtxtID').innerHTML == 2) {
+              } else if (document.getElementById('IDtxtID').value == "2") {
                 startpoint2.removeFrom(mymap);
               } else {
                 startpoint1.removeFrom(mymap);
@@ -681,7 +682,7 @@
           }, 100)
         }
         else {
-          if (document.getElementById('IDtxtID').innerHTML == 1) {
+          if (document.getElementById('IDtxtID').value == "1") {
             console.log('latlngs1=' + latlngs1.length)
             setTimeout(function () {
               circle.setRadius(0);
@@ -691,7 +692,7 @@
               setMarker(latlngs1[latlngs1.length-1]);
               addPolyline(latlngs1[latlngs1.length-1]);
             }, 1000);
-          } else if (document.getElementById('IDtxtID').innerHTML == 2) {
+          } else if (document.getElementById('IDtxtID').value == "2") {
             console.log('latlngs2=' + latlngs2.length)
             setTimeout(function () {
               circle.setRadius(0);
