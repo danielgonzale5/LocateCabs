@@ -350,7 +350,7 @@
         <a href="/" class="logo"><img src="/logo.png" id="logoimg" /></a>
         <ul>
             <li><a class="menulink" style="background: rgb(19, 19, 19); color: rgb(255, 255, 255); border-bottom:4px solid rgb(0, 130, 230);">Home</a></li>
-            <li><a class="menulink" href="../historicos/">Históricos</a></li>
+            <li><a class="menulink" href="../historicostest/">Históricos</a></li>
         </ul>
       </nav>
     </div>
@@ -404,7 +404,6 @@
     //Declaración de Variables Globales
     let lat = 10.984719;
     let long = -74.811302;
-    var markers = {};
     var polyline1;
     var polyline2;
     var polyline_set = 0;
@@ -413,6 +412,8 @@
     var startpoint_was_set = 0;
     var hist_was_set = 0;
     var  myFGMarker = L.FeatureGroup;
+    var markers = new Array();
+    var Taxis= new Array(); //Aquí se almacenará cada Taxi como objeto...
     let UsuArr = [];
     let UsuArrT = [];
     let latlngs = [];
@@ -421,6 +422,21 @@
     let latlngsTemp = [];
     let latlngsTemp1 = [];
     let latlngsTemp2 = [];
+
+
+    function containsID(array, attribute){ //Función para buscar atributo ID dentro de un array.
+
+        var found = false;
+        for(var i = 0; i < array.length; i++) {
+            if (array[i].id == attribute) {
+                found = true;
+                var pos=i;
+                break;
+            }
+        }
+        return [pos,found];
+
+    }
 
     //Serie de funciones para el mapa
     function MapsetUbication() {
@@ -463,16 +479,30 @@
         circle.setLatLng(new L.LatLng(ltlg[0], ltlg[1]));
       }
     }
-    function setMarkers(data) {
-        data.BMS.forEach(function (obj) {
-        if (!markers.hasOwnProperty(obj.id)) {
-            markers[obj.id] = new L.Marker([obj.lat, obj.long]).addTo(map);
-            markers[obj.id].previousLatLngs = [];
-        } else {
-            markers[obj.id].previousLatLngs.push(markers[obj.id].getLatLng());
-            markers[obj.id].setLatLng([obj.lat, obj.long]);
-        }
+    function setMarkers(array) {
+        array.forEach(function (obj) {
+
+            var [pos, isid]= containsID(markers, obj.id) //Verifica si el array Markers contiene el atributo id: "usuario" del objeto del array
+
+            if (isid){
+
+                markers[pos].mark.setLatLng(new L.LatLng(obj.lat, obj.long));
+                console.log('Se actualizó el marcador para la ID: "'+ markers[pos].id +'"');
+                console.log('Lat y Long de la ID: "'+ obj.lat +','+ obj.long);
+
+            }else{
+
+                markers.push(new Object({
+                    id: obj.id,
+                    mark: new L.Marker([obj.lat, obj.long]).addTo(mymap)
+                }));
+
+                console.log('Se creó el marcador para la ID: "'+ usuario +'"');
+
+            }
+
         });
+
     }
     function Markerlabel(idus) {
       circle_marker.bindPopup(idus, { autoPan: false }).openPopup()
@@ -567,80 +597,48 @@
         usuario = data.DataUsu;
         lat = data.DataLat;
         long = data.DataLong;
-        var ObjLatLng = {
-        "BMS":[{
-            "id": usuario,
-            "lat": lat,
-            "long": long
-        }]
-        }
-        setInterval(setMarkers(ObjLatLng), 1000);;
-        valor = document.getElementById('switch').checked;
-        if (valor) {
-            if (usuario == "1") {
-                setInterval(latlngsTemp1 = [lat, long], 1000);
-                setInterval(latlngs1.push(latlngsTemp1), 1000);
-            } else if (usuario == "2") {
-                setInterval(latlngsTemp2 = [lat, long], 1000);
-                setInterval(latlngs2.push(latlngsTemp2), 1000);
+
+        if (usuario!=old_user){
+
+            var [pos, isid]= containsID(Taxis, usuario) //Verifica si el array Taxis contiene el atributo id: "usuario"
+
+
+            if (isid){
+
+                Taxis[pos].lat = data.DataLat;
+                Taxis[pos].long = data.DataLong;
+
+            }else{
+
+                Taxis.push(new Object({
+                    id: usuario,
+                    lat: lat,
+                    long: long
+                }));
+
+                console.log('Se creó el objeto con la ID: "'+usuario+'"');
+
             }
-        } else {
-          latlngs1 = [];
-          latlngs2 = [];
+
+            setInterval(setMarkers(Taxis), 1000);;
+            valor = document.getElementById('switch').checked;
+            if (valor) {
+                if (usuario == "1") {
+                    setInterval(latlngsTemp1 = [lat, long], 1000);
+                    setInterval(latlngs1.push(latlngsTemp1), 1000);
+                } else if (usuario == "2") {
+                    setInterval(latlngsTemp2 = [lat, long], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                }
+            } else {
+              latlngs1 = [];
+              latlngs2 = [];
+            }
+
         }
-        //if (valor) {
-        //  setInterval(latlngsTemp = [lat, long], 1000);
-        //  setInterval(latlngs.push(latlngsTemp), 1000);
-        //} else {
-        //  latlngs = [];
-        //}
         
-        if (document.getElementById('IDtxtID').innerHTML == 1) {
-          setTimeout(function () {
-            MapsetUbication();
-            Markerlabel("1");
-            if (valor) {
-              latlngs1 = [];
-              if (startpoint_was_set == 1) {
-                startpoint1.removeFrom(mymap);
-                startpoint_was_set = 0;
-              }
-              clearpoly();
-              startPolyline(latlngs1[latlngs1.length-1]);
-            }
-          }, 1000);
-        } else if (document.getElementById('IDtxtID').innerHTML == 2) {
-          setTimeout(function () {
-            MapsetUbication();
-            Markerlabel("2");
-            if (valor) {
-              latlngs2 = [];
-              if (startpoint_was_set == 1) {
-                startpoint2.removeFrom(mymap);
-                startpoint_was_set = 0;
-              }
-              clearpoly();
-              startPolyline(latlngs2[latlngs2.length-1]);
-            }
-          }, 1000);
-        } else {
-            setTimeout(function () {
-              //Aca hay que hacer un layer que agrupe los marcadores para que de ese layer extraiga los bounds y pueda establecerse un fitbounds del grupo
-            MapsetUbication2();
-            if (valor) {
-              latlngs1 = [];
-              latlngs2 = [];
-              if (startpoint_was_set == 1) {
-                startpoint1.removeFrom(mymap);
-                startpoint2.removeFrom(mymap);
-                startpoint_was_set = 0;
-              }
-              clearpoly();
-              startPolyline(latlngs1[latlngs1.length-1]);
-              startPolyline(latlngs2[latlngs2.length-1]);
-            }
-          }, 1000);
-        } 
+
+       
 
         //if (old_user != usuario) {
         //  setTimeout(function () {
@@ -687,7 +685,7 @@
             console.log('latlngs1=' + latlngs1.length)
             setTimeout(function () {
               circle.setRadius(0);
-              startPolyline(latlngs1[latlngs1.length-1]);
+              startPolyline(latlngs1);
             }, 1000);
             setInterval(function () {
               setMarker(latlngs1[latlngs1.length-1]);
