@@ -463,8 +463,7 @@
       datafin = new Date(datafin).valueOf();
       datainicio = datainicio.toString();
       datafin = datafin.toString();
-      console.log('datainicio= ' + datainicio);
-      console.log('datafina= ' + datafin);
+
       const info = { datainicio, datafin };
       const options = {
         method: 'POST',
@@ -500,7 +499,7 @@
       dataactual = document.getElementById('CHist').value;
       dataactual = new Date(dataactual).valueOf();
       dataactual = dataactual.toString();
-      console.log('dataactual= ' + dataactual);
+     
       const info = { dataactual };
       const options = {
         method: 'POST',
