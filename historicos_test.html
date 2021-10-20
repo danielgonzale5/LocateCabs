@@ -624,7 +624,7 @@
     function condicional2() {
         valor = document.getElementById('switch2').checked;
         if (valor) {
-          if (document.getElementById('IDtxtID').innerHTML == 1) {
+          if (document.getElementById('IDtxtID').value == "1") {
             if (hist_was_set == 1) {
               clearpoly1();
               startpointHist1.removeFrom(mymap);
@@ -634,7 +634,7 @@
             circle_marker.setRadius(10);
             circle.setRadius(50);
             circle_marker.openPopup();
-          } else if (document.getElementById('IDtxtID').innerHTML == 2) {
+          } else if (document.getElementById('IDtxtID').value == "2") {
             if (hist_was_set == 1) {
               clearpoly2();
               startpointHist2.removeFrom(mymap);
@@ -662,7 +662,7 @@
         } else {
           enviarhist();
           setTimeout(function () {
-            if (document.getElementById('IDtxtID').innerHTML == 1) {
+            if (document.getElementById('IDtxtID').value == "1") {
               startPolyline(Cord1);
               circle_marker.setRadius(0);
               circle.setRadius(0);
@@ -676,7 +676,7 @@
                   L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
                 })
               }
-            } else if (document.getElementById('IDtxtID').innerHTML == 2) {
+            } else if (document.getElementById('IDtxtID').value == "2") {
               startPolyline(Cord2);
               circle_marker.setRadius(0);
               circle.setRadius(0);
@@ -723,11 +723,11 @@
       var SlidePoly = document.getElementById("SlidePoly");
       var SlidePolyL = document.getElementById("SlidePolyL");
       if (document.getElementById('switch2').checked) {
-        if (document.getElementById('IDtxtID').innerHTML == "1") {
+        if (document.getElementById('IDtxtID').value == "1") {
           SlidePoly.style.display = "block";
           SlidePolyL.style.display = "block";
           SlidePoly.setAttribute("max",Cord1.length);
-        } else if (document.getElementById('IDtxtID').innerHTML == "2") {
+        } else if (document.getElementById('IDtxtID').value == "2") {
           SlidePoly.style.display = "block";
           SlidePolyL.style.display = "block";
           SlidePoly.setAttribute("max",Cord2.length);
@@ -743,10 +743,10 @@
     }
     function changepoly() {
       var polypos = document.getElementById('SlidePoly').value;
-      if (document.getElementById('IDtxtID').innerHTML == "1") {
+      if (document.getElementById('IDtxtID').value == "1") {
         let infocp = "Ubicación: " + Cord1[polypos].toString();
         L.popup().setLatLng(Cord1[polypos]).setContent(infocp).openOn(mymap); 
-      } else if (document.getElementById('IDtxtID').innerHTML == "2"){
+      } else if (document.getElementById('IDtxtID').value == "2"){
         let infocp = "Ubicación: " + Cord2[polypos].toString();
         L.popup().setLatLng(Cord2[polypos]).setContent(infocp).openOn(mymap); 
       } else {
