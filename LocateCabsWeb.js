@@ -184,23 +184,22 @@ app.post('/historicact', function (req, res) {
   console.log(req.body);
   var HisDatact = req.body;
   var TSact = HisDatact.dataactual.toString();
-  console.log(TSact)
+  
   var TSactant = parseInt(TSact)-100000;
-  console.log(TSactant)
+
   var TSactant = TSactant.toString();
-  console.log(TSactant)
+ 
   con.query("SELECT * FROM gps WHERE TimeStamp BETWEEN ('" + TSactant + "') AND ('" + TSact + "');", function (err, rows) {
     if (err) throw err;
     var HistDataact = JSON.parse(JSON.stringify(rows))
-    console.log(HistDataact)
     var DataHistact = Object.values(HistDataact)
     var ActConverArray = []
     var CCoordinatesArr = []
-    console.log(DataHistact)
+  
     for (var i = 0; i < DataHistact.length; i++) {
       ActConverArray.push(Object.values(DataHistact[i]))
     }
-    console.log(ActConverArray)
+   
     if (HistDataact == 0) {
       CCoordinatesArr=[10.9847191,-74.811302]
     } else {
@@ -215,6 +214,7 @@ app.post('/historicact', function (req, res) {
     io.on('connection', function (socket) {
       socket.emit('ctimestamp', {
         CurrentDataTimeStamp: CurrentDataTimeStamp
+
       });
     });
   });
