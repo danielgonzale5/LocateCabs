@@ -531,6 +531,10 @@
         if (valor) {
           setInterval(latlngsTemp1 = [lat1, long1], 1000);
           setInterval(latlngs1.push(latlngsTemp1), 1000);
+        } else {
+          latlngs1 = [];
+        }
+        if (valor) {
           if (document.getElementById('IDtxtID').value == "1") {
             if (latlngs1.length = 1) {
                 startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
@@ -542,8 +546,6 @@
                 startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
             }
           } 
-        } else {
-          latlngs1 = [];
         }
       });
       io().on('change2', function (data) {
@@ -569,6 +571,10 @@
         if (valor) {
           setInterval(latlngsTemp2 = [lat2, long2], 1000);
           setInterval(latlngs2.push(latlngsTemp2), 1000);
+        } else {
+          latlngs2 = [];
+        }
+        if (valor) {
           if (document.getElementById('IDtxtID').value == "1") {
             if (latlngs2.length = 1) {
 
@@ -582,8 +588,6 @@
                 startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
             }
           }
-        } else {
-          latlngs2 = [];
         }
         console.log(latlngs2)
       });
