@@ -422,9 +422,6 @@
     let Coordinates = [];
 
     //Serie de funciones para el mapa
-    function MapsetUbication() {
-      mymap.setView(new L.LatLng(lat, long));
-    }
     function MapAutoCenter() {
       if (document.getElementById('switch').checked) {
         if (startpoint_was_set == 1) {
@@ -435,10 +432,10 @@
       }
     }
     function setMarker1() {
-        point1 = L.marker([lat1, long2]).addTo(mymap);
+        point1 = L.marker([lat1, long1]).addTo(mymap);
     }
     function setMarker2() {
-        point2 = L.marker([lat1, long2]).addTo(mymap);
+        point2 = L.marker([lat2, long2]).addTo(mymap);
     }
     function Markerlabel() {
       circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()

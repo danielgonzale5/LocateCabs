@@ -126,7 +126,6 @@ setInterval(function () {
     var DataUsu = dataGPS[1]
     var DataLat = parseFloat(dataGPS[2]).toFixed(6)
     var DataLong = parseFloat(dataGPS[3]).toFixed(6)
-    console.log(DataLat, DataLong)
     var DataTime = parseFloat(dataGPS[4])
     io.emit('change1', {
       DataUsu: DataUsu,
@@ -153,7 +152,6 @@ setInterval(function () {
       var DataUsu = dataGPS[1]
       var DataLat = parseFloat(dataGPS[2]).toFixed(6)
       var DataLong = parseFloat(dataGPS[3]).toFixed(6)
-      console.log(DataLat, DataLong)
       var DataTime = parseFloat(dataGPS[4])
       io.emit('change2', {
         DataUsu: DataUsu,
