@@ -4,7 +4,8 @@
   "description": "",
   "main": "LocateCabsWeb.js",
   "scripts": {
-    "Start": "nodemon LocateCabsWeb.js"
+    "Start": "nodemon LocateCabsWeb.js",
+    "Start2": "nodemon LocateCabsWeb2.js"
   },
   "keywords": [],
   "author": "",
