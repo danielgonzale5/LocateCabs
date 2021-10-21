@@ -473,7 +473,7 @@
         }
       }
     }
-    function setMarker(lat, long) {
+    function setMarker() {
       if (lat != null && long != null) {
         new L.marker(lat, long).addTo(mymap);
       }
@@ -600,7 +600,7 @@
         usuario = data.DataUsu;
         lat = data.DataLat;
         long = data.DataLong;
-        setInterval(setMarker(lat, long), 1000);
+        setInterval(setMarker(), 1000);
         
       });
     });
