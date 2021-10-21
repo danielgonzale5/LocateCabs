@@ -601,27 +601,7 @@
         lat = data.DataLat;
         long = data.DataLong;
         setInterval(setMarker(lat, long), 1000);
-        valor = document.getElementById('switch').checked;
-        if (valor) {
-          setInterval(latlngsTemp1 = [lat, long], 1000);
-          setInterval(latlngs1.push(latlngsTemp1), 1000);
-        } else {
-          latlngs = [];
-        }
-        if (old_user != usuario) {
-          setTimeout(function () {
-            if (valor) {
-              latlngs1 = [];
-              if (startpoint_was_set == 1) {
-                startpoint1.removeFrom(mymap);
-                startpoint_was_set = 0;
-              }
-              clearpoly();
-              startPolyline(latlngs1);
-            }
-          }, 1000);
-          old_user = usuario;
-        }
+        
       });
       io().on('change2', function (data) {
         document.getElementById('UsuID').innerHTML = data.DataUsu;
@@ -642,27 +622,7 @@
         lat = data.DataLat;
         long = data.DataLong;
         setInterval(setMarker(lat, long), 1000);
-        valor = document.getElementById('switch').checked;
-        if (valor) {
-          setInterval(latlngsTemp2 = [lat, long], 1000);
-          setInterval(latlngs2.push(latlngsTemp2), 1000);
-        } else {
-          latlngs = [];
-        }
-        if (old_user != usuario) {
-          setTimeout(function () {
-            if (valor) {
-              latlngs1 = [];
-              if (startpoint_was_set == 1) {
-                startpoint1.removeFrom(mymap);
-                startpoint_was_set = 0;
-              }
-              clearpoly();
-              startPolyline(latlngs2);
-            }
-          }, 1000);
-          old_user = usuario;
-        }
+        
       });
     });
     //Funciones de los switches al trazar linea en vivo
