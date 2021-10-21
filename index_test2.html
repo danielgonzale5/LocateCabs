@@ -435,14 +435,10 @@
       }
     }
     function setMarker1() {
-      if (lat1 != null && isNaN(lat1) == false && long1 != null && isNaN(long1) == false) {
         point1 = L.marker([lat1, long2]).addTo(mymap);
-      }
     }
     function setMarker2() {
-      if (lat2 != null && isNaN(lat2) == false && long2 != null && isNaN(long2) == false) {
         point2 = L.marker([lat1, long2]).addTo(mymap);
-      }
     }
     function Markerlabel() {
       circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
@@ -479,14 +475,7 @@
         polyline.removeFrom(mymap)
       }
     }
-    function clearpoly2() {
-      polylineHistoric.removeFrom(mymap)
-      hist_was_set = 0;
-    }
     let mymap = L.map('mapid').setView([lat, long], 18);
-    var circle = L.circle([lat, long], { radius: 50, color: '#FCFF42' }).addTo(mymap);
-    var circle_marker = L.circleMarker([lat, long], { color: '#CA2049' }).bindPopup("No Data", { autoPan: false }).addTo(mymap);
-    circle_marker.openPopup();
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
@@ -537,39 +526,6 @@
       });
     });
 
-
-
-
-
-    //Funciones de los switches al trazar linea en vivo
-    function condicional() {
-        valor = document.getElementById('switch').checked;
-        if (valor) {
-          setTimeout(function () {
-            clearpoly();
-            circle.setRadius(50);
-            circle_marker.openPopup();
-            if (startpoint_was_set == 1) {
-              startpoint.removeFrom(mymap);
-              startpoint_was_set = 0;
-            }
-          }
-            , 100)
-        }
-        else {
-          console.log('latlngs=' + latlngs.length)
-          setTimeout(function () {
-            circle.setRadius(0);
-            startPolyline();
-          }
-            , 1000);
-          setInterval(function () {
-            setMarker();
-            addPolyline();
-          }
-            , 1000);
-        }
-    }
   </script>
 </body>
 
