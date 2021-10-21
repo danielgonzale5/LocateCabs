@@ -564,23 +564,11 @@
         console.log(latlngs2)
       });
     });
-    if (document.getElementById('switch').checked) {
-            if (document.getElementById('IDtxtID').value == "1") {
-                startpoint1 = L.marker(latlngs1[0]).addTo(mymap); 
-            } else if (document.getElementById('IDtxtID').value == "2") {
-                startpoint2 = L.marker(latlngs2[0]).addTo(mymap); 
-            } else {
-                startpoint1 = L.marker(latlngs1[0]).addTo(mymap);  
-                startpoint2 = L.marker(latlngs2[0]).addTo(mymap); 
-            }   
-        }
     function condicional() {
         valor = document.getElementById('switch').checked;
         if (valor) {
           setTimeout(function () {
             clearpoly();
-            startpoint1.removeFrom(mymap);
-            startpoint2.removeFrom(mymap);
           }, 200)
         } else {
           if (document.getElementById('IDtxtID').value == "1") {
