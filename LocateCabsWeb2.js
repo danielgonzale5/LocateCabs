@@ -124,9 +124,9 @@ setInterval(function () {
     data = JSON.parse(JSON.stringify(rows))
     var dataGPS = Object.values(data[0])
     var DataUsu = dataGPS[1]
-    console.log(DataUsu)
     var DataLat = parseFloat(dataGPS[2]).toFixed(6)
     var DataLong = parseFloat(dataGPS[3]).toFixed(6)
+    console.log(DataLat, DataLong)
     var DataTime = parseFloat(dataGPS[4])
     io.emit('change1', {
       DataUsu: DataUsu,
@@ -151,9 +151,9 @@ setInterval(function () {
       data = JSON.parse(JSON.stringify(rows))
       var dataGPS = Object.values(data[0])
       var DataUsu = dataGPS[1]
-      console.log(DataUsu)
       var DataLat = parseFloat(dataGPS[2]).toFixed(6)
       var DataLong = parseFloat(dataGPS[3]).toFixed(6)
+      console.log(DataLat, DataLong)
       var DataTime = parseFloat(dataGPS[4])
       io.emit('change2', {
         DataUsu: DataUsu,
