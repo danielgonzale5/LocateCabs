@@ -349,7 +349,7 @@
         </label>
         <a href="/" class="logo"><img src="/logo.png" id="logoimg" /></a>
         <ul>
-            <li><a class="menulink" href="#" style="background: rgb(19, 19, 19); color: rgb(255, 255, 255); border-bottom:4px solid rgb(0, 130, 230);">Home</a></li>
+            <li><a class="menulink" style="background: rgb(19, 19, 19); color: rgb(255, 255, 255); border-bottom:4px solid rgb(0, 130, 230);">Home</a></li>
             <li><a class="menulink" href="../historicos/">Históricos</a></li>
         </ul>
       </nav>
@@ -374,13 +374,13 @@
         <label class="inlineclass" style="width: 100px; padding-left: 10px;">Hora</label>
         <label class="inlineclass" id="HoraID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
         <div></div>
+        <h2 style="text-align: center; margin-top: 15px;">Inserte ID específica</h2>
+        <h4 style="text-align: center; margin-top: 15px;">"-" para observar todos los taxis</h4>
+        <input style="text-align: center; margin-top: 15px;" type="text" id="IDtxtID" name="IDtxt" value="-">
         <h2 style="text-align: center; margin-top: 15px;">Trazar recorrido</h2>
         <div class="switch-container;" style="text-align: center; margin-top: 5px;">
           <input type="Checkbox" id="switch">
           <label for="switch" onclick="condicional();" class="sw"></label>
-        </div>
-        <div class="CenterButton;" style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
-          <button onclick="MapAutoCenter(), Markerlabel()" class="CB" >Auto-center Camera</button>
         </div>
       </div>
     </div>
@@ -400,148 +400,96 @@
     //Declaración de Variables Globales
     let lat = 10.984719;
     let long = -74.811302;
-    var polylinePoints;
-    var polyline;
-    var datainicio;
-    var datafin;
-    var polylineHistoric;
+    var lat1 = 10.984719;
+    var long1 = -74.811302;
+    var lat2 = 10.984719;
+    var long2 = -74.811302;
+    var polyline1;
+    var polyline2;
     var polyline_set = 0;
-    var startpoint;
-    var startpointHist;
-    var finalpointHist;
-    var startpoint_was_set = 0;
-    var hist_was_set = 0;
-    let latlngs = [];
-    let latlngsTemp = [];
-    let Coordinates = [];
-    //Condición de Calendario
-    window.addEventListener('load', function () {
-      datainicio = document.getElementById('IHist')
-      datainicio.addEventListener('change', function () {
-        var uno = new Date(this.value).valueOf()
-        console.log(this.value);
-        document.getElementById('FHist').value = this.value;
-      });
-      datafin = document.getElementById('FHist')
-      datafin.addEventListener('change', function () {
-        if (document.getElementById('IHist').value > this.value) {
-          this.value = document.getElementById('IHist').value;
-        }
-      });
-    });
-    //Función de consulta de histórico
-    function changehist() {
-      valor = document.getElementById('switch2').checked;
-      if (valor) {
-        enviarhist();
-        setTimeout(function () {
-          if (Coordinates.length != 0) {
-            if (hist_was_set == 1) {
-              polylineHistoric.setLatLngs(Coordinates);
-              startpointHist.setLatLng(Coordinates[0]);
-              finalpointHist.setLatLng(Coordinates[Coordinates.length - 1]);
-              mymap.fitBounds(Coordinates);
-            } else {
-              startPolyline2();
-              startpointHist = L.marker(Coordinates[0]).addTo(mymap);
-              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
-            }
-          } else {
-            console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
-          }
-        }, 1000)
-      }
-    }
-    //Función de coneión Frontend-Backend del histórico
-    async function enviarhist() {
-      datainicio = document.getElementById('IHist').value;
-      datafin = document.getElementById('FHist').value;
-      datainicio = new Date(datainicio).valueOf();
-      datafin = new Date(datafin).valueOf();
-      datainicio = datainicio.toString();
-      datafin = datafin.toString();
-      console.log('datainicio= ' + datainicio);
-      console.log('datafina= ' + datafin);
-      const info = { datainicio, datafin };
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(info)
-      };
-      await fetch('/historic', options);
-    }
+    var startpoint1;
+    var startpoint2;
+    var latlngs1 = [];
+    var latlngsTemp1 = [];
+    var latlngs2 = [];
+    var latlngsTemp2 = [];
+
     //Serie de funciones para el mapa
     function MapsetUbication() {
       mymap.setView(new L.LatLng(lat, long));
     }
-    function MapAutoCenter() {
-      if (document.getElementById('switch').checked) {
-        if (startpoint_was_set == 1) {
-          mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
-        }
-      } else {
-        mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
+    function setMarker1() {
+      if (lat1 != null && isNaN(lat1) == false && long1 != null && isNaN(long1) == false) {
+        point1.setLatLng(new L.LatLng(lat1, long1));
       }
     }
-    function setMarker() {
-      if (lat != null && isNaN(lat) == false && long != null && isNaN(long) == false) {
-        circle_marker.setLatLng(new L.LatLng(lat, long));
-        circle.setLatLng(new L.LatLng(lat, long));
+    function setMarker2() {
+      if (lat2 != null && isNaN(lat2) == false && long2 != null && isNaN(long2) == false) {
+        point2.setLatLng(new L.LatLng(lat2, long2));
       }
     }
     function Markerlabel() {
       circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
     }
-    function createStartPoint() {
-      startpoint = L.marker([lat, long]).addTo(mymap);
-    }
-    function startPolyline() {
-      if (isNaN(latlngs) == false) {
-        polyline = L.polyline(latlngs).addTo(mymap);
+    function startPolyline1(ltlgp1) {
+      if (isNaN(ltlgp1) == false) {
+        polyline1 = L.polyline(ltlgp1).addTo(mymap);
         polyline_set = 1;
       }
     }
-    function startPolyline2() {
-      if (Coordinates.length != 0) {
-        polylineHistoric = L.polyline(Coordinates, { color: 'red' }).addTo(mymap);
-        mymap.fitBounds(Coordinates);
-        hist_was_set = 1;
-      } else {
-        console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
+    function startPolyline2(ltlgp2) {
+      if (isNaN(ltlgp2) == false) {
+        polyline2 = L.polyline(ltlgp2).addTo(mymap);
+        polyline_set = 1;
       }
     }
-    function addPolyline() {
+    function start2Polyline(ltlgp1, ltlgp2) {
+      if (isNaN(ltlgp1) == false && isNaN(ltlgp2) == false) {
+        polyline1 = L.polyline(ltlgp1).addTo(mymap);
+        polyline2 = L.polyline(ltlgp2).addTo(mymap);
+        polyline_set = 1;
+      }
+    }
+
+    function addPolyline1(ltlgap1) {
       if ((polyline_set == 1)) {
-        polyline.setLatLngs(latlngs)
-        if (!polyline.isEmpty() && polyline.getLatLngs().length == 1 && startpoint_was_set == 0) {
-          setTimeout(createStartPoint(), 1000)
-          startpoint_was_set = 1;
-        }
+          polyline1.setLatLngs(ltlgap1)
+      }
+    }
+
+    function addPolyline2(ltlgap2) {
+      if ((polyline_set == 1)) {
+          polyline2.setLatLngs(ltlgap2)
+      }
+    }
+    function add2Polyline(ltlgap1, ltlgap2) {
+      if ((polyline_set == 1)) {
+        polyline1.setLatLngs(ltlgap1)
+        polyline2.setLatLngs(ltlgap2)
       }
     }
     function clearpoly() {
       if (polyline_set == 1) {
-        polyline.removeFrom(mymap)
+        if (document.getElementById('IDtxtID').value == "1") {
+          polyline1.removeFrom(mymap)
+        } else if (document.getElementById('IDtxtID').value == "2") {
+          polyline2.removeFrom(mymap)
+        } else {
+          polyline1.removeFrom(mymap)
+          polyline2.removeFrom(mymap)
+        }
       }
     }
-    function clearpoly2() {
-      polylineHistoric.removeFrom(mymap)
-      hist_was_set = 0;
-    }
     let mymap = L.map('mapid').setView([lat, long], 18);
-    var circle = L.circle([lat, long], { radius: 50, color: '#FCFF42' }).addTo(mymap);
-    var circle_marker = L.circleMarker([lat, long], { color: '#CA2049' }).bindPopup("No Data", { autoPan: false }).addTo(mymap);
-    circle_marker.openPopup();
+    var point1 = L.marker([lat1, long1]).bindPopup("ID Usuario: 1", { autoPan: false }).addTo(mymap);
+    var point2 = L.marker([lat2, long2]).bindPopup("ID Usuario: 2", { autoPan: false }).addTo(mymap);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);
     //Recepción y traducción de información del Backend
     document.addEventListener('DOMContentLoaded', function () {
-      old_user = "-";
-      io().on('change', function (data) {
+      io().on('change1', function (data) {
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
@@ -555,65 +503,120 @@
         var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
         document.getElementById('FechaID').innerHTML = datofecha;
         document.getElementById('HoraID').innerHTML = formattedTime;
-        lat = data.DataLat;
-        long = data.DataLong;
+        var TaxID = document.getElementById('IDtxtID').innerHTML;
+        lat1 = data.DataLat;
+        long1 = data.DataLong;
         usuario = data.DataUsu;
-        finallong = data.DataLong;
-        finallat = data.DataLat;
-        setInterval(setMarker, 1000);
+        setInterval(setMarker1, 1000);
         valor = document.getElementById('switch').checked;
         if (valor) {
-          setInterval(latlngsTemp = [lat, long], 1000);
-          setInterval(latlngs.push(latlngsTemp), 1000);
-        } else {
-          latlngs = [];
-        }
-        if (old_user != usuario) {
-          setTimeout(function () {
-            MapsetUbication();
-            Markerlabel();
-            if (valor) {
-              latlngs = [];
-              if (startpoint_was_set == 1) {
-                startpoint.removeFrom(mymap);
-                startpoint_was_set = 0;
-              }
-              clearpoly();
-              startPolyline();
+            if (document.getElementById('IDtxtID').value == "1") {
+                if(latlngs1.length != 1) {
+                setInterval(latlngsTemp1 = [lat1, long1], 1000);
+                setInterval(latlngs1.push(latlngsTemp1), 1000);
+            } else {
+                startpoint1 = L.marker(latlngs1[0]).bindPopup("Inicio ID: 1", { autoPan: false }).addTo(mymap);
+                setInterval(latlngsTemp1 = [lat1, long1], 1000);
+                setInterval(latlngs1.push(latlngsTemp1), 1000);
             }
-          }
-            , 1000);
-          old_user = usuario;
+            } else if (document.getElementById('IDtxtID').value == "2") {
+
+            } else {
+                if(latlngs1.length != 1) {
+                setInterval(latlngsTemp1 = [lat1, long1], 1000);
+                setInterval(latlngs1.push(latlngsTemp1), 1000);
+            } else {
+                startpoint1 = L.marker(latlngs1[0]).bindPopup("Inicio ID: 1", { autoPan: false }).addTo(mymap);
+                setInterval(latlngsTemp1 = [lat1, long1], 1000);
+                setInterval(latlngs1.push(latlngsTemp1), 1000);
+            }
+            }
+        } else {
+          latlngs1 = [];
+        }
+      });
+      io().on('change2', function (data) {
+        document.getElementById('UsuID').innerHTML = data.DataUsu;
+        document.getElementById('LatID').innerHTML = data.DataLat;
+        document.getElementById('LongID').innerHTML = data.DataLong;
+        var date = new Date(parseFloat(data.DataTime));
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var month = months[date.getMonth()];
+        var hours = date.toLocaleTimeString();
+        var minutes = "0" + date.getMinutes();
+        var seconds = "0" + date.getSeconds();
+        var formattedTime = hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+        var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
+        document.getElementById('FechaID').innerHTML = datofecha;
+        document.getElementById('HoraID').innerHTML = formattedTime;
+        var TaxID = document.getElementById('IDtxtID').innerHTML;
+        lat2 = data.DataLat;
+        long2 = data.DataLong;
+        usuario = data.DataUsu;
+        setInterval(setMarker2, 1000);
+        valor = document.getElementById('switch').checked;
+        if (valor) {
+            if (document.getElementById('IDtxtID').value == "1") {
+
+            } else if (document.getElementById('IDtxtID').value == "2") {
+                if(latlngs2.length != 1) {
+                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                } else {
+                    startpoint2 = L.marker(latlngs2[0]).bindPopup("Inicio ID: 2", { autoPan: false }).addTo(mymap);
+                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                }
+            } else {
+                if(latlngs2.length != 1) {
+                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                } else {
+                    startpoint2 = L.marker(latlngs2[0]).bindPopup("Inicio ID: 2", { autoPan: false }).addTo(mymap);
+                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                }
+            }
+        } else {
+          latlngs2 = [];
         }
       });
     });
-    //Funciones de los switches al trazar linea en vivo
     function condicional() {
         valor = document.getElementById('switch').checked;
         if (valor) {
           setTimeout(function () {
             clearpoly();
-            circle.setRadius(50);
-            circle_marker.openPopup();
-            if (startpoint_was_set == 1) {
-              startpoint.removeFrom(mymap);
-              startpoint_was_set = 0;
-            }
+            startpoint1.removeFrom(mymap);
+            startpoint2.removeFrom(mymap);
+          }, 200)
+        } else {
+          if (document.getElementById('IDtxtID').value == "1") {
+            console.log('latlngs1=' + latlngs1.length)
+            setInterval(function () {
+              addPolyline1(latlngs1);
+            }, 200); 
+            setTimeout(function () {
+              startPolyline1(latlngs1);
+            }, 200);
+          } else if (document.getElementById('IDtxtID').value == "2") {
+            console.log('latlngs2=' + latlngs2.length)
+            setInterval(function () {
+              addPolyline2(latlngs2);
+            }, 200);
+            setTimeout(function () {
+              startPolyline2(latlngs2);
+            }, 200);
+          } else {
+            console.log('latlngs1=' + latlngs1.length)
+            console.log('latlngs2=' + latlngs2.length)
+            setInterval(function () {
+              add2Polyline(latlngs1, latlngs2);
+            }, 200);
+            setTimeout(function () {
+              start2Polyline(latlngs1, latlngs2);
+            }, 200);
           }
-            , 100)
-        }
-        else {
-          console.log('latlngs=' + latlngs.length)
-          setTimeout(function () {
-            circle.setRadius(0);
-            startPolyline();
-          }
-            , 1000);
-          setInterval(function () {
-            setMarker();
-            addPolyline();
-          }
-            , 1000);
         }
     }
   </script>
