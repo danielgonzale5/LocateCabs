@@ -143,7 +143,7 @@ setInterval(function () {
       });
     });
   });
-}, 1000);
+}, 1500);
 
 setInterval(function () {
     con.query('SELECT * FROM gps WHERE Usuario = 2 ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
@@ -170,7 +170,7 @@ setInterval(function () {
         });
       });
     });
-  }, 1000);
+  }, 1500);
 
 
 
