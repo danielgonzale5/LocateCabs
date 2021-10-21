@@ -504,8 +504,10 @@
         finallong = data.DataLong;
         finallat = data.DataLat;
         setInterval(setMarker, 1000);
-
       });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+      old_user = "-";
       io().on('change2', function (data) {
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
@@ -526,7 +528,6 @@
         finallong = data.DataLong;
         finallat = data.DataLat;
         setInterval(setMarker, 1000);
-
       });
     });
 
