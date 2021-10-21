@@ -119,7 +119,7 @@ setTimeout(function () {
 }, 999999999);
 //Consulta a la base de datos y conexión constante Backend-Frontend
 setInterval(function () {
-  con.query('SELECT * FROM gps WHERE Usuario = "1" ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
+  con.query('SELECT * FROM gps WHERE Usuario = 1 ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
     if (err) throw err;
     data = JSON.parse(JSON.stringify(rows))
     var dataGPS = Object.values(data[0])
@@ -145,7 +145,7 @@ setInterval(function () {
 }, 1000);
 
 setInterval(function () {
-    con.query('SELECT * FROM gps WHERE Usuario = "2" ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
+    con.query('SELECT * FROM gps WHERE Usuario = 2 ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
       if (err) throw err;
       data = JSON.parse(JSON.stringify(rows))
       var dataGPS = Object.values(data[0])
