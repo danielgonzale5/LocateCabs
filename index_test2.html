@@ -474,8 +474,8 @@
       }
     }
     function setMarker(lat, long) {
-      if (lat != null && isNaN(lat) == false && long != null && isNaN(long) == false) {
-        L.marker(lat, long).addTo(mymap);
+      if (lat != null && long != null) {
+        new L.marker(lat, long).addTo(mymap);
       }
     }
     function setMarkers(array) {
