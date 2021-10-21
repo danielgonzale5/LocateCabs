@@ -443,12 +443,21 @@
     function Markerlabel() {
       circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
     }
-    function createStartPoint1(sp1) {
-      startpoint1 = L.marker(sp1).addTo(mymap);
+    function countp1(sp1) {
+        if (sp1.length = 1) {
+            startpoint1 = L.marker(sp1[0]).addTo(mymap);
+        }
     }
-    function create2StartPoint(sp1, sp2) {
-      startpoint1 = L.marker(sp1).addTo(mymap);     
-      startpoint2 = L.marker(sp2).addTo(mymap);
+    function countp2(sp2) {
+        if (sp2.length = 1) {
+            startpoint2 = L.marker(sp2[0]).addTo(mymap);
+        }
+    }
+    function count2p(sp1, sp2) {
+        if ((sp1.length = 1)&&(sp2.length = 1)) {
+            startpoint1 = L.marker(sp1[0]).addTo(mymap);     
+            startpoint2 = L.marker(sp2[0]).addTo(mymap);
+        }
     }
     function startPolyline1(ltlgp1) {
       if (isNaN(ltlgp1) == false) {
@@ -576,6 +585,9 @@
             setInterval(function () {
               addPolyline1(latlngs1);
             }, 200); 
+            setInterval(function () {
+              countp1(latlngs1);
+            }, 200); 
             setTimeout(function () {
               startPolyline1(latlngs1);
             }, 200);
@@ -583,6 +595,9 @@
             console.log('latlngs2=' + latlngs2.length)
             setInterval(function () {
               addPolyline2(latlngs2);
+            }, 200);
+            setInterval(function () {
+              countp2(latlngs2);
             }, 200);
             setTimeout(function () {
               startPolyline2(latlngs2);
@@ -592,7 +607,10 @@
             console.log('latlngs2=' + latlngs2.length)
             setInterval(function () {
               add2Polyline(latlngs1, latlngs2);
-            }, 200); 
+            }, 200);
+            setInterval(function () {
+              count2p(latlngs1, latlngs2);
+            }, 200);
             setTimeout(function () {
               start2Polyline(latlngs1, latlngs2);
             }, 200);
