@@ -193,12 +193,11 @@
 
 
   #historic-range{
-    width: 150px;
+    width: 170px;
     height: 10px;
     cursor: pointer;
     background-color: #ffffff;
     position: relative;
-
   }
 
   .wrapper {
@@ -596,6 +595,7 @@
       Coordinates = dataTS.DataTimeStamp;
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
     });
+
     //Funciones de los switches al trazar histórico
     function condicional2() {
       if (document.getElementById('switch2').disabled != true) {
@@ -636,40 +636,30 @@
       CCoordinates = dataCTS.CurrentDataTimeStamp;
       console.log('io-on-current timestamp Coordinates= ' + CCoordinates)
     });
-    function condicional3() { //Condicionales
-      if (document.getElementById('switch3').disabled != true) {
-        valor = document.getElementById('switch3').checked;
-        if (valor) {
-          if (hist_was_set == 1) {
-            clearpoly2();
-            startpointHist.removeFrom(mymap);
-            finalpointHist.removeFrom(mymap);
-          }
-          setMarker();
-          circle_marker.setRadius(10);
-          circle.setRadius(50);
-          circle_marker.openPopup();
-          if (currentpointHist_was_created==1){
-            currentpointHist.removeFrom(mymap);
-            currentpointHist_was_created=0;
-          }
-          document.getElementById('switch2').disabled = false;
-        } else {
-          document.getElementById('switch2').disabled = true;
-          enviarhistact();
-          setTimeout(function () {
-            if ((CCoordinates[0] !== 10.9847191) && (CCoordinates[1] !== -74.811302) && currentpointHist_was_created==0) {
-              currentpointHist = L.marker(CCoordinates).addTo(mymap);
-              currentpointHist_was_created=1;
-              mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
-            } 
-            circle_marker.closePopup();
-            circle_marker.setRadius(0);
-            circle.setRadius(0);
-          }, 500)
-        }
+    
+    
+    //Recorrer la polilínea
+
+    function CondicionSlide(){
+
+      var polySlide = document.getElementById('Historic-range');
+      if (document.getElementById('switch2').checked) {
+        SlidePoly.setAttribute("max",Coordinates.length);
+      }
+      else{
+        polySlide.style.display = "none";
       }
     }
+
+
+    function changepoly(){
+      var polypos = getElementById('Historic-range');
+      console.log(polypos);
+      let info = "Ubicación: "+Coordinates[polypos].toString();
+      L.popup().setLatLng(Coordinates[polypos]).setContent(info).openOn(mymap);
+    }
+    
+
   </script>
 </body>
 
