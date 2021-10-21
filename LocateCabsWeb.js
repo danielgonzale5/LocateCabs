@@ -168,6 +168,8 @@ app.post('/historic', function (req, res) {
       CoordinatesArr.push(CoordinatesArrTemp);
       timearr.push(timearrtemp);
     }
+
+    
     var DatoTiempo = timearr
     var DataTimeStamp = CoordinatesArr
     io.emit('timestamp', {

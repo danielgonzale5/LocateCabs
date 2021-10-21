@@ -667,7 +667,7 @@
               console.log(e.latlng.lng)
 
     
-                let info =  tiempotran[i].toString();
+                let info =  "Tiempo: "+tiempotran[i].toString()+"Ubicación: " + e.latlng.toString();
                 L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
 
               })
@@ -681,6 +681,8 @@
       CCoordinates = dataCTS.CurrentDataTimeStamp;
       console.log('io-on-current timestamp Coordinates= ' + CCoordinates)
     });
+
+
     function condicional3() {
       if (document.getElementById('switch3').disabled != true) {
         valor = document.getElementById('switch3').checked;
