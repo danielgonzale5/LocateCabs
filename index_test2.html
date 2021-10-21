@@ -585,7 +585,9 @@
             if (startpoint_was_set == 1) {
               if (document.getElementById('IDtxtID').value == "1") {
                 startpoint1.removeFrom(mymap);
+                startpoint2.removeFrom(mymap);
               } else if (document.getElementById('IDtxtID').value == "2") {
+                startpoint1.removeFrom(mymap);
                 startpoint2.removeFrom(mymap);
               } else {
                 startpoint1.removeFrom(mymap);
@@ -601,6 +603,7 @@
             setInterval(function () {
               addPolyline1(latlngs1);
             }, 200);
+            startpoint2.removeFrom(mymap);
             setTimeout(function () {
               startPolyline1(latlngs1);
             }, 200);
@@ -609,6 +612,7 @@
             setInterval(function () {
               addPolyline2(latlngs2);
             }, 200);
+            startpoint1.removeFrom(mymap);
             setTimeout(function () {
               startPolyline2(latlngs2);
             }, 200);
