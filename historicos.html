@@ -694,10 +694,11 @@
       //Función de cambios    
       function changepoly(){
         var polypos = getElementById('Historic-range');
-        console.log(polypos);
-        let info = "Ubicación: "+Coordinates[polypos].toString();
+        let info1 = "Ubicación: "+Coordinates[polypos].toString();
         L.popup().setLatLng(Coordinates[polypos]).setContent(info).openOn(mymap);
+        console.log(info1);
         }
+        
   </script>
 </body>
 
