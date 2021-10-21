@@ -428,10 +428,16 @@
         mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
       }
     }
-    function setMarker() {
-      if (lat != null && isNaN(lat) == false && long != null && isNaN(long) == false) {
-        circle_marker.setLatLng(new L.LatLng(lat, long));
-        circle.setLatLng(new L.LatLng(lat, long));
+    function setMarker1() {
+      if (lat1 != null && isNaN(lat1) == false && long1 != null && isNaN(long1) == false) {
+        circle_marker.setLatLng(new L.LatLng(lat1, long1));
+        circle.setLatLng(new L.LatLng(lat1, long1));
+      }
+    }
+    function setMarker2() {
+      if (lat2 != null && isNaN(lat2) == false && long2 != null && isNaN(long2) == false) {
+        circle_marker.setLatLng(new L.LatLng(lat2, long2));
+        circle.setLatLng(new L.LatLng(lat2, long2));
       }
     }
     function Markerlabel() {
@@ -498,12 +504,10 @@
         var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
         document.getElementById('FechaID').innerHTML = datofecha;
         document.getElementById('HoraID').innerHTML = formattedTime;
-        lat = data.DataLat;
-        long = data.DataLong;
+        lat1 = data.DataLat;
+        long1 = data.DataLong;
         usuario = data.DataUsu;
-        finallong = data.DataLong;
-        finallat = data.DataLat;
-        setInterval(setMarker, 1000);
+        setInterval(setMarker1, 1000);
       });
     });
     document.addEventListener('DOMContentLoaded', function () {
@@ -522,12 +526,10 @@
         var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
         document.getElementById('FechaID').innerHTML = datofecha;
         document.getElementById('HoraID').innerHTML = formattedTime;
-        lat = data.DataLat;
-        long = data.DataLong;
+        lat2 = data.DataLat;
+        long2 = data.DataLong;
         usuario = data.DataUsu;
-        finallong = data.DataLong;
-        finallat = data.DataLat;
-        setInterval(setMarker, 1000);
+        setInterval(setMarker2, 1000);
       });
     });
 
