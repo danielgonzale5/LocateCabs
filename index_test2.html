@@ -522,13 +522,26 @@
         setInterval(setMarker1, 1000);
         valor = document.getElementById('switch').checked;
         if (valor) {
-            if(latlngs1.length != 1) {
+            if (document.getElementById('IDtxtID').value == "1") {
+                if(latlngs1.length != 1) {
                 setInterval(latlngsTemp1 = [lat1, long1], 1000);
                 setInterval(latlngs1.push(latlngsTemp1), 1000);
             } else {
                 startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
                 setInterval(latlngsTemp1 = [lat1, long1], 1000);
                 setInterval(latlngs1.push(latlngsTemp1), 1000);
+            }
+            } else if (document.getElementById('IDtxtID').value == "2") {
+
+            } else {
+                if(latlngs1.length != 1) {
+                setInterval(latlngsTemp1 = [lat1, long1], 1000);
+                setInterval(latlngs1.push(latlngsTemp1), 1000);
+            } else {
+                startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
+                setInterval(latlngsTemp1 = [lat1, long1], 1000);
+                setInterval(latlngs1.push(latlngsTemp1), 1000);
+            }
             }
         } else {
           latlngs1 = [];
@@ -555,13 +568,26 @@
         setInterval(setMarker2, 1000);
         valor = document.getElementById('switch').checked;
         if (valor) {
-            if(latlngs2.length != 1) {
-                setInterval(latlngsTemp2 = [lat2, long2], 1000);
-                setInterval(latlngs2.push(latlngsTemp2), 1000);
+            if (document.getElementById('IDtxtID').value == "1") {
+
+            } else if (document.getElementById('IDtxtID').value == "2") {
+                if(latlngs2.length != 1) {
+                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                } else {
+                    startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
+                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                }
             } else {
-                startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
-                setInterval(latlngsTemp2 = [lat2, long2], 1000);
-                setInterval(latlngs2.push(latlngsTemp2), 1000);
+                if(latlngs2.length != 1) {
+                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                } else {
+                    startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
+                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                }
             }
         } else {
           latlngs2 = [];
@@ -574,6 +600,8 @@
         if (valor) {
           setTimeout(function () {
             clearpoly();
+            startpoint1.removeFrom(mymap);
+            startpoint2.removeFrom(mymap);
           }, 200)
         } else {
           if (document.getElementById('IDtxtID').value == "1") {
