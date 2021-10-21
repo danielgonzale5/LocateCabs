@@ -190,16 +190,6 @@
   #switch3 {
     display: none;
   }
-
-
-  #historic-range{
-    width: 170px;
-    height: 10px;
-    cursor: pointer;
-    background-color: #ffffff;
-    position: relative;
-  }
-
   .wrapper {
     display: flex;
     width: 100%;
@@ -362,14 +352,16 @@
           <label for="switch2" onclick="condicional2();" class="sw"></label>
         </div>
         <div></div>
-        <h2 style="text-align: center; margin-top: 15px;">RECORRER POLILÍNEA</h2> 
+        <h2 style="text-align: center; margin-top: 15px;">Consultar ubicación</h2>
         <div></div>
-        <div class="slider">
-          <input type="range" id="historic-range" value="50" min="0" max="100" onchange="changepoly()"/>   
-              <div id="Selector">
-          </div>
+        <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Fecha y Hora:</label>
+        <input class="inlineclass" style="text-align: center;" type="datetime-local" id="CHist" onchange="changehistact()" name="CurrentHistoric" value="2021-06-01T00:00"
+          min="2021-06-01T00:00" max="2044-06-0 1T00:00">
+        <div></div>
+        <div class="switch-container;" style="text-align: center; margin-top: 5px;">
+          <input type="Checkbox" id="switch3">
+          <label for="switch3" onclick="condicional3();" class="sw"></label>
         </div>
-     
       </div>
     </div>
     <footer>
@@ -595,7 +587,6 @@
       Coordinates = dataTS.DataTimeStamp;
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
     });
-
     //Funciones de los switches al trazar histórico
     function condicional2() {
       if (document.getElementById('switch2').disabled != true) {
@@ -636,6 +627,40 @@
       CCoordinates = dataCTS.CurrentDataTimeStamp;
       console.log('io-on-current timestamp Coordinates= ' + CCoordinates)
     });
+    function condicional3() {
+      if (document.getElementById('switch3').disabled != true) {
+        valor = document.getElementById('switch3').checked;
+        if (valor) {
+          if (hist_was_set == 1) {
+            clearpoly2();
+            startpointHist.removeFrom(mymap);
+            finalpointHist.removeFrom(mymap);
+          }
+          setMarker();
+          circle_marker.setRadius(10);
+          circle.setRadius(50);
+          circle_marker.openPopup();
+          if (currentpointHist_was_created==1){
+            currentpointHist.removeFrom(mymap);
+            currentpointHist_was_created=0;
+          }
+          document.getElementById('switch2').disabled = false;
+        } else {
+          document.getElementById('switch2').disabled = true;
+          enviarhistact();
+          setTimeout(function () {
+            if ((CCoordinates[0] !== 10.9847191) && (CCoordinates[1] !== -74.811302) && currentpointHist_was_created==0) {
+              currentpointHist = L.marker(CCoordinates).addTo(mymap);
+              currentpointHist_was_created=1;
+              mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
+            } 
+            circle_marker.closePopup();
+            circle_marker.setRadius(0);
+            circle.setRadius(0);
+          }, 500)
+        }
+      }
+    }
   </script>
 </body>
 
