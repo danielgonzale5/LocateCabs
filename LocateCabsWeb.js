@@ -33,6 +33,12 @@ app.get('/historicos', function (req, res) {
   res.sendfile(dir + '/historicos.html');
 });
 
+app.get('/historicostest', function (req, res) {
+  res.sendfile(dir + '/historicos_test.html');
+});
+app.get('/indextest', function (req, res) {
+  res.sendfile(dir + '/index_test.html');
+});
 
 //Conexión al puerto establecido
 server.listen(port, function (error) {
