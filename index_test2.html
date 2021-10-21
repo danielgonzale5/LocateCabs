@@ -450,6 +450,10 @@
     function createStartPoint2(sp2) {
       startpoint2 = L.marker(sp2).addTo(mymap);
     }
+    function create2StartPoint(sp1, sp2) {
+      startpoint1 = L.marker(sp1).addTo(mymap);     
+      startpoint2 = L.marker(sp2).addTo(mymap);
+    }
     function startPolyline1(ltlgp1) {
       if (isNaN(ltlgp1) == false) {
         polyline1 = L.polyline(ltlgp1).addTo(mymap);
@@ -492,13 +496,9 @@
     function add2Polyline(ltlgap1, ltlgap2) {
       if ((polyline_set == 1)) {
         polyline1.setLatLngs(ltlgap1)
-        if (!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0) {
-          setTimeout(createStartPoint1(ltlgap1[0]), 1000)
-          startpoint_was_set = 1;
-        }
         polyline2.setLatLngs(ltlgap2)
-        if (!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0) {
-          setTimeout(createStartPoint2(ltlgap2[0]), 1000)
+        if ((!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0)&&((!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0))) {
+          setTimeout(create2StartPoint(ltlgap1[0], ltlgap2[0]), 1000)
           startpoint_was_set = 1;
         }
       }
