@@ -544,12 +544,6 @@
         if (valor) {
           setInterval(latlngsTemp1 = [lat1, long1], 1000);
           setInterval(latlngs1.push(latlngsTemp1), 1000);
-          setTimeout(function () {
-              startPolyline(latlngs1);
-            }, 1000);
-          setInterval(function () {
-              addPolyline(latlngs1);
-            }, 1000);
         } else {
           latlngs1 = [];
         }
@@ -608,6 +602,7 @@
               startPolyline(latlngs1);
             }, 1000);
             setInterval(function () {
+                setMarker1();
               addPolyline(latlngs1);
             }, 1000);
           } else if (document.getElementById('IDtxtID').value == "2") {
@@ -616,6 +611,7 @@
               startPolyline(latlngs2);
             }, 1000);
             setInterval(function () {
+                setMarker2();
               addPolyline(latlngs2);
             }, 1000);
           } else {
@@ -625,6 +621,8 @@
               start2Polyline(latlngs1, latlngs2);
             }, 1000);
             setInterval(function () {
+                setMarker1();
+                setMarker2();
               add2Polyline(latlngs1, latlngs2);
             }, 1000);
           }
