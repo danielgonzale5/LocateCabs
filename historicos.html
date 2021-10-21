@@ -636,30 +636,6 @@
       CCoordinates = dataCTS.CurrentDataTimeStamp;
       console.log('io-on-current timestamp Coordinates= ' + CCoordinates)
     });
-    
-    
-    //Recorrer la polilínea
-
-    function CondicionSlide(){
-
-      var polySlide = document.getElementById('Historic-range');
-      if (document.getElementById('switch2').checked) {
-        SlidePoly.setAttribute("max",Coordinates.length);
-      }
-      else{
-        polySlide.style.display = "none";
-      }
-    }
-
-
-    function changepoly(){
-      var polypos = getElementById('Historic-range');
-      console.log(polypos);
-      let info = "Ubicación: "+Coordinates[polypos].toString();
-      L.popup().setLatLng(Coordinates[polypos]).setContent(info).openOn(mymap);
-    }
-    
-
   </script>
 </body>
 
