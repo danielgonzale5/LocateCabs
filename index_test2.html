@@ -491,11 +491,15 @@
       if (polyline_set == 1) {
         if (document.getElementById('IDtxtID').value == "1") {
           polyline1.removeFrom(mymap)
+          startpoint1.removeFrom(mymap);
         } else if (document.getElementById('IDtxtID').value == "2") {
           polyline2.removeFrom(mymap)
+          startpoint2.removeFrom(mymap);
         } else {
           polyline1.removeFrom(mymap)
+          startpoint1.removeFrom(mymap);
           polyline2.removeFrom(mymap)
+          startpoint2.removeFrom(mymap);
         }
       }
     }
@@ -573,26 +577,42 @@
         } else {
           if (document.getElementById('IDtxtID').value == "1") {
             console.log('latlngs1=' + latlngs1.length)
+            var i1;
             setInterval(function () {
               addPolyline1(latlngs1);
-            }, 200);   
+              i1+=1;
+            }, 200);
+            if (i1=2) {
+                startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
+            }   
             setTimeout(function () {
               startPolyline1(latlngs1);
             }, 200);
           } else if (document.getElementById('IDtxtID').value == "2") {
             console.log('latlngs2=' + latlngs2.length)
+            var i2;
             setInterval(function () {
               addPolyline2(latlngs2);
+              i2+=1;
             }, 200);
+            if (i2=2) {
+                startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
+            }   
             setTimeout(function () {
               startPolyline2(latlngs2);
             }, 200);
           } else {
             console.log('latlngs1=' + latlngs1.length)
             console.log('latlngs2=' + latlngs2.length)
+            var i3;
             setInterval(function () {
               add2Polyline(latlngs1, latlngs2);
+              i3+=1;
             }, 200);
+            if (i3=2) {
+                startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
+                startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
+            } 
             setTimeout(function () {
               start2Polyline(latlngs1, latlngs2);
             }, 200);
