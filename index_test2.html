@@ -383,7 +383,7 @@
           <label for="switch" onclick="condicional();" class="sw"></label>
         </div>
         <div class="CenterButton;" style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
-          <button onclick="MapAutoCenter(), Markerlabel(TaxID)" class="CB" >Auto-center Camera</button>
+          <button onclick="MapAutoCenter()" class="CB" >Auto-center Camera</button>
         </div>
       </div>
     </div>
@@ -427,7 +427,7 @@
           mymap.fitBounds(polyline1.getBounds() + polyline2.getBounds()); //Centra hacia la polilínea.
         }
       } else {
-        mymap.setView(new L.LatLng([lat1, long1]+[lat2, long2]), 18);  //Centra hacia la posición actual.
+        mymap.setView(new L.LatLng([lat1, long1],[lat2, long2]), 18);  //Centra hacia la posición actual.
       }
     }
     function setMarker1() {
