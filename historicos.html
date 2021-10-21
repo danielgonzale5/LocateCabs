@@ -190,6 +190,16 @@
   #switch3 {
     display: none;
   }
+
+  #historic-range{
+    width: 170px;
+    height: 10px;
+    cursor: pointer;
+    background-color: #ffffff;
+    position: relative;
+  }
+
+
   .wrapper {
     display: flex;
     width: 100%;
@@ -361,6 +371,13 @@
         <div class="switch-container;" style="text-align: center; margin-top: 5px;">
           <input type="Checkbox" id="switch3">
           <label for="switch3" onclick="condicional3();" class="sw"></label>
+        </div>
+        <h2 style="text-align: center; margin-top: 15px;">RECORRER POLILÍNEA</h2> 
+        <div></div>
+        <div class="slider">
+          <input type="range" id="historic-range" value="50" min="0" max="100" onchange="changepoly()"/>   
+              <div id="Selector">
+          </div>
         </div>
       </div>
     </div>
@@ -661,6 +678,26 @@
         }
       }
     }
+       //Recorrer la polilínea
+
+       function CondicionSlide(){
+
+        var polySlide = document.getElementById('Historic-range');
+        if (document.getElementById('switch2').checked) {
+        SlidePoly.setAttribute("max",Coordinates.length);
+        }
+        else{
+          polySlide.style.display = "none";
+        }
+      }
+
+      //Función de cambios    
+      function changepoly(){
+        var polypos = getElementById('Historic-range');
+        console.log(polypos);
+        let info = "Ubicación: "+Coordinates[polypos].toString();
+        L.popup().setLatLng(Coordinates[polypos]).setContent(info).openOn(mymap);
+        }
   </script>
 </body>
 
