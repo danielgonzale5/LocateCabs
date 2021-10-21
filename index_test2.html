@@ -423,9 +423,7 @@
     }
     function MapAutoCenter() {
       if (document.getElementById('switch').checked) {
-        if (startpoint_was_set == 1) {
-          mymap.fitBounds(polyline1.getBounds() + polyline2.getBounds()); //Centra hacia la polilínea.
-        }
+        mymap.fitBounds(polyline1.getBounds(), polyline2.getBounds()); //Centra hacia la polilínea.
       } else {
         mymap.setView(new L.LatLng([lat1, long1],[lat2, long2]), 18);  //Centra hacia la posición actual.
       }
