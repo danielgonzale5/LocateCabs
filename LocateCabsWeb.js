@@ -148,6 +148,8 @@ app.post('/historic', function (req, res) {
   var TSini = HisDat.datainicio.toString();
   var TSfin = HisDat.datafin.toString();
   console.log(TSini, TSfin)
+
+  
   con.query("SELECT * FROM gps WHERE TimeStamp BETWEEN ('" + TSini + "') AND ('" + TSfin + "');", function (err, rows) {
     if (err) throw err;
     var HistData = JSON.parse(JSON.stringify(rows))
@@ -169,6 +171,7 @@ app.post('/historic', function (req, res) {
       timearr.push(timearrtemp);
     }
 
+    
     var DatoTiempo = timearr
     var DataTimeStamp = CoordinatesArr
     io.emit('timestamp', {
@@ -186,6 +189,8 @@ app.post('/historic', function (req, res) {
     status: 'received'
   });
 });
+
+
 
 app.post('/historicact', function (req, res) {
 
