@@ -568,13 +568,13 @@
         usuario = data.DataUsu;
         setInterval(setMarker2, 1000);
         valor = document.getElementById('switch').checked;
-        console.log(valor)
         if (valor) {
           setInterval(latlngsTemp2 = [lat2, long2], 1000);
           setInterval(latlngs2.push(latlngsTemp2), 1000);
         } else {
           latlngs2 = [];
         }
+        console.log(latlngs2)
       });
     });
     function condicional() {
