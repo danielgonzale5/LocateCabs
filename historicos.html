@@ -553,7 +553,7 @@
       tiempo = dataTS.DatoTiempo;
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
 
-      for (var j = 0; j < dataTS.DatoTiempo.length; j++) {
+      for (var j = 0; j < tiempo.length; j++) {
         var date = new Date(parseFloat(tiempo[j]));
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var month = months[date.getMonth()];
