@@ -121,10 +121,10 @@ setTimeout(function () {
 setInterval(function () {
   con.query('SELECT * FROM gps WHERE Usuario = 1 ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
     if (err) throw err;
-    console.log("Funciona")
     data = JSON.parse(JSON.stringify(rows))
     var dataGPS = Object.values(data[0])
     var DataUsu = dataGPS[1]
+    console.log(DataUsu)
     var DataLat = parseFloat(dataGPS[2]).toFixed(6)
     var DataLong = parseFloat(dataGPS[3]).toFixed(6)
     var DataTime = parseFloat(dataGPS[4])
@@ -148,10 +148,10 @@ setInterval(function () {
 setInterval(function () {
     con.query('SELECT * FROM gps WHERE Usuario = 2 ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
       if (err) throw err;
-      console.log("Funciona")
       data = JSON.parse(JSON.stringify(rows))
       var dataGPS = Object.values(data[0])
       var DataUsu = dataGPS[1]
+      console.log(DataUsu)
       var DataLat = parseFloat(dataGPS[2]).toFixed(6)
       var DataLong = parseFloat(dataGPS[3]).toFixed(6)
       var DataTime = parseFloat(dataGPS[4])
