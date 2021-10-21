@@ -447,9 +447,6 @@
     function createStartPoint1(sp1) {
       startpoint1 = L.marker(sp1).addTo(mymap);
     }
-    function createStartPoint2(sp2) {
-      startpoint2 = L.marker(sp2).addTo(mymap);
-    }
     function create2StartPoint(sp1, sp2) {
       startpoint1 = L.marker(sp1).addTo(mymap);     
       startpoint2 = L.marker(sp2).addTo(mymap);
@@ -488,7 +485,7 @@
       if ((polyline_set == 1)) {
           polyline2.setLatLngs(ltlgap2)
           if (!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0) {
-            setTimeout(createStartPoint2(ltlgap2[0]), 1000)
+            setTimeout(createStartPoint1(ltlgap2[0]), 1000)
             startpoint_was_set = 1;
         }
       }
@@ -589,7 +586,7 @@
               if (document.getElementById('IDtxtID').value == "1") {
                 startpoint1.removeFrom(mymap);
               } else if (document.getElementById('IDtxtID').value == "2") {
-                startpoint2.removeFrom(mymap);
+                startpoint1.removeFrom(mymap);
               } else {
                 startpoint1.removeFrom(mymap);
                 startpoint2.removeFrom(mymap);
