@@ -125,7 +125,7 @@
   #container {
     background-color: rgba(255, 212, 20, .8);
     margin: 1px;
-    height: 650px;
+    height: auto;
     width: auto;
     border: 5px solid rgba(12, 12, 12, .8);
     border-radius: 15px;
@@ -146,7 +146,7 @@
     border-radius: 100px;
     cursor: pointer;
     position: relative;
-    transition: 1.2s;
+    transition: .5s;
   }
   .sw::after {
     content: "";
@@ -158,17 +158,7 @@
     position: absolute;
     top: 5px;
     left: 4px;
-    transition: .2s;
-  }
-  #switch:checked+.sw::after {
-    left: 70px;
-  }
-  #switch:checked+.sw {
-    left: 0px;
-    background-color: rgb(184, 194, 42);
-  }
-  #switch {
-    display: none;
+    transition: .5s;
   }
   #switch2:checked+.sw::after {
     left: 70px;
@@ -180,16 +170,7 @@
   #switch2 {
     display: none;
   }
-  #switch3:checked+.sw::after {
-    left: 70px;
-  }
-  #switch3:checked+.sw {
-    left: 0px;
-    background-color: rgb(184, 194, 42);
-  }
-  #switch3 {
-    display: none;
-  }
+
   .wrapper {
     display: flex;
     width: 100%;
@@ -316,6 +297,37 @@
     text-transform: uppercase;
     font-weight: 200;
   }
+
+  .slider {
+    -webkit-appearance: none;
+    width: auto;
+    height: 15px;
+    border-radius: 5px;  
+    background: #181818;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; 
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+  }
+
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+  }
+
 </style>
 <body>
   <div class="padre">
@@ -335,9 +347,7 @@
     <div class="wrapper">
       <div class="inlineclass" id="mapid"></div>
       <div class="inlineclass" style="text-align: center;" id="container">
-        <h1 style="text-align: center; padding-top: 15px;">CONSULTA DE HISTÓRICOS</h1>
-        <div></div>
-        <h2 style="text-align: center; margin-top: 15px;">Consultar trayecto</h2>
+        <h2 style="text-align: center; margin-top: 15px;">Consultar historial del trayecto</h2>
         <div></div>
         <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Inicio:</label>
         <input class="inlineclass" style="text-align: center;" type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00"
@@ -347,23 +357,28 @@
         <input class="inlineclass" style="text-align: center;" type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00"
           min="2021-06-01T00:00" max="2044-06-01T00:00">
         <div></div>
+        <label class="inlineclass" style="width: 140px;" for="vehiculo">ID del vehículo:</label>
+        <select name="cars" id="vehiculo" onchange="changehist()" style="margin-top: 10px; text-align: center; border-radius: 8px; font-size: 100%;">
+          <option value="none">Seleccionar ID</option>
+        </select>
+
+        <div></div>
         <div class="switch-container;" style="text-align: center; margin-top: 5px;">
           <input type="Checkbox" id="switch2">
-          <label for="switch2" onclick="condicional2();" class="sw"></label>
+          <label for="switch2" onclick="condicional_switch_historico(); " class="sw"></label>
         </div>
         <div></div>
-        <h2 style="text-align: center; margin-top: 15px;">Consultar ubicación</h2>
+        
+        <h2 style="text-align: center; margin-top: 15px; visibility:hidden;" id="title_poly">Recorrer Polilínea</h2> 
         <div></div>
-        <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Fecha y Hora:</label>
-        <input class="inlineclass" style="text-align: center;" type="datetime-local" id="CHist" onchange="changehistact()" name="CurrentHistoric" value="2021-06-01T00:00"
-          min="2021-06-01T00:00" max="2044-06-0 1T00:00">
-        <div></div>
-        <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-          <input type="Checkbox" id="switch3">
-          <label for="switch3" onclick="condicional3();" class="sw"></label>
+
+        <div class="slidecontainer">
+          <h4 style="text-align: center; visibility:hidden;" id="guia_recorrido" >Inicio - Fin</h4>
+          <input type="range" min="0" max="100" value="0" class="slider" id="myRange" onchange="imprimirValor();" style=" margin-top: 15px; margin-bottom: 15px; visibility:hidden;">
         </div>
       </div>
     </div>
+    
     <footer>
       <div class="footer-content">
         <h3>LocateCABS</h3>
@@ -375,30 +390,29 @@
       </div>
     </footer>
   </div>
+
+
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    //Declaración de Variables Globales
+
+    //-----------Declaración de Variables Globales
     let lat = 10.984719;
     let long = -74.811302;
-    var polylinePoints;
-    var polyline;
     var datainicio;
     var datafin;
     var polylineHistoric;
-    var polyline_set = 0;
-    var startpoint;
+    var hist_was_set = 0;
     var startpointHist;
     var finalpointHist;
-    var currentpointHist;
-    var currentpointHist_was_created=0;
-    var startpoint_was_set = 0;
-    var hist_was_set = 0;
-    let latlngs = [];
-    let latlngsTemp = [];
+    let User = [];
     let Coordinates = [];
-    let CCoordinates = [];
+    var switch_turned_on=false;
+    var historic_updated=false;
+    var popuphistorico;
+    let tiempo=[];
+    let tiempotran=[];
 
-
+    //Este objeto es el ícono verde que se observa en el mapa. Es personalizado, por tanto se importa desde una URL externa.
     var greenIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -409,9 +423,20 @@
     });
 
 
+    //------------------Zona de funciones
 
+    //Esta función imprime el valor de la posición de la polilínea del histórico en consola y genera el Popup en pantalla por cada vez que se desliza en el Slider.
+    function imprimirValor(){
+      var title=document.getElementById('title_poly');
+      var slider= document.getElementById('myRange');
+      slide_valor= slider.value;
+      console.log("Moviéndose a la posición ("+ slide_valor + ") del vector de polilínea generado");
+      latlng = polylineHistoric.getLatLngs()[slide_valor];
+      let info = tiempotran[slide_valor].toString() + " Ubicación: " + latlng.toString();
+      popuphistorico = L.popup().setLatLng(latlng).setContent(info).openOn(mymap);
+    };
 
-    //Condición de Calendario
+    //Función que regula el valor de los calendarios de tal modo que el final se encuentre siempre igual o después del inicial.
     window.addEventListener('load', function () {
       datainicio = document.getElementById('IHist')
       datainicio.addEventListener('change', function () { 
@@ -429,44 +454,34 @@
 
     });
 
-    //Función de consulta de histórico o
+    //Función para cambiar el histórico si se cambian los valores de calendario o ID del vehículo.
     function changehist() {
       valor = document.getElementById('switch2').checked;
-      if (valor) {
-        enviarhist();
-        setTimeout(function () {
-          if (Coordinates.length != 0) {
-            if (hist_was_set == 1) {
-              polylineHistoric.setLatLngs(Coordinates);
-              startpointHist.setLatLng(Coordinates[0]);
-              finalpointHist.setLatLng(Coordinates[Coordinates.length - 1]);
-              mymap.fitBounds(Coordinates);
-            } else {
-              startPolyline2();
-              startpointHist = L.marker(Coordinates[0]).addTo(mymap);
-              finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
-              polylineHistoric.on('click',(e)=>{
-                let info = "Ubicación: " + e.latlng.toString();
-                L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap); 
-              })
-            }
-          } else {
-            console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
-          }
-        }, 1000)
+      var select = document.getElementById('vehiculo');
+      var user_value = select.options[select.selectedIndex].value;
+
+      if (valor && user_value!='none') {
+          historic_updated=true;
+          console.log('Se seleccionó el vehículo con la ID: '+ user_value);
+          enviarhist(user_value);
+          
       }
     }
-    //Función de coneión Frontend-Backend del histórico
-    async function enviarhist() {
+
+    //Función de conexión Frontend-Backend del histórico
+    async function enviarhist(user_id) {
       datainicio = document.getElementById('IHist').value;
       datafin = document.getElementById('FHist').value;
       datainicio = new Date(datainicio).valueOf();
       datafin = new Date(datafin).valueOf();
       datainicio = datainicio.toString();
       datafin = datafin.toString();
+      datauser = user_id.toString();
       console.log('datainicio= ' + datainicio);
-      console.log('datafina= ' + datafin);
-      const info = { datainicio, datafin };
+      console.log('datafin= ' + datafin);
+      console.log('datauser= ' + datauser);
+
+      const info = { datainicio, datafin, datauser };
       const options = {
         method: 'POST',
         headers: {
@@ -477,190 +492,243 @@
       await fetch('/historic', options);
     }
 
-
-    //Función de consulta de histórico actual
-    function changehistact() {
-      valor = document.getElementById('switch3').checked;
-      if (valor) {
-        enviarhistact();
-        if ((CCoordinates[0] !== 10.9847191) && (CCoordinates[1] !== -74.811302) && currentpointHist_was_created==0) {
-              currentpointHist = L.marker(CCoordinates).addTo(mymap); //Crea marcador cuando sea necesario
-              currentpointHist_was_created=1;
-              mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
-        } 
-        else{
-
-           if ((CCoordinates[0] !== 10.9847191) && (CCoordinates[1] !== -74.811302) && currentpointHist_was_created==1) {
-              currentpointHist.setLatLng(CCoordinates); //Cambia las coordenadas del marcador
-              mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]));  //Centra hacia la posición actual consulta.
-          }
-        }
-         
-      }
-    }
-    //Función de coneión Frontend-Backend del histórico actual
-    async function enviarhistact() {
-      dataactual = document.getElementById('CHist').value;
-      dataactual = new Date(dataactual).valueOf();
-      dataactual = dataactual.toString();
-      console.log('dataactual= ' + dataactual);
-      const info = { dataactual };
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(info)
-      };
-      await fetch('/historicact', options);
+    //Esta función inicia el objeto de polilínea del histórico cuando se activa el switch o sea cambia el calendario/ID del vehículo siempre y cuando no se haya creado un objeto antes.
+    function startPolyHist() {
+      polylineHistoric = L.polyline(Coordinates, { color: 'red' }).addTo(mymap);
+      mymap.fitBounds(Coordinates)
     }
 
-
-    //Serie de funciones para el mapa
-    function MapsetUbication() {
-      mymap.setView(new L.LatLng(lat, long));
-    }
-    function MapAutoCenter() {
-      if (document.getElementById('switch').checked) {
-        if (startpoint_was_set == 1) {
-          mymap.fitBounds(polyline.getBounds()); //Centra hacia la polilínea.
-        }
-      } else {
-        mymap.setView(new L.LatLng(lat, long), 18);  //Centra hacia la posición actual.
-      }
-    }
-    function setMarker() {
-      if (lat != null && isNaN(lat) == false && long != null && isNaN(long) == false) {
-        circle_marker.setLatLng(new L.LatLng(lat, long));
-        circle.setLatLng(new L.LatLng(lat, long));
-      }
-    }
-    function Markerlabel() {
-      circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
-    }
-    function createStartPoint() {
-      startpoint = L.marker([lat, long]).addTo(mymap);
-    }
-    function startPolyline() {
-      if (isNaN(latlngs) == false) {
-        polyline = L.polyline(latlngs).addTo(mymap);
-        polyline_set = 1;
-      }
-    }
-    function startPolyline2() {
-      if (Coordinates.length != 0) {
-        polylineHistoric = L.polyline(Coordinates, { color: 'red' }).addTo(mymap);
-        mymap.fitBounds(Coordinates);
-        hist_was_set = 1;
-      } else {
-        console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
-      }
-    }
-    function addPolyline() {
-      if ((polyline_set == 1)) {
-        polyline.setLatLngs(latlngs)
-        if (!polyline.isEmpty() && polyline.getLatLngs().length == 1 && startpoint_was_set == 0) {
-          setTimeout(createStartPoint(), 1000)
-          startpoint_was_set = 1;
-        }
-      }
-    }
-    function clearpoly() {
-      if (polyline_set == 1) {
-        polyline.removeFrom(mymap)
-      }
-    }
-    function clearpoly2() {
+    //Esta función limpia la polilínea que representa el histórico.
+    function clearPolyHist() {
       polylineHistoric.removeFrom(mymap)
       hist_was_set = 0;
     }
+
+
+
+    //-------------Zona de objetos, condicionales y ciclos para generar la lógica principal del documento.
+
+    //Aquí se crea el objeto asignado para el mapa llamado "mymap".
     let mymap = L.map('mapid').setView([lat, long], 18);
-    var circle = L.circle([lat, long], { radius: 50, color: '#FCFF42' }).addTo(mymap);
-    var circle_marker = L.circleMarker([lat, long], { color: '#CA2049' }).bindPopup("No Data", { autoPan: false }).addTo(mymap);
-    circle_marker.openPopup();
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);
-    //Recepción de información del Backend
-    io().on('timestamp', function (dataTS) {
-      Coordinates = dataTS.DataTimeStamp;
-      console.log('io-on-timestamp Coordinates= ' + Coordinates)
+
+    //Este socket recibe el vector de usuarios de la base de datos vistos por primera vez cuando se conecta el cliente a la página.
+    io().on('init_users', function (users){
+      Userv= users.Usersvec;
+      console.log(Userv);
+
+      var lista_select = document.getElementById('vehiculo');
+
+      for (var i = 0; i<Userv.length; i++){
+        if (Userv[i]!='' && Userv[i]!='-'){
+          var new_opt = document.createElement('option');
+          new_opt.value = Userv[i];
+          new_opt.innerHTML = Userv[i];
+          lista_select.appendChild(new_opt);
+        }
+      } 
     });
-    //Funciones de los switches al trazar histórico
-    function condicional2() {
-      if (document.getElementById('switch2').disabled != true) {
-        valor = document.getElementById('switch2').checked;
-        if (valor) {
-          if (hist_was_set == 1) {
-            clearpoly2();
-            startpointHist.removeFrom(mymap);
-            finalpointHist.removeFrom(mymap);
-          }
-          setMarker();
-          circle_marker.setRadius(10);
-          circle.setRadius(50);
-          circle_marker.openPopup();
-          document.getElementById('switch3').disabled = false;
-        } else {
-          document.getElementById('switch3').disabled = true;
-          enviarhist();
-          setTimeout(function () {
-            startPolyline2();
-            circle_marker.setRadius(0);
-            circle.setRadius(0);
-            if (Coordinates.length != 0) {
+
+    //Este socket, a diferencia del anterior, detecta si hay un usuario nuevo en la base de datos y lo agrega a la lista desplegable. Esto es para que el cliente no se vea obligado a recargar la página.
+    io().on('new_user_detected', function(user){
+
+      usuario_detectado=user.Newuser;
+      var lista_select = document.getElementById('vehiculo');
+      var new_opt = document.createElement('option');
+      new_opt.value = usuario_detectado;
+      new_opt.innerHTML = usuario_detectado;
+      lista_select.appendChild(new_opt);
+
+    })
+
+
+    //Este es el socket donde se reciben los vectores correspondientes a Usuario, Coordenadas y Tiempo desde el evento "timestamp" emitido por el Backend.
+    //Aquí se llaman casi todas las funciones importantes que generan las polilíneas para que sea un proceso sincrónico.
+    io().on('timestamp', function (dataTS) {
+      User = dataTS.DataUsuario;
+      Coordinates = dataTS.DataTimeStamp;
+      tiempo = dataTS.DatoTiempo;
+      console.log('io-on-timestamp Coordinates= ' + Coordinates)
+
+      for (var j = 0; j < dataTS.DatoTiempo.length; j++) {
+        var date = new Date(parseFloat(tiempo[j]));
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var month = months[date.getMonth()];
+        var hours = date.toLocaleTimeString();
+        var minutes = "0" + date.getMinutes();
+        var seconds = "0" + date.getSeconds();
+        var formattedTime = 'Tiempo: '+hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2)+' Fecha: '+date.getDate() + "/" + month + "/" + date.getFullYear();
+        tiempotran.push(formattedTime);
+      }
+
+
+      if (switch_turned_on){
+
+        if (Coordinates.length != 0 && hist_was_set==0) {
+              var title=document.getElementById('title_poly');
+              var slider= document.getElementById('myRange');
+              var guia= document.getElementById('guia_recorrido');
+              startPolyHist();
               startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).addTo(mymap);
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
               finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
               startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
+              slider.min=0; slider.max=polylineHistoric.getLatLngs().length-1;
+              guia.style.visibility="visible"; title.style.visibility="visible"; slider.style.visibility="visible";
               polylineHistoric.on('click',(e)=>{
-                let info = "Ubicación: " + e.latlng.toString();
+
+                for (var i = 0; i < tiempo.length; i++) {
+                  var errorlat = Math.abs((Math.abs(parseFloat(Coordinates[i][0])) - Math.abs(parseFloat(e.latlng.lat)) ))/ Math.abs(parseFloat(Coordinates[i][0])); 
+                  var errorlot = Math.abs((Math.abs(parseFloat(Coordinates[i][1])) - Math.abs(parseFloat(e.latlng.lng)) ))/ Math.abs(parseFloat(Coordinates[i][1])); 
+                  if((errorlat<0.000003)&&(errorlot<0.000003)){
+                    break; 
+                  }
+
+                  if (tiempo.length==i+1) {
+                    break; 
+                  }
+
+                }
+
+                let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString();
                 L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
               })
-            }
-          }, 500)
+              hist_was_set=1;
         }
+        if (Coordinates.length==0 && hist_was_set==0){
+                console.log('El intervalo de tiempo ingresado no es válido.');
+        } 
+              
+        switch_turned_on=false;
+
+      } else{
+
+        if (historic_updated){
+          var title=document.getElementById('title_poly');
+          var slider= document.getElementById('myRange');
+          var guia= document.getElementById('guia_recorrido');
+          if (hist_was_set==0){
+            if (Coordinates.length != 0){
+
+              setTimeout(function () {           
+                    startPolyHist();
+                    startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).addTo(mymap);
+                    finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
+                    finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
+                    startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
+                    slider.min=0; slider.max=polylineHistoric.getLatLngs().length-1;
+                    guia.style.visibility="visible"; title.style.visibility="visible"; slider.style.visibility="visible";
+                    polylineHistoric.on('click',(e)=>{
+                      
+                      for (var i = 0; i < tiempo.length; i++) {
+                        var errorlat = Math.abs((Math.abs(parseFloat(Coordinates[i][0])) - Math.abs(parseFloat(e.latlng.lat)) ))/ Math.abs(parseFloat(Coordinates[i][0])); 
+                        var errorlot = Math.abs((Math.abs(parseFloat(Coordinates[i][1])) - Math.abs(parseFloat(e.latlng.lng)) ))/ Math.abs(parseFloat(Coordinates[i][1])); 
+                        if((errorlat<0.000003)&&(errorlot<0.000003)){
+                          break; 
+                        }
+
+                        if (tiempo.length==i+1) {
+                          break; 
+                        }
+
+                      }
+
+                      let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString();
+                      L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
+
+                    })
+
+                    hist_was_set=1;
+
+                }, 300)
+
+                mymap.fitBounds(Coordinates);
+            } else {
+
+              console.log('El intervalo de tiempo ingresado no es válido.');
+
+            }
+            
+
+
+          } else {
+            if (Coordinates.length != 0){
+              setTimeout(function () { 
+                polylineHistoric.setLatLngs(Coordinates);
+                startpointHist.setLatLng(Coordinates[0]);
+                finalpointHist.setLatLng(Coordinates[Coordinates.length - 1]);
+                mymap.fitBounds(Coordinates);
+                mymap.closePopup();
+                slider.min=0; slider.max=polylineHistoric.getLatLngs().length-1;
+                polylineHistoric.on('click',(e)=>{
+
+                  for (var i = 0; i < tiempo.length; i++) {
+                    var errorlat = Math.abs((Math.abs(parseFloat(Coordinates[i][0])) - Math.abs(parseFloat(e.latlng.lat)) ))/ Math.abs(parseFloat(Coordinates[i][0])); 
+                    var errorlot = Math.abs((Math.abs(parseFloat(Coordinates[i][1])) - Math.abs(parseFloat(e.latlng.lng)) ))/ Math.abs(parseFloat(Coordinates[i][1])); 
+                    if((errorlat<0.000003)&&(errorlot<0.000003)){
+                      break; 
+                    }
+
+                    if (tiempo.length==i+1) {
+                      break; 
+                    }
+
+                  }
+
+                  let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString();
+                  L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
+                })
+              }, 300)
+
+            }else{
+
+              console.log('El intervalo de tiempo nuevo no es válido.');
+
+            }
+          }
+
+          historic_updated=false;
+
+
+        }
+
       }
-    }
-    io().on('ctimestamp', function (dataCTS) {
-      CCoordinates = dataCTS.CurrentDataTimeStamp;
-      console.log('io-on-current timestamp Coordinates= ' + CCoordinates)
+
+
     });
-    function condicional3() {
-      if (document.getElementById('switch3').disabled != true) {
-        valor = document.getElementById('switch3').checked;
+   
+    //Función que define la acción a realizar cuando se activa o desactiva el switch de histórico. (Su callback se da por presionar click en el switch)
+    function condicional_switch_historico() {
+        var valor = document.getElementById('switch2').checked;
+        var guia= document.getElementById('guia_recorrido');
+        var title=document.getElementById('title_poly');
+        var slider= document.getElementById('myRange');
+        var select = document.getElementById('vehiculo');
+        var user_value = select.options[select.selectedIndex].value;
+
         if (valor) {
           if (hist_was_set == 1) {
-            clearpoly2();
+
+            guia.style.visibility="hidden"; title.style.visibility="hidden"; slider.style.visibility="hidden";
+            clearPolyHist();
             startpointHist.removeFrom(mymap);
             finalpointHist.removeFrom(mymap);
+            mymap.closePopup();
           }
-          setMarker();
-          circle_marker.setRadius(10);
-          circle.setRadius(50);
-          circle_marker.openPopup();
-          if (currentpointHist_was_created==1){
-            currentpointHist.removeFrom(mymap);
-            currentpointHist_was_created=0;
-          }
-          document.getElementById('switch2').disabled = false;
         } else {
-          document.getElementById('switch2').disabled = true;
-          enviarhistact();
-          setTimeout(function () {
-            if ((CCoordinates[0] !== 10.9847191) && (CCoordinates[1] !== -74.811302) && currentpointHist_was_created==0) {
-              currentpointHist = L.marker(CCoordinates).addTo(mymap);
-              currentpointHist_was_created=1;
-              mymap.setView(new L.LatLng(CCoordinates[0], CCoordinates[1]), 18);  //Centra hacia la posición actual consulta.
-            } 
-            circle_marker.closePopup();
-            circle_marker.setRadius(0);
-            circle.setRadius(0);
-          }, 500)
+          if(user_value!='none'){
+            switch_turned_on=true;
+            console.log('Se seleccionó el vehículo con la ID: '+ user_value);
+            enviarhist(user_value);
+ 
+          }
+
         }
-      }
     }
+
   </script>
 </body>
 
