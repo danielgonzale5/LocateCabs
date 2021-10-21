@@ -492,7 +492,7 @@
       }
     }
 
-    
+
     function Markerlabel() {
       circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
     }
@@ -544,9 +544,11 @@
     document.addEventListener('DOMContentLoaded', function () {
       old_user = "-";
       io().on('change', function (data) {
+
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
+        
         var date = new Date(parseFloat(data.DataTime));
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var month = months[date.getMonth()];
@@ -555,6 +557,7 @@
         var seconds = "0" + date.getSeconds();
         var formattedTime = hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
         var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
+
         document.getElementById('FechaID').innerHTML = datofecha;
         document.getElementById('HoraID').innerHTML = formattedTime;
         lat = data.DataLat;

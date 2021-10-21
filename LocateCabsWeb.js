@@ -155,6 +155,8 @@ app.post('/historic', function (req, res) {
     var ConverArray = []
     var CoordinatesArrTemp = []
     var CoordinatesArr = []
+    var timearrtemp = []
+    var timearr = []
     console.log(DataHist)
     for (var i = 0; i < DataHist.length; i++) {
       ConverArray.push(Object.values(DataHist[i]))
@@ -162,9 +164,11 @@ app.post('/historic', function (req, res) {
     console.log(ConverArray)
     for (var j = 0; j < DataHist.length; j++) {
       CoordinatesArrTemp = [ConverArray[j][2], ConverArray[j][3]];
+      timearrtemp = [ConverArray[j][4]] ;
       CoordinatesArr.push(CoordinatesArrTemp);
+      timearr.push(timearrtemp);
     }
-    var DatoTiempo = ConverArray
+    var DatoTiempo = timearr
     var DataTimeStamp = CoordinatesArr
     io.emit('timestamp', {
       DataTimeStamp: DataTimeStamp,

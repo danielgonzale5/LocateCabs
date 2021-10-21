@@ -389,6 +389,7 @@
     var startpoint;
     var startpointHist;
     var finalpointHist;
+    var pointtime ; 
     var currentpointHist;
     var currentpointHist_was_created=0;
     var startpoint_was_set = 0;
@@ -397,6 +398,11 @@
     let latlngsTemp = [];
     let Coordinates = [];
     let CCoordinates = [];
+    let tiempo = [] ; 
+    let tiempotran = [] ; 
+    let tiempoarr =[];
+    let marktime = [] ; 
+
 
 
     var greenIcon = new L.Icon({
@@ -444,8 +450,11 @@
               startpointHist = L.marker(Coordinates[0]).addTo(mymap);
               finalpointHist = L.circleMarker(Coordinates[Coordinates.length - 1], { color: '#FFB242' }).addTo(mymap);
               polylineHistoric.on('click',(e)=>{
+                
                 let info = "Ubicación: " + e.latlng.toString();
                 L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap); 
+
+
               })
             }
           } else {
@@ -585,7 +594,19 @@
     io().on('timestamp', function (dataTS) {
       Coordinates = dataTS.DataTimeStamp;
       tiempo = dataTS.DatoTiempo;
-      console.log('prueba= ' + tiempo)
+
+      for (var j = 0; j < dataTS.DatoTiempo.length; j++) {
+        var date = new Date(parseFloat(tiempo[j]));
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var month = months[date.getMonth()];
+        var hours = date.toLocaleTimeString();
+        var minutes = "0" + date.getMinutes();
+        var seconds = "0" + date.getSeconds();
+        var formattedTime = 'hora: '+hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2)+' fecha: '+date.getDate() + "/" + month + "/" + date.getFullYear();
+        tiempotran.push(formattedTime);
+      }
+
+      console.log('prueba= ' + tiempotran)
       console.log('io-on-timestamp Coordinates= ' + Coordinates)
     });
 
@@ -609,23 +630,32 @@
           document.getElementById('switch3').disabled = true;
           enviarhist();
           setTimeout(function () {
+
             startPolyline2();
             circle_marker.setRadius(0);
             circle.setRadius(0);
             if (Coordinates.length != 0) {
+
+
               startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).addTo(mymap);
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
+ 
+
               finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
               startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
               polylineHistoric.on('click',(e)=>{
-                let info = "Ubicación: " + e.latlng.toString();
-                L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
+                for (var i = 0;  i < tiempo.length; i++) {
+                let info =  tiempotran.toString();
+                L.popup().setLatLng(Coordinates[i]).setContent(info).openOn(mymap);
+                }
+
               })
             }
           }, 500)
         }
       }
     }
+    
     io().on('ctimestamp', function (dataCTS) {
       CCoordinates = dataCTS.CurrentDataTimeStamp;
       console.log('io-on-current timestamp Coordinates= ' + CCoordinates)
