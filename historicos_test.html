@@ -190,6 +190,39 @@
   #switch3 {
     display: none;
   }
+
+  #historic-range{
+      -webkit-appearance: none;
+      width: 45%;
+      height: 7px;
+      border-radius: 3px;
+      outline: none;
+  }
+
+  #historic-range::-webkit-slider-thumb{
+      -webkit-appearance: none;
+      width: 10px;
+      height: 10px;
+      cursor: pointer;
+      z-index: 3;
+      position: relative;
+      background-color: black;
+      border-radius: 7px;
+  }
+
+  #Selector{
+      height: 48px;
+      width: 48px;
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2; 
+  }
+
+
+
+
   .wrapper {
     display: flex;
     width: 100%;
@@ -349,16 +382,25 @@
         <div></div>
         <div class="switch-container;" style="text-align: center; margin-top: 5px;">
           <input type="Checkbox" id="switch2">
-          <label for="switch2" onclick="condicional2(); Slide();" class="sw"></label>
+          <label for="switch2" onclick="condicional2(); CondicionSlide();" class="sw"></label>
         </div>
         <div></div>
         <h2 style="text-align: center; margin-top: 15px;">Inserte ID específica</h2>
         <h4 style="text-align: center; margin-top: 15px;">"-" para observar todos los taxis</h4>
         <input style="text-align: center; margin-top: 15px;" type="text" id="IDtxtID" name="IDtxt" value="-">
+      
         <div></div>
-        <label for="SlidePoly" id="SlidePolyL" style="display:none">Recorrer Polilinea:</label>
-        <input type="number" id="SlidePoly" name="SlidePoly" style="display:none" onchange="changepoly()" value = "0" min="1" max="9999999999">
-        <div></div>
+        <h2 style="text-align: center; margin-top: 25px;">Recorrer Polilinea</h2>
+         
+
+        <div class="slider">
+            <input type="range" id="historic-range" value="50" min="0" max="100" onchange="changepoly()"/>   
+                <div id="Selector">
+            </div>
+        </div>
+       
+        
+
       </div>
     </div>
     <footer>
@@ -513,7 +555,8 @@
         }, 1000)
       }
     }
-    //Función de coneión Frontend-Backend del histórico
+
+    //Función de conexión Frontend-Backend del histórico
     async function enviarhist() {
       datainicio = document.getElementById('IHist').value;
       datafin = document.getElementById('FHist').value;
@@ -544,6 +587,7 @@
         circle.setLatLng(new L.LatLng(ltlg[0], ltlg[1]));
       }
     }
+
     function setMarkers(data) {
         data.BMS.forEach(function (obj) {
         if (!markers.hasOwnProperty(obj.id)) {
@@ -699,7 +743,7 @@
                 startpointHist1 = L.marker(Cord1[0], {icon: greenIcon }).addTo(mymap);
                 finalpointHist1 = L.marker(Cord1[Cord1.length - 1]).addTo(mymap);
                 finalpointHist1.bindPopup("Fin", { autoPan: false }).openPopup()
-                startpointHist1.bindPopup("Inicio", { autoPan: false }).openPopup()
+                startpointHist1.bindPopup("Inicio", { autoPan: false}).openPopup()
                 polylineHistoric1.on('click',(e)=>{
                   let info = "Ubicación: " + e.latlng.toString();
                   L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
@@ -719,30 +763,32 @@
           }, 500)
         }
     }
-    function Slide() {
-      var SlidePoly = document.getElementById("SlidePoly");
-      var SlidePolyL = document.getElementById("SlidePolyL");
+
+    function CondicionSlide() {
+      var SlidePoly = document.getElementById('historic-range');
+      var select = document.getElementById('selector');
       if (document.getElementById('switch2').checked) {
         if (document.getElementById('IDtxtID').value == "1") {
           SlidePoly.style.display = "block";
-          SlidePolyL.style.display = "block";
+          select.style.display = "block";
           SlidePoly.setAttribute("max",Cord1.length);
         } else if (document.getElementById('IDtxtID').value == "2") {
           SlidePoly.style.display = "block";
-          SlidePolyL.style.display = "block";
+          select.style.display = "block";
           SlidePoly.setAttribute("max",Cord2.length);
         } else {
           SlidePoly.style.display = "none";
-          SlidePolyL.style.display = "none";
+          select.style.display = "none";
           console.log("El deslizamiento solo se realiza por una polilinea")
         }
       } else {
         SlidePoly.style.display = "none";
-        SlidePolyL.style.display = "none";
+        select.style.display = "none";
       }
     }
+
     function changepoly() {
-      var polypos = document.getElementById('SlidePoly').value;
+      var polypos = document.getElementById('selector').value;
       if (document.getElementById('IDtxtID').value == "1") {
         let infocp = "Ubicación: " + Cord1[polypos].toString();
         L.popup().setLatLng(Cord1[polypos]).setContent(infocp).openOn(mymap); 
@@ -750,9 +796,10 @@
         let infocp = "Ubicación: " + Cord2[polypos].toString();
         L.popup().setLatLng(Cord2[polypos]).setContent(infocp).openOn(mymap); 
       } else {
-        console.log("El deslizamiento solo se realiza por una polilinea")
+        console.log("El deslizamiento solo se realiza por una polilinea.")
       }
     }
+
   </script>
 </body>
 
