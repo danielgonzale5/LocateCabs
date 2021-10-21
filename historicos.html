@@ -190,6 +190,14 @@
   #switch3 {
     display: none;
   }
+
+
+  #historic-range{
+    width: 50px;
+    height: 10px;
+    cursor: pointer;
+  }
+
   .wrapper {
     display: flex;
     width: 100%;
@@ -352,16 +360,14 @@
           <label for="switch2" onclick="condicional2();" class="sw"></label>
         </div>
         <div></div>
-        <h2 style="text-align: center; margin-top: 15px;">Consultar ubicación</h2>
+        <h2 style="text-align: center; margin-top: 15px;">RECORRER POLILÍNEA</h2> 
         <div></div>
-        <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Fecha y Hora:</label>
-        <input class="inlineclass" style="text-align: center;" type="datetime-local" id="CHist" onchange="changehistact()" name="CurrentHistoric" value="2021-06-01T00:00"
-          min="2021-06-01T00:00" max="2044-06-0 1T00:00">
-        <div></div>
-        <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-          <input type="Checkbox" id="switch3">
-          <label for="switch3" onclick="condicional3();" class="sw"></label>
+        <div class="slider">
+          <input type="range" id="historic-range" value="50" min="0" max="100" onchange="changepoly()"/>   
+              <div id="Selector">
+          </div>
         </div>
+     
       </div>
     </div>
     <footer>
