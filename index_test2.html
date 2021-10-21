@@ -473,10 +473,9 @@
         }
       }
     }
-    function setMarker(ltlg) {
-      if (ltlg[0] != null && isNaN(ltlg[0]) == false && ltlg[1] != null && isNaN(ltlg[1]) == false) {
-        circle_marker.setLatLng(new L.LatLng(ltlg[0], ltlg[1]));
-        circle.setLatLng(new L.LatLng(ltlg[0], ltlg[1]));
+    function setMarker(lat, long) {
+      if (lat != null && isNaN(lat) == false && long != null && isNaN(long) == false) {
+        L.marker(lat, long).addTo(mymap);
       }
     }
     function setMarkers(array) {
@@ -601,7 +600,7 @@
         usuario = data.DataUsu;
         lat = data.DataLat;
         long = data.DataLong;
-      
+        setInterval(setMarker(lat, long), 1000);
         valor = document.getElementById('switch').checked;
         if (valor) {
           setInterval(latlngsTemp1 = [lat, long], 1000);
@@ -642,7 +641,7 @@
         usuario = data.DataUsu;
         lat = data.DataLat;
         long = data.DataLong;
-      
+        setInterval(setMarker(lat, long), 1000);
         valor = document.getElementById('switch').checked;
         if (valor) {
           setInterval(latlngsTemp2 = [lat, long], 1000);
