@@ -515,7 +515,7 @@
                 setInterval(latlngsTemp1 = [lat1, long1], 1000);
                 setInterval(latlngs1.push(latlngsTemp1), 1000);
             } else {
-                startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
+                startpoint1 = L.marker(latlngs1[0]).bindPopup("Inicio ID: 1", { autoPan: false }).addTo(mymap);
                 setInterval(latlngsTemp1 = [lat1, long1], 1000);
                 setInterval(latlngs1.push(latlngsTemp1), 1000);
             }
@@ -526,7 +526,7 @@
                 setInterval(latlngsTemp1 = [lat1, long1], 1000);
                 setInterval(latlngs1.push(latlngsTemp1), 1000);
             } else {
-                startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
+                startpoint1 = L.marker(latlngs1[0]).bindPopup("Inicio ID: 1", { autoPan: false }).addTo(mymap);
                 setInterval(latlngsTemp1 = [lat1, long1], 1000);
                 setInterval(latlngs1.push(latlngsTemp1), 1000);
             }
@@ -563,7 +563,7 @@
                     setInterval(latlngsTemp2 = [lat2, long2], 1000);
                     setInterval(latlngs2.push(latlngsTemp2), 1000);
                 } else {
-                    startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
+                    startpoint2 = L.marker(latlngs2[0]).bindPopup("Inicio ID: 2", { autoPan: false }).addTo(mymap);
                     setInterval(latlngsTemp2 = [lat2, long2], 1000);
                     setInterval(latlngs2.push(latlngsTemp2), 1000);
                 }
@@ -572,7 +572,7 @@
                     setInterval(latlngsTemp2 = [lat2, long2], 1000);
                     setInterval(latlngs2.push(latlngsTemp2), 1000);
                 } else {
-                    startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
+                    startpoint2 = L.marker(latlngs2[0]).bindPopup("Inicio ID: 2", { autoPan: false }).addTo(mymap);
                     setInterval(latlngsTemp2 = [lat2, long2], 1000);
                     setInterval(latlngs2.push(latlngsTemp2), 1000);
                 }
