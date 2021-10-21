@@ -488,8 +488,6 @@
       }
     }
     let mymap = L.map('mapid').setView([lat, long], 18);
-    var point1 = L.marker([lat1, long1]).addTo(mymap);
-    var point2 = L.marker([lat2, long2]).addTo(mymap);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
@@ -497,6 +495,7 @@
     //Recepción y traducción de información del Backend
     document.addEventListener('DOMContentLoaded', function () {
       io().on('change1', function (data) {
+        var point1 = L.marker([lat1, long1]).addTo(mymap);
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
@@ -543,6 +542,7 @@
         }
       });
       io().on('change2', function (data) {
+        var point2 = L.marker([lat2, long2]).addTo(mymap);
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
