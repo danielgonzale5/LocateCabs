@@ -534,6 +534,15 @@
         } else {
           latlngs1 = [];
         }
+        if (valor) {
+            if (document.getElementById('IDtxtID').value == "1") {
+                startpoint1 = L.marker(latlngs1[0]).addTo(mymap); 
+            } else if (document.getElementById('IDtxtID').value == "2") {
+
+            } else {
+                startpoint1 = L.marker(latlngs1[0]).addTo(mymap);  
+            }   
+        }
       });
       io().on('change2', function (data) {
         document.getElementById('UsuID').innerHTML = data.DataUsu;
@@ -561,6 +570,15 @@
         } else {
           latlngs2 = [];
         }
+        if (valor) {
+            if (document.getElementById('IDtxtID').value == "1") {
+                
+            } else if (document.getElementById('IDtxtID').value == "2") {
+                startpoint2 = L.marker(latlngs2[0]).addTo(mymap); 
+            } else {
+                startpoint2 = L.marker(latlngs2[0]).addTo(mymap);  
+            }   
+        }
         console.log(latlngs2)
       });
     });
@@ -572,8 +590,7 @@
             startpoint1.removeFrom(mymap);
             startpoint2.removeFrom(mymap);
           }, 200)
-        }
-        else {
+        } else {
           if (document.getElementById('IDtxtID').value == "1") {
             console.log('latlngs1=' + latlngs1.length)
             setInterval(function () {
@@ -581,7 +598,6 @@
             }, 200);   
             setTimeout(function () {
               startPolyline1(latlngs1);
-              startpoint1 = L.marker(latlngs1[0]).addTo(mymap); 
             }, 200);
           } else if (document.getElementById('IDtxtID').value == "2") {
             console.log('latlngs2=' + latlngs2.length)
@@ -590,7 +606,6 @@
             }, 200);
             setTimeout(function () {
               startPolyline2(latlngs2);
-              startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
             }, 200);
           } else {
             console.log('latlngs1=' + latlngs1.length)
@@ -600,8 +615,6 @@
             }, 200);
             setTimeout(function () {
               start2Polyline(latlngs1, latlngs2);
-                startpoint1 = L.marker(latlngs1[0]).addTo(mymap);     
-                startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
             }, 200);
           }
         }
