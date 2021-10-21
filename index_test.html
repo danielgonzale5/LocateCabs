@@ -481,8 +481,8 @@
       }
     }
     let mymap = L.map('mapid').setView([lat, long], 18);
-    var point1 = L.marker([lat1, long1]).bindPopup("1", { autoPan: false }).addTo(mymap);
-    var point2 = L.marker([lat2, long2]).bindPopup("2", { autoPan: false }).addTo(mymap);
+    var point1 = L.marker([lat1, long1]).bindPopup("ID Usuario: 1", { autoPan: false }).addTo(mymap);
+    var point2 = L.marker([lat2, long2]).bindPopup("ID Usuario: 2", { autoPan: false }).addTo(mymap);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
