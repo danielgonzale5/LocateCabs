@@ -33,13 +33,6 @@ app.get('/historicos', function (req, res) {
   res.sendfile(dir + '/historicos.html');
 });
 
-app.get('/historicostest', function (req, res) {
-  res.sendfile(dir + '/historicos_test.html');
-});
-app.get('/indextest', function (req, res) {
-  res.sendfile(dir + '/index_test.html');
-});
-
 //Conexión al puerto establecido
 server.listen(port, function (error) {
   if (error) {
@@ -256,6 +249,9 @@ app.post('/historic', function (req, res) {
     var CoordinatesArrTemp = []
     var CoordinatesArr = []
     var UserData = []
+    var timearrtemp = []
+    var timearr = []
+    
     console.log(DataHist)
     for (var i = 0; i < DataHist.length; i++) {
       ConverArray.push(Object.values(DataHist[i]))
@@ -265,12 +261,17 @@ app.post('/historic', function (req, res) {
       UserData.push(ConverArray[j][1]);
       CoordinatesArrTemp = [ConverArray[j][2], ConverArray[j][3]];
       CoordinatesArr.push(CoordinatesArrTemp);
+      timearrtemp = [ConverArray[j][4]];
+      timearr.push(timearrtemp);
     }
-    var DataTimeStamp = CoordinatesArr
-    var DataUsuario = UserData
+
+    var DataTimeStamp = CoordinatesArr;
+    var DatoTiempo = timearr;
+    var DataUsuario = UserData;
     io.emit('timestamp', {
       DataUsuario: DataUsuario,
-      DataTimeStamp: DataTimeStamp
+      DataTimeStamp: DataTimeStamp,
+      DatoTiempo : DatoTiempo
     });
 
   });
