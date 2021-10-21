@@ -577,10 +577,10 @@
             console.log('latlngs1=' + latlngs1.length)
             setInterval(function () {
               addPolyline1(latlngs1);
-            }, 200); 
-            if (latlngs1.length = 1) {
+              if (latlngs1.length = 1) {
                 startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
-            }
+              }
+            }, 200); 
             setTimeout(function () {
               startPolyline1(latlngs1);
             }, 200);
@@ -588,10 +588,10 @@
             console.log('latlngs2=' + latlngs2.length)
             setInterval(function () {
               addPolyline2(latlngs2);
-            }, 200);
-            if (latlngs2.length = 1) {
+              if (latlngs2.length = 1) {
                 startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
-            }
+              }
+            }, 200);
             setTimeout(function () {
               startPolyline2(latlngs2);
             }, 200);
