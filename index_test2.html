@@ -578,31 +578,31 @@
             console.log('latlngs1=' + latlngs1.length)
             setInterval(function () {
               addPolyline1(latlngs1);
-            }, 200);
-            startpoint1 = L.marker(latlngs1[0]).addTo(mymap);   
+            }, 200);   
             setTimeout(function () {
               startPolyline1(latlngs1);
             }, 200);
+            startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
           } else if (document.getElementById('IDtxtID').value == "2") {
             console.log('latlngs2=' + latlngs2.length)
             setInterval(function () {
               addPolyline2(latlngs2);
             }, 200);
-            startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
             setTimeout(function () {
               startPolyline2(latlngs2);
             }, 200);
+            startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
           } else {
             console.log('latlngs1=' + latlngs1.length)
             console.log('latlngs2=' + latlngs2.length)
             setInterval(function () {
               add2Polyline(latlngs1, latlngs2);
             }, 200);
-            startpoint1 = L.marker(latlngs1[0]).addTo(mymap);     
-            startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
             setTimeout(function () {
               start2Polyline(latlngs1, latlngs2);
             }, 200);
+            startpoint1 = L.marker(latlngs1[0]).addTo(mymap);     
+            startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
           }
         }
     }
