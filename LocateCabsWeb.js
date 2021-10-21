@@ -8,10 +8,11 @@ var DatosGPS;
 var udp = require('dgram');
 var dir = __dirname;
 var io = require('socket.io')(server);
+io.setMaxListeners(0);
 //Metodos de conección Frontend-Backend, Rutas
 app.post('/github', function (req, res) {
   console.log("received")
-  systemchild.exec("cd /home/ubuntu/LocateCabs && git reset --hard ")
+  systemchild.exec("cd /home/ubuntu/LocateCabs && git reset --hard && git pull")
 });
 app.get('/', function (req, res) {
   res.sendfile(dir + '/index.html');
@@ -28,12 +29,10 @@ app.get('/bg.png', function (req, res) {
 app.get('/github.svg', function (req, res) {
   res.sendfile(dir + '/github.svg');
 });
-app.get('/routing', function (req, res) {
-  res.sendfile(dir + '/index_routingmachine.html');
-});
 app.get('/historicos', function (req, res) {
   res.sendfile(dir + '/historicos.html');
 });
+
 //Conexión al puerto establecido
 server.listen(port, function (error) {
   if (error) {
@@ -66,6 +65,29 @@ con.connect((err) => {
     console.log('la conexión con la base de datos funciona')
   }
 })
+
+let Usersvec;
+
+//Consulta a la base de datos por primera vez y manda el vector de usuarios para la lista desplegable----
+setTimeout(function(){
+
+  con.query('SELECT DISTINCT Usuario FROM gps ORDER BY Usuario', function(err, users){
+
+    if (err) throw err;
+    Usersvec = users.map(e=> e.Usuario);
+    console.log('El vector de usuarios inicial es:'); 
+    console.log(Usersvec);
+
+    io.on('connection', function (socket) {
+      socket.emit('init_users', {
+        Usersvec: Usersvec
+      });
+    });
+
+  });
+
+}, 0);
+
 //Ingreso de variables ppro defecto
 var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, TimeStamp) VALUES ?";
 var values = [
@@ -100,7 +122,24 @@ serverudp.on('message', function (msg, info) {
   con.query(Imysql, [values], function (err, result) {
     if (err) throw err;
     console.log("Records inserted: " + result.affectedRows);
+    
   });
+
+  
+      
+    con.query('SELECT DISTINCT Usuario FROM gps ORDER BY Usuario', function(err, users){
+
+      if (err) throw err;
+      Usersvec = users.map(e=> e.Usuario);
+
+    });
+
+    if (!Usersvec.includes(DatosGPS[0])){
+    io.emit('new_user_detected', {
+      Newuser: DatosGPS[0]
+    });
+    }
+
 });
 //Mensaje de cierre del socket (Servidor UDP)
 serverudp.on('close', function () {
@@ -108,11 +147,61 @@ serverudp.on('close', function () {
 });
 //Puerto 3020
 serverudp.bind(3020);
-//Tiempo de espera para el cierre del socket
-setTimeout(function () {
-  serverudp.close();
-}, 999999999);
+
 //Consulta a la base de datos y conexión constante Backend-Frontend
+setInterval(function () {
+  con.query('SELECT * FROM gps WHERE Usuario = 1 ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
+    if (err) throw err;
+    data = JSON.parse(JSON.stringify(rows))
+    var dataGPS = Object.values(data[0])
+    var DataUsu = dataGPS[1]
+    var DataLat = parseFloat(dataGPS[2]).toFixed(6)
+    var DataLong = parseFloat(dataGPS[3]).toFixed(6)
+    var DataTime = parseFloat(dataGPS[4])
+    io.emit('change1', {
+      DataUsu: DataUsu,
+      DataLat: DataLat,
+      DataLong: DataLong,
+      DataTime: DataTime,
+    });
+    io.on('connection', function (socket) {
+      socket.emit('change1', {
+        DataUsu: DataUsu,
+        DataLat: DataLat,
+        DataLong: DataLong,
+        DataTime: DataTime,
+      });
+    });
+  });
+}, 1500);
+
+setInterval(function () {
+    con.query('SELECT * FROM gps WHERE Usuario = 2 ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
+      if (err) throw err;
+      data = JSON.parse(JSON.stringify(rows))
+      var dataGPS = Object.values(data[0])
+      var DataUsu = dataGPS[1]
+      var DataLat = parseFloat(dataGPS[2]).toFixed(6)
+      var DataLong = parseFloat(dataGPS[3]).toFixed(6)
+      var DataTime = parseFloat(dataGPS[4])
+      io.emit('change2', {
+        DataUsu: DataUsu,
+        DataLat: DataLat,
+        DataLong: DataLong,
+        DataTime: DataTime,
+      });
+      io.on('connection', function (socket) {
+        socket.emit('change2', {
+          DataUsu: DataUsu,
+          DataLat: DataLat,
+          DataLong: DataLong,
+          DataTime: DataTime,
+        });
+      });
+    });
+  }, 1500);
+
+//Consulta nuevamente la base de datos y conexión constante Backend-Frontend (Históricos)
 setInterval(function () {
   con.query('SELECT * FROM gps ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
     if (err) throw err;
@@ -122,6 +211,7 @@ setInterval(function () {
     var DataLat = parseFloat(dataGPS[2]).toFixed(6)
     var DataLong = parseFloat(dataGPS[3]).toFixed(6)
     var DataTime = parseFloat(dataGPS[4])
+
     io.emit('change', {
       DataUsu: DataUsu,
       DataLat: DataLat,
@@ -137,7 +227,9 @@ setInterval(function () {
       });
     });
   });
-}, 3000);
+
+  
+}, 1500);
 
 app.use(express.json({ limit: '500mb' }));
 
@@ -147,88 +239,41 @@ app.post('/historic', function (req, res) {
   var HisDat = req.body;
   var TSini = HisDat.datainicio.toString();
   var TSfin = HisDat.datafin.toString();
-  console.log(TSini, TSfin)
-
-  
-  con.query("SELECT * FROM gps WHERE TimeStamp BETWEEN ('" + TSini + "') AND ('" + TSfin + "');", function (err, rows) {
+  var TSuser = HisDat.datauser.toString();
+  console.log(TSini, TSfin, TSuser)
+  con.query("SELECT * FROM gps WHERE TimeStamp BETWEEN ('" + TSini + "') AND ('" + TSfin + "') AND Usuario = '"+ TSuser +"';", function (err, rows) {
     if (err) throw err;
     var HistData = JSON.parse(JSON.stringify(rows))
     var DataHist = Object.values(HistData)
     var ConverArray = []
     var CoordinatesArrTemp = []
     var CoordinatesArr = []
+    var UserData = []
     var timearrtemp = []
     var timearr = []
+    
     console.log(DataHist)
     for (var i = 0; i < DataHist.length; i++) {
       ConverArray.push(Object.values(DataHist[i]))
     }
     console.log(ConverArray)
     for (var j = 0; j < DataHist.length; j++) {
+      UserData.push(ConverArray[j][1]);
       CoordinatesArrTemp = [ConverArray[j][2], ConverArray[j][3]];
-      timearrtemp = [ConverArray[j][4]] ;
       CoordinatesArr.push(CoordinatesArrTemp);
+      timearrtemp = [ConverArray[j][4]];
       timearr.push(timearrtemp);
     }
 
-    
-    var DatoTiempo = timearr
-    var DataTimeStamp = CoordinatesArr
+    var DataTimeStamp = CoordinatesArr;
+    var DatoTiempo = timearr;
+    var DataUsuario = UserData;
     io.emit('timestamp', {
+      DataUsuario: DataUsuario,
       DataTimeStamp: DataTimeStamp,
-      DatoTiempo : DatoTiempo 
-    });
-    io.on('connection', function (socket) {
-      socket.emit('timestamp', {
-        DataTimeStamp: DataTimeStamp,
-        DatoTiempo : DatoTiempo
-      });
-    });
-  });
-  res.json({
-    status: 'received'
-  });
-});
-
-
-
-app.post('/historicact', function (req, res) {
-
-  var HisDatact = req.body;
-  var TSact = HisDatact.dataactual.toString();
-  
-  var TSactant = parseInt(TSact)-100000;
-
-  var TSactant = TSactant.toString();
- 
-  con.query("SELECT * FROM gps WHERE TimeStamp BETWEEN ('" + TSactant + "') AND ('" + TSact + "');", function (err, rows) {
-    if (err) throw err;
-    var HistDataact = JSON.parse(JSON.stringify(rows))
-    var DataHistact = Object.values(HistDataact)
-    var ActConverArray = []
-    var CCoordinatesArr = []
-  
-    for (var i = 0; i < DataHistact.length; i++) {
-      ActConverArray.push(Object.values(DataHistact[i]))
-    }
-   
-    if (HistDataact == 0) {
-      CCoordinatesArr=[10.9847191,-74.811302]
-    } else {
-      CCoordinatesArr=[ActConverArray[DataHistact.length-1][2],ActConverArray[DataHistact.length-1][3]]
-    }
-    var CurrentDataTimeStamp = CCoordinatesArr
-    console.log(CurrentDataTimeStamp)
-    io.emit('ctimestamp', {
-      CurrentDataTimeStamp: CurrentDataTimeStamp,
+      DatoTiempo : DatoTiempo
     });
 
-    io.on('connection', function (socket) {
-      socket.emit('ctimestamp', {
-        CurrentDataTimeStamp: CurrentDataTimeStamp
-
-      });
-    });
   });
   res.json({
     status: 'received'
