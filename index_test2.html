@@ -544,6 +544,12 @@
         if (valor) {
           setInterval(latlngsTemp1 = [lat1, long1], 1000);
           setInterval(latlngs1.push(latlngsTemp1), 1000);
+          setTimeout(function () {
+              startPolyline(latlngs1);
+            }, 1000);
+          setInterval(function () {
+              addPolyline(latlngs1);
+            }, 1000);
         } else {
           latlngs1 = [];
         }
