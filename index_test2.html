@@ -412,7 +412,6 @@
     var polyline_set = 0;
     var startpoint1;
     var startpoint2;
-    var startpoint_was_set = 0;
     let latlngs1 = [];
     let latlngsTemp1 = [];
     let latlngs2 = [];
@@ -474,30 +473,18 @@
     function addPolyline1(ltlgap1) {
       if ((polyline_set == 1)) {
           polyline1.setLatLngs(ltlgap1)
-          if (!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0) {
-            setTimeout(createStartPoint1(ltlgap1[0]), 100)
-            startpoint_was_set = 1;
-        }
       }
     }
 
     function addPolyline2(ltlgap2) {
       if ((polyline_set == 1)) {
           polyline2.setLatLngs(ltlgap2)
-          if (!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0) {
-            setTimeout(createStartPoint1(ltlgap2[0]), 100)
-            startpoint_was_set = 1;
-        }
       }
     }
     function add2Polyline(ltlgap1, ltlgap2) {
       if ((polyline_set == 1)) {
         polyline1.setLatLngs(ltlgap1)
         polyline2.setLatLngs(ltlgap2)
-        if ((!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0)&&((!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0))) {
-          setTimeout(create2StartPoint(ltlgap1[0], ltlgap2[0]), 100)
-          startpoint_was_set = 1;
-        }
       }
     }
     function clearpoly() {
@@ -582,19 +569,8 @@
         if (valor) {
           setTimeout(function () {
             clearpoly();
-            if (startpoint_was_set == 1) {
-              if (document.getElementById('IDtxtID').value == "1") {
-                startpoint1.removeFrom(mymap);
-                startpoint2.removeFrom(mymap);
-              } else if (document.getElementById('IDtxtID').value == "2") {
-                startpoint1.removeFrom(mymap);
-                startpoint2.removeFrom(mymap);
-              } else {
-                startpoint1.removeFrom(mymap);
-                startpoint2.removeFrom(mymap);
-              }
-              startpoint_was_set = 0;
-            }
+            startpoint1.removeFrom(mymap);
+            startpoint2.removeFrom(mymap);
           }, 200)
         }
         else {
@@ -603,7 +579,7 @@
             setInterval(function () {
               addPolyline1(latlngs1);
             }, 200);
-            startpoint2.removeFrom(mymap);
+            startpoint1 = L.marker(latlngs1[0]).addTo(mymap);   
             setTimeout(function () {
               startPolyline1(latlngs1);
             }, 200);
@@ -612,7 +588,7 @@
             setInterval(function () {
               addPolyline2(latlngs2);
             }, 200);
-            startpoint1.removeFrom(mymap);
+            startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
             setTimeout(function () {
               startPolyline2(latlngs2);
             }, 200);
@@ -622,6 +598,8 @@
             setInterval(function () {
               add2Polyline(latlngs1, latlngs2);
             }, 200);
+            startpoint1 = L.marker(latlngs1[0]).addTo(mymap);     
+            startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
             setTimeout(function () {
               start2Polyline(latlngs1, latlngs2);
             }, 200);
