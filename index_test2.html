@@ -535,7 +535,7 @@
           latlngs1 = [];
         }
       });
-      if (valor) {
+      if (document.getElementById('switch').checked) {
           if (document.getElementById('IDtxtID').value == "1") {
             if (latlngs1.length = 1) {
                 startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
@@ -576,7 +576,7 @@
         }
         console.log(latlngs2)
       });
-      if (valor) {
+      if (document.getElementById('switch').checked) {
           if (document.getElementById('IDtxtID').value == "1") {
             if (latlngs2.length = 1) {
 
