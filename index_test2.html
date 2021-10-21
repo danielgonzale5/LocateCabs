@@ -383,7 +383,7 @@
           <label for="switch" onclick="condicional();" class="sw"></label>
         </div>
         <div class="CenterButton;" style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
-          <button onclick="MapAutoCenter()" class="CB" >Auto-center Camera</button>
+          <button onclick="CleanMap()" class="CB" >Limpiar Mapa</button>
         </div>
       </div>
     </div>
@@ -421,12 +421,10 @@
     function MapsetUbication() {
       mymap.setView(new L.LatLng(lat, long));
     }
-    function MapAutoCenter() {
-      if (document.getElementById('switch').checked) {
-        mymap.fitBounds(polyline1.getBounds(), polyline2.getBounds()); //Centra hacia la polilínea.
-      } else {
-        mymap.setView(new L.LatLng([lat1, long1],[lat2, long2]), 18);  //Centra hacia la posición actual.
-      }
+    function CleanMap() {
+        mymap.eachLayer(function (layer) {
+            mymap.removeLayer(layer);
+        });
     }
     function setMarker1() {
       if (lat1 != null && isNaN(lat1) == false && long1 != null && isNaN(long1) == false) {
