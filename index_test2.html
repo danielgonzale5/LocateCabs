@@ -400,12 +400,12 @@
     //Declaración de Variables Globales
     let lat = 10.984719;
     let long = -74.811302;
-    var lat1;
-    var lat2;
-    var long1;
-    var long2;
-    var point1;
-    var point2;
+    let lat1 = 10.984719;
+    let long1 = -74.811302;
+    let lat2 = 10.984719;
+    let long2 = -74.811302;
+    var point1 = L.marker([lat1, long1], { color: '#CA2049' }).addTo(mymap);
+    var point2 = L.marker([lat2, long2], { color: '#CA2049' }).addTo(mymap);
     var polylinePoints;
     var polyline;
     var datainicio;
@@ -432,10 +432,14 @@
       }
     }
     function setMarker1() {
-        point1 = L.marker([lat1, long1]).addTo(mymap);
+        if (lat1 != null && isNaN(lat1) == false && long1 != null && isNaN(long1) == false) {
+            point1.setLatLng(new L.LatLng(lat1, long1));
+      }
     }
     function setMarker2() {
-        point2 = L.marker([lat2, long2]).addTo(mymap);
+        if (lat2 != null && isNaN(lat2) == false && long2 != null && isNaN(long2) == false) {
+            point2.setLatLng(new L.LatLng(lat2, long2));
+      }
     }
     function Markerlabel() {
       circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
@@ -499,30 +503,6 @@
         usuario = data.DataUsu;
         
         setInterval(setMarker1, 1000);
-        valor = document.getElementById('switch').checked;
-        if (valor) {
-          setInterval(latlngsTemp = [lat, long], 1000);
-          setInterval(latlngs.push(latlngsTemp), 1000);
-        } else {
-          latlngs = [];
-        }
-        if (old_user != usuario) {
-          setTimeout(function () {
-            MapsetUbication();
-            Markerlabel();
-            if (valor) {
-              latlngs = [];
-              if (startpoint_was_set == 1) {
-                startpoint.removeFrom(mymap);
-                startpoint_was_set = 0;
-              }
-              clearpoly();
-              startPolyline();
-            }
-          }
-            , 1000);
-          old_user = usuario;
-        }
       });
     });
     document.addEventListener('DOMContentLoaded', function () {
@@ -546,30 +526,6 @@
         usuario = data.DataUsu;
         
         setInterval(setMarker2, 1000);
-        valor = document.getElementById('switch').checked;
-        if (valor) {
-          setInterval(latlngsTemp = [lat, long], 1000);
-          setInterval(latlngs.push(latlngsTemp), 1000);
-        } else {
-          latlngs = [];
-        }
-        if (old_user != usuario) {
-          setTimeout(function () {
-            MapsetUbication();
-            Markerlabel();
-            if (valor) {
-              latlngs = [];
-              if (startpoint_was_set == 1) {
-                startpoint.removeFrom(mymap);
-                startpoint_was_set = 0;
-              }
-              clearpoly();
-              startPolyline();
-            }
-          }
-            , 1000);
-          old_user = usuario;
-        }
       });
     });
 
