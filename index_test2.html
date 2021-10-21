@@ -482,8 +482,8 @@
 
     function addPolyline2(ltlgap2) {
       if ((polyline_set == 1)) {
-          polyline1.setLatLngs(ltlgap2)
-          if (!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0) {
+          polyline2.setLatLngs(ltlgap2)
+          if (!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0) {
             setTimeout(createStartPoint2(ltlgap2[0]), 1000)
             startpoint_was_set = 1;
         }
