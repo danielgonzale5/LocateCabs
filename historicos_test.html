@@ -789,6 +789,7 @@
 
     function changepoly() {
       var polypos = document.getElementById('selector').value;
+      console.log(polypos);
       if (document.getElementById('IDtxtID').value == "1") {
         let infocp = "Ubicación: " + Cord1[polypos].toString();
         L.popup().setLatLng(Cord1[polypos]).setContent(infocp).openOn(mymap); 
