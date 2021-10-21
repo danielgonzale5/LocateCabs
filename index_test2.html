@@ -534,9 +534,6 @@
         } else {
           latlngs1 = [];
         }
-        if (latlngs1.length = 1) {
-                startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
-            }
       });
       io().on('change2', function (data) {
         document.getElementById('UsuID').innerHTML = data.DataUsu;
@@ -564,9 +561,6 @@
         } else {
           latlngs2 = [];
         }
-        if (latlngs2.length = 1) {
-                startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
-            }
         console.log(latlngs2)
       });
     });
@@ -584,6 +578,9 @@
             setInterval(function () {
               addPolyline1(latlngs1);
             }, 200); 
+            if (latlngs1.length = 1) {
+                startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
+            }
             setTimeout(function () {
               startPolyline1(latlngs1);
             }, 200);
@@ -592,6 +589,9 @@
             setInterval(function () {
               addPolyline2(latlngs2);
             }, 200);
+            if (latlngs2.length = 1) {
+                startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
+            }
             setTimeout(function () {
               startPolyline2(latlngs2);
             }, 200);
