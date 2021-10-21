@@ -327,7 +327,7 @@
         </label>
         <a href="/" class="logo"><img src="/logo.png" id="logoimg" /></a>
         <ul>
-          <li><a class="menulink" href="../indextest">Home</a></li>
+          <li><a class="menulink" href="../">Home</a></li>
           <li><a class="menulink"  style="background: rgb(19, 19, 19); color: rgb(255, 255, 255); border-bottom:4px solid rgb(0, 130, 230);">Históricos</a></li>
         </ul>
       </nav>
@@ -349,12 +349,15 @@
         <div></div>
         <div class="switch-container;" style="text-align: center; margin-top: 5px;">
           <input type="Checkbox" id="switch2">
-          <label for="switch2" onclick="condicional2();" class="sw"></label>
+          <label for="switch2" onclick="condicional2(); Slide();" class="sw"></label>
         </div>
         <div></div>
         <h2 style="text-align: center; margin-top: 15px;">Inserte ID específica</h2>
         <h4 style="text-align: center; margin-top: 15px;">"-" para observar todos los taxis</h4>
-        <input style="text-align: center; margin-top: 15px;" type="text" id="IDtxtID" name="IDtxt">
+        <input style="text-align: center; margin-top: 15px;" type="text" id="IDtxtID" name="IDtxt" value="-">
+        <div></div>
+        <label for="SlidePoly" id="SlidePolyL" style="display:none">Recorrer Polilinea:</label>
+        <input type="number" id="SlidePoly" name="SlidePoly" style="display:none" onchange="changepoly()" value = "0" min="1" max="9999999999">
         <div></div>
       </div>
     </div>
@@ -621,7 +624,7 @@
     function condicional2() {
         valor = document.getElementById('switch2').checked;
         if (valor) {
-          if (document.getElementById('IDtxtID').innerHTML == 1) {
+          if (document.getElementById('IDtxtID').value == "1") {
             if (hist_was_set == 1) {
               clearpoly1();
               startpointHist1.removeFrom(mymap);
@@ -631,7 +634,7 @@
             circle_marker.setRadius(10);
             circle.setRadius(50);
             circle_marker.openPopup();
-          } else if (document.getElementById('IDtxtID').innerHTML == 2) {
+          } else if (document.getElementById('IDtxtID').value == "2") {
             if (hist_was_set == 1) {
               clearpoly2();
               startpointHist2.removeFrom(mymap);
@@ -659,7 +662,7 @@
         } else {
           enviarhist();
           setTimeout(function () {
-            if (document.getElementById('IDtxtID').innerHTML == 1) {
+            if (document.getElementById('IDtxtID').value == "1") {
               startPolyline(Cord1);
               circle_marker.setRadius(0);
               circle.setRadius(0);
@@ -673,7 +676,7 @@
                   L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
                 })
               }
-            } else if (document.getElementById('IDtxtID').innerHTML == 2) {
+            } else if (document.getElementById('IDtxtID').value == "2") {
               startPolyline(Cord2);
               circle_marker.setRadius(0);
               circle.setRadius(0);
@@ -716,7 +719,40 @@
           }, 500)
         }
     }
-
+    function Slide() {
+      var SlidePoly = document.getElementById("SlidePoly");
+      var SlidePolyL = document.getElementById("SlidePolyL");
+      if (document.getElementById('switch2').checked) {
+        if (document.getElementById('IDtxtID').value == "1") {
+          SlidePoly.style.display = "block";
+          SlidePolyL.style.display = "block";
+          SlidePoly.setAttribute("max",Cord1.length);
+        } else if (document.getElementById('IDtxtID').value == "2") {
+          SlidePoly.style.display = "block";
+          SlidePolyL.style.display = "block";
+          SlidePoly.setAttribute("max",Cord2.length);
+        } else {
+          SlidePoly.style.display = "none";
+          SlidePolyL.style.display = "none";
+          console.log("El deslizamiento solo se realiza por una polilinea")
+        }
+      } else {
+        SlidePoly.style.display = "none";
+        SlidePolyL.style.display = "none";
+      }
+    }
+    function changepoly() {
+      var polypos = document.getElementById('SlidePoly').value;
+      if (document.getElementById('IDtxtID').value == "1") {
+        let infocp = "Ubicación: " + Cord1[polypos].toString();
+        L.popup().setLatLng(Cord1[polypos]).setContent(infocp).openOn(mymap); 
+      } else if (document.getElementById('IDtxtID').value == "2"){
+        let infocp = "Ubicación: " + Cord2[polypos].toString();
+        L.popup().setLatLng(Cord2[polypos]).setContent(infocp).openOn(mymap); 
+      } else {
+        console.log("El deslizamiento solo se realiza por una polilinea")
+      }
+    }
   </script>
 </body>
 
