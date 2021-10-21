@@ -534,6 +534,9 @@
         } else {
           latlngs1 = [];
         }
+        if (latlngs1.length = 1) {
+            startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
+        }
       });
       io().on('change2', function (data) {
         document.getElementById('UsuID').innerHTML = data.DataUsu;
@@ -561,6 +564,9 @@
         } else {
           latlngs2 = [];
         }
+        if (latlngs2.length = 1) {
+            startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
+        }
         console.log(latlngs2)
       });
     });
@@ -569,6 +575,8 @@
         if (valor) {
           setTimeout(function () {
             clearpoly();
+            startpoint1.removeFrom(mymap);
+            startpoint2.removeFrom(mymap);
           }, 200)
         } else {
           if (document.getElementById('IDtxtID').value == "1") {
