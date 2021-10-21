@@ -382,9 +382,6 @@
           <input type="Checkbox" id="switch">
           <label for="switch" onclick="condicional();" class="sw"></label>
         </div>
-        <div class="CenterButton;" style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
-          <button onclick="CleanMap()" class="CB" >Limpiar Mapa</button>
-        </div>
       </div>
     </div>
     <footer>
@@ -420,10 +417,6 @@
     //Serie de funciones para el mapa
     function MapsetUbication() {
       mymap.setView(new L.LatLng(lat, long));
-    }
-    function CleanMap() {
-        point1.removeFrom(mymap);
-        point2.removeFrom(mymap);
     }
     function setMarker1() {
       if (lat1 != null && isNaN(lat1) == false && long1 != null && isNaN(long1) == false) {
@@ -488,6 +481,8 @@
       }
     }
     let mymap = L.map('mapid').setView([lat, long], 18);
+    var point1 = L.marker([lat1, long1]).addTo(mymap);
+    var point2 = L.marker([lat2, long2]).addTo(mymap);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
@@ -495,7 +490,6 @@
     //Recepción y traducción de información del Backend
     document.addEventListener('DOMContentLoaded', function () {
       io().on('change1', function (data) {
-        var point1 = L.marker([lat1, long1]).addTo(mymap);
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
@@ -542,7 +536,6 @@
         }
       });
       io().on('change2', function (data) {
-        var point2 = L.marker([lat2, long2]).addTo(mymap);
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
