@@ -599,7 +599,6 @@
           if (document.getElementById('IDtxtID').value == "1") {
             console.log('latlngs1=' + latlngs1.length)
             setInterval(function () {
-                setMarker1();
               addPolyline1(latlngs1);
             }, 1000);
             setTimeout(function () {
@@ -608,7 +607,6 @@
           } else if (document.getElementById('IDtxtID').value == "2") {
             console.log('latlngs2=' + latlngs2.length)
             setInterval(function () {
-                setMarker2();
               addPolyline2(latlngs2);
             }, 1000);
             setTimeout(function () {
@@ -618,8 +616,6 @@
             console.log('latlngs1=' + latlngs1.length)
             console.log('latlngs2=' + latlngs2.length)
             setInterval(function () {
-                setMarker1();
-                setMarker2();
               add2Polyline(latlngs1, latlngs2);
             }, 1000);
             setTimeout(function () {
