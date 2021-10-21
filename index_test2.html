@@ -586,41 +586,41 @@
               if (document.getElementById('IDtxtID').value == "1") {
                 startpoint1.removeFrom(mymap);
               } else if (document.getElementById('IDtxtID').value == "2") {
-                startpoint1.removeFrom(mymap);
+                startpoint2.removeFrom(mymap);
               } else {
                 startpoint1.removeFrom(mymap);
                 startpoint2.removeFrom(mymap);
               }
               startpoint_was_set = 0;
             }
-          }, 200)
+          }, 100)
         }
         else {
           if (document.getElementById('IDtxtID').value == "1") {
             console.log('latlngs1=' + latlngs1.length)
             setInterval(function () {
               addPolyline1(latlngs1);
-            }, 100);
+            }, 200);
             setTimeout(function () {
               startPolyline1(latlngs1);
-            }, 100);
+            }, 200);
           } else if (document.getElementById('IDtxtID').value == "2") {
             console.log('latlngs2=' + latlngs2.length)
             setInterval(function () {
               addPolyline2(latlngs2);
-            }, 100);
+            }, 200);
             setTimeout(function () {
               startPolyline2(latlngs2);
-            }, 100);
+            }, 200);
           } else {
             console.log('latlngs1=' + latlngs1.length)
             console.log('latlngs2=' + latlngs2.length)
             setInterval(function () {
               add2Polyline(latlngs1, latlngs2);
-            }, 100);
+            }, 200);
             setTimeout(function () {
               start2Polyline(latlngs1, latlngs2);
-            }, 100);
+            }, 200);
           }
         }
     }
