@@ -404,7 +404,7 @@
     let marktime = [] ; 
 
 
-
+    
     var greenIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -413,7 +413,13 @@
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
     });
-
+    var redIcon = new L.Icon({
+    iconUrl: 'https://images.emojiterra.com/twitter/512px/1f534.png',
+    iconSize: [10, 10],
+    iconAnchor: [10, 10],
+    popupAnchor: [1, -34],
+    });
+                  
 
     //Condición de Calendario
     window.addEventListener('load', function () {
@@ -472,8 +478,7 @@
       datafin = new Date(datafin).valueOf();
       datainicio = datainicio.toString();
       datafin = datafin.toString();
-      console.log('datainicio= ' + datainicio);
-      console.log('datafina= ' + datafin);
+
       const info = { datainicio, datafin };
       const options = {
         method: 'POST',
@@ -509,7 +514,7 @@
       dataactual = document.getElementById('CHist').value;
       dataactual = new Date(dataactual).valueOf();
       dataactual = dataactual.toString();
-      console.log('dataactual= ' + dataactual);
+     
       const info = { dataactual };
       const options = {
         method: 'POST',
@@ -606,8 +611,6 @@
         tiempotran.push(formattedTime);
       }
 
-      console.log('prueba= ' + tiempotran)
-      console.log('io-on-timestamp Coordinates= ' + Coordinates)
     });
 
 
@@ -644,10 +647,28 @@
               finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
               startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
               polylineHistoric.on('click',(e)=>{
-                for (var i = 0;  i < tiempo.length; i++) {
-                let info =  tiempotran.toString();
-                L.popup().setLatLng(Coordinates[i]).setContent(info).openOn(mymap);
-                }
+           
+              for (var i = 0; i < tiempo.length; i++) {
+               errorlat = Math.abs((Math.abs(parseFloat(Coordinates[i][0])) - Math.abs(parseFloat(e.latlng.lat)) ))/ Math.abs(parseFloat(Coordinates[i][0])) ; 
+               errorlot = Math.abs((Math.abs(parseFloat(Coordinates[i][1])) - Math.abs(parseFloat(e.latlng.lng)) ))/ Math.abs(parseFloat(Coordinates[i][1])) ; 
+                if((errorlat<0.000003)&&(errorlot<0.000003)){break ; }
+
+                if (tiempo.length==i+1) {break ; }
+
+              }
+
+             console.log(tiempo.length)
+             console.log(i) 
+
+              console.log (parseFloat(Coordinates[i][0]))
+              console.log (parseFloat(Coordinates[i][1]))
+
+              console.log(e.latlng.lat) 
+              console.log(e.latlng.lng)
+
+    
+                let info =  tiempotran[i].toString();
+                L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
 
               })
             }

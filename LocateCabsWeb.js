@@ -11,7 +11,7 @@ var io = require('socket.io')(server);
 //Metodos de conección Frontend-Backend, Rutas
 app.post('/github', function (req, res) {
   console.log("received")
-  systemchild.exec("cd /home/ubuntu/LocateCabs && git reset --hard && git pull")
+  systemchild.exec("cd /home/ubuntu/LocateCabs && git reset --hard ")
 });
 app.get('/', function (req, res) {
   res.sendfile(dir + '/index.html');
