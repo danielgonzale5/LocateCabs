@@ -414,7 +414,7 @@
     let latlngs = [];
     let latlngsTemp = [];
     let Coordinates = [];
-    
+
     //Serie de funciones para el mapa
     function MapsetUbication() {
       mymap.setView(new L.LatLng(lat, long));
@@ -504,32 +504,36 @@
         finallong = data.DataLong;
         finallat = data.DataLat;
         setInterval(setMarker, 1000);
-        valor = document.getElementById('switch').checked;
-        if (valor) {
-          setInterval(latlngsTemp = [lat, long], 1000);
-          setInterval(latlngs.push(latlngsTemp), 1000);
-        } else {
-          latlngs = [];
-        }
-        if (old_user != usuario) {
-          setTimeout(function () {
-            MapsetUbication();
-            Markerlabel();
-            if (valor) {
-              latlngs = [];
-              if (startpoint_was_set == 1) {
-                startpoint.removeFrom(mymap);
-                startpoint_was_set = 0;
-              }
-              clearpoly();
-              startPolyline();
-            }
-          }
-            , 1000);
-          old_user = usuario;
-        }
+
+      });
+      io().on('change2', function (data) {
+        document.getElementById('UsuID').innerHTML = data.DataUsu;
+        document.getElementById('LatID').innerHTML = data.DataLat;
+        document.getElementById('LongID').innerHTML = data.DataLong;
+        var date = new Date(parseFloat(data.DataTime));
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var month = months[date.getMonth()];
+        var hours = date.toLocaleTimeString();
+        var minutes = "0" + date.getMinutes();
+        var seconds = "0" + date.getSeconds();
+        var formattedTime = hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+        var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
+        document.getElementById('FechaID').innerHTML = datofecha;
+        document.getElementById('HoraID').innerHTML = formattedTime;
+        lat = data.DataLat;
+        long = data.DataLong;
+        usuario = data.DataUsu;
+        finallong = data.DataLong;
+        finallat = data.DataLat;
+        setInterval(setMarker, 1000);
+
       });
     });
+
+
+
+
+
     //Funciones de los switches al trazar linea en vivo
     function condicional() {
         valor = document.getElementById('switch').checked;
