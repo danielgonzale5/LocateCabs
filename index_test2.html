@@ -400,6 +400,12 @@
     //Declaración de Variables Globales
     let lat = 10.984719;
     let long = -74.811302;
+    var lat1;
+    var lat2;
+    var long1;
+    var long2;
+    var point1;
+    var point2;
     var polylinePoints;
     var polyline;
     var datainicio;
@@ -430,14 +436,12 @@
     }
     function setMarker1() {
       if (lat1 != null && isNaN(lat1) == false && long1 != null && isNaN(long1) == false) {
-        circle_marker.setLatLng(new L.LatLng(lat1, long1));
-        circle.setLatLng(new L.LatLng(lat1, long1));
+        point1 = L.marker([lat1, long2]).addTo(mymap);
       }
     }
     function setMarker2() {
       if (lat2 != null && isNaN(lat2) == false && long2 != null && isNaN(long2) == false) {
-        circle_marker.setLatLng(new L.LatLng(lat2, long2));
-        circle.setLatLng(new L.LatLng(lat2, long2));
+        point2 = L.marker([lat1, long2]).addTo(mymap);
       }
     }
     function Markerlabel() {
