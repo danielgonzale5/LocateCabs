@@ -597,7 +597,7 @@
             console.log('latlngs2=' + latlngs2.length)
             setInterval(function () {
               add2Polyline(latlngs1, latlngs2);
-            }, 500);
+            }, 200);
             startpoint1 = L.marker(latlngs1[0]).addTo(mymap);     
             startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
             setTimeout(function () {
