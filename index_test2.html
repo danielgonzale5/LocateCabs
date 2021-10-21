@@ -497,7 +497,32 @@
         lat1 = data.DataLat;
         long1 = data.DataLong;
         usuario = data.DataUsu;
+        
         setInterval(setMarker1, 1000);
+        valor = document.getElementById('switch').checked;
+        if (valor) {
+          setInterval(latlngsTemp = [lat, long], 1000);
+          setInterval(latlngs.push(latlngsTemp), 1000);
+        } else {
+          latlngs = [];
+        }
+        if (old_user != usuario) {
+          setTimeout(function () {
+            MapsetUbication();
+            Markerlabel();
+            if (valor) {
+              latlngs = [];
+              if (startpoint_was_set == 1) {
+                startpoint.removeFrom(mymap);
+                startpoint_was_set = 0;
+              }
+              clearpoly();
+              startPolyline();
+            }
+          }
+            , 1000);
+          old_user = usuario;
+        }
       });
     });
     document.addEventListener('DOMContentLoaded', function () {
@@ -519,7 +544,32 @@
         lat2 = data.DataLat;
         long2 = data.DataLong;
         usuario = data.DataUsu;
+        
         setInterval(setMarker2, 1000);
+        valor = document.getElementById('switch').checked;
+        if (valor) {
+          setInterval(latlngsTemp = [lat, long], 1000);
+          setInterval(latlngs.push(latlngsTemp), 1000);
+        } else {
+          latlngs = [];
+        }
+        if (old_user != usuario) {
+          setTimeout(function () {
+            MapsetUbication();
+            Markerlabel();
+            if (valor) {
+              latlngs = [];
+              if (startpoint_was_set == 1) {
+                startpoint.removeFrom(mymap);
+                startpoint_was_set = 0;
+              }
+              clearpoly();
+              startPolyline();
+            }
+          }
+            , 1000);
+          old_user = usuario;
+        }
       });
     });
 
