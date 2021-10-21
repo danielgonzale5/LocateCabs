@@ -475,7 +475,7 @@
       if ((polyline_set == 1)) {
           polyline1.setLatLngs(ltlgap1)
           if (!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0) {
-            setTimeout(createStartPoint1(ltlgap1[0]), 1000)
+            setTimeout(createStartPoint1(ltlgap1[0]), 100)
             startpoint_was_set = 1;
         }
       }
@@ -485,7 +485,7 @@
       if ((polyline_set == 1)) {
           polyline2.setLatLngs(ltlgap2)
           if (!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0) {
-            setTimeout(createStartPoint1(ltlgap2[0]), 1000)
+            setTimeout(createStartPoint1(ltlgap2[0]), 100)
             startpoint_was_set = 1;
         }
       }
@@ -495,7 +495,7 @@
         polyline1.setLatLngs(ltlgap1)
         polyline2.setLatLngs(ltlgap2)
         if ((!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0)&&((!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0))) {
-          setTimeout(create2StartPoint(ltlgap1[0], ltlgap2[0]), 1000)
+          setTimeout(create2StartPoint(ltlgap1[0], ltlgap2[0]), 100)
           startpoint_was_set = 1;
         }
       }
@@ -586,7 +586,7 @@
               if (document.getElementById('IDtxtID').value == "1") {
                 startpoint1.removeFrom(mymap);
               } else if (document.getElementById('IDtxtID').value == "2") {
-                startpoint1.removeFrom(mymap);
+                startpoint2.removeFrom(mymap);
               } else {
                 startpoint1.removeFrom(mymap);
                 startpoint2.removeFrom(mymap);
