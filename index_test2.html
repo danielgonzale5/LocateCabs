@@ -404,8 +404,6 @@
     let long1 = -74.811302;
     let lat2 = 10.984719;
     let long2 = -74.811302;
-    var point1 = L.marker([lat1, long1], { color: '#CA2049' }).addTo(mymap);
-    var point2 = L.marker([lat2, long2], { color: '#CA2049' }).addTo(mymap);
     var polylinePoints;
     var polyline;
     var datainicio;
@@ -420,8 +418,11 @@
     let latlngs = [];
     let latlngsTemp = [];
     let Coordinates = [];
-
+    
     //Serie de funciones para el mapa
+    function MapsetUbication() {
+      mymap.setView(new L.LatLng(lat, long));
+    }
     function MapAutoCenter() {
       if (document.getElementById('switch').checked) {
         if (startpoint_was_set == 1) {
@@ -432,13 +433,13 @@
       }
     }
     function setMarker1() {
-        if (lat1 != null && isNaN(lat1) == false && long1 != null && isNaN(long1) == false) {
-            point1.setLatLng(new L.LatLng(lat1, long1));
+      if (lat1 != null && isNaN(lat1) == false && long1 != null && isNaN(long1) == false) {
+        point1.setLatLng(new L.LatLng(lat1, long1));
       }
     }
     function setMarker2() {
-        if (lat2 != null && isNaN(lat2) == false && long2 != null && isNaN(long2) == false) {
-            point2.setLatLng(new L.LatLng(lat2, long2));
+      if (lat2 != null && isNaN(lat2) == false && long2 != null && isNaN(long2) == false) {
+        point2.setLatLng(new L.LatLng(lat2, long2));
       }
     }
     function Markerlabel() {
@@ -451,15 +452,6 @@
       if (isNaN(latlngs) == false) {
         polyline = L.polyline(latlngs).addTo(mymap);
         polyline_set = 1;
-      }
-    }
-    function startPolyline2() {
-      if (Coordinates.length != 0) {
-        polylineHistoric = L.polyline(Coordinates, { color: 'red' }).addTo(mymap);
-        mymap.fitBounds(Coordinates);
-        hist_was_set = 1;
-      } else {
-        console.log('El intervalo de tiempo o Usuario ingresado no es válido.');
       }
     }
     function addPolyline() {
@@ -476,6 +468,8 @@
         polyline.removeFrom(mymap)
       }
     }
+    var point1 = L.marker([lat1, long1]).addTo(mymap);;
+    var point2 = L.marker([lat2, long2]).addTo(mymap);;
     let mymap = L.map('mapid').setView([lat, long], 18);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -483,7 +477,6 @@
     }).addTo(mymap);
     //Recepción y traducción de información del Backend
     document.addEventListener('DOMContentLoaded', function () {
-      old_user = "-";
       io().on('change1', function (data) {
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
@@ -501,12 +494,8 @@
         lat1 = data.DataLat;
         long1 = data.DataLong;
         usuario = data.DataUsu;
-        
         setInterval(setMarker1, 1000);
       });
-    });
-    document.addEventListener('DOMContentLoaded', function () {
-      old_user = "-";
       io().on('change2', function (data) {
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
@@ -524,11 +513,9 @@
         lat2 = data.DataLat;
         long2 = data.DataLong;
         usuario = data.DataUsu;
-        
         setInterval(setMarker2, 1000);
       });
     });
-
   </script>
 </body>
 
