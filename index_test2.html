@@ -473,34 +473,18 @@
     function addPolyline1(ltlgap1) {
       if ((polyline_set == 1)) {
           polyline1.setLatLngs(ltlgap1)
-          if (!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0) {
-            setTimeout(createStartPoint1(ltlgap1[0]), 1000)
-            startpoint_was_set = 1;
-        }
       }
     }
 
     function addPolyline2(ltlgap2) {
       if ((polyline_set == 1)) {
           polyline2.setLatLngs(ltlgap2)
-          if (!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0) {
-            setTimeout(createStartPoint2(ltlgap2[0]), 1000)
-            startpoint_was_set = 1;
-        }
       }
     }
     function add2Polyline(ltlgap1, ltlgap2) {
       if ((polyline_set == 1)) {
         polyline1.setLatLngs(ltlgap1)
-        if (!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0) {
-          setTimeout(createStartPoint1(ltlgap1[0]), 1000)
-          startpoint_was_set = 1;
-        }
         polyline2.setLatLngs(ltlgap2)
-        if (!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0) {
-          setTimeout(createStartPoint2(ltlgap2[0]), 1000)
-          startpoint_was_set = 1;
-        }
       }
     }
     function clearpoly() {
