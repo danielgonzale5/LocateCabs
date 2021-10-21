@@ -422,14 +422,8 @@
       mymap.setView(new L.LatLng(lat, long));
     }
     function CleanMap() {
-        mymap.eachLayer(function (layer) {
-            mymap.removeLayer(layer);
-        });
-        let mymap = L.map('mapid').setView([lat, long], 18);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 19
-        }).addTo(mymap);
+        point1.removeFrom(mymap);
+        point2.removeFrom(mymap);
     }
     function setMarker1() {
       if (lat1 != null && isNaN(lat1) == false && long1 != null && isNaN(long1) == false) {
