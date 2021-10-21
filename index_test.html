@@ -350,7 +350,7 @@
         <a href="/" class="logo"><img src="/logo.png" id="logoimg" /></a>
         <ul>
             <li><a class="menulink" style="background: rgb(19, 19, 19); color: rgb(255, 255, 255); border-bottom:4px solid rgb(0, 130, 230);">Home</a></li>
-            <li><a class="menulink" href="../historicostest/">Históricos</a></li>
+            <li><a class="menulink" href="../historicos/">Históricos</a></li>
         </ul>
       </nav>
     </div>
@@ -382,9 +382,6 @@
           <input type="Checkbox" id="switch">
           <label for="switch" onclick="condicional();" class="sw"></label>
         </div>
-        <div class="CenterButton;" style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
-          <button onclick="MapAutoCenter(), Markerlabel(TaxID)" class="CB" >Auto-center Camera</button>
-        </div>
       </div>
     </div>
     <footer>
@@ -398,130 +395,52 @@
       </div>
     </footer>
   </div>
-  <script src="http://underscorejs.org/underscore-min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     //Declaración de Variables Globales
     let lat = 10.984719;
     let long = -74.811302;
+    var lat1 = 10.984719;
+    var long1 = -74.811302;
+    var lat2 = 10.984719;
+    var long2 = -74.811302;
     var polyline1;
     var polyline2;
     var polyline_set = 0;
     var startpoint1;
     var startpoint2;
-    var startpoint_was_set = 0;
-    var hist_was_set = 0;
-    var  myFGMarker = L.FeatureGroup;
-    var markers = new Array();
-    var Taxis= new Array(); //Aquí se almacenará cada Taxi como objeto...
-    let UsuArr = [];
-    let UsuArrT = [];
-    let latlngs = [];
-    let latlngs1 = [];
-    let latlngs2 = [];
-    let latlngsTemp = [];
-    let latlngsTemp1 = [];
-    let latlngsTemp2 = [];
-
-
-    function containsID(array, attribute){ //Función para buscar atributo ID dentro de un array.
-
-        var found = false;
-        for(var i = 0; i < array.length; i++) {
-            if (array[i].id == attribute) {
-                found = true;
-                var pos=i;
-                break;
-            }
-        }
-        return [pos,found];
-
-    }
+    var latlngs1 = [];
+    var latlngsTemp1 = [];
+    var latlngs2 = [];
+    var latlngsTemp2 = [];
 
     //Serie de funciones para el mapa
     function MapsetUbication() {
       mymap.setView(new L.LatLng(lat, long));
     }
-    function MapsetUbication2() {
-        //Algo así mas o menos, siendo myFGMarker el featuregroup de los marcadores o esto
-        map.fitBounds(latlngs1, latlngs2);
-    }
-    function MapAutoCenter() {
-      if (document.getElementById('IDtxtID').value == "1") {
-        if (document.getElementById('switch').checked) {
-          if (startpoint_was_set == 1) {
-            mymap.fitBounds(polyline1.getBounds()); //Centra hacia la polilínea.
-          }
-        } else {
-          mymap.setView(new L.LatLng(latlngs1[latlngs1.length - 1]), 18);  //Centra hacia la posición actual.
-        }
-      } else if (document.getElementById('IDtxtID').value == "2") {
-        if (document.getElementById('switch').checked) {
-          if (startpoint_was_set == 1) {
-            mymap.fitBounds(polyline2.getBounds()); //Centra hacia la polilínea.
-          }
-        } else {
-          mymap.setView(new L.LatLng(latlngs2[latlngs2.length - 1]), 18);  //Centra hacia la posición actual.
-        }
-      } else {
-        if (document.getElementById('switch').checked) {
-          if (startpoint_was_set == 1) {
-            map.fitBounds(latlngs1, latlngs2); //Centra hacia la polilínea.
-          }
-        } else {
-          map.fitBounds(latlngs1[latlngs1.length-1], latlngs2[latlngs2.length-1]);;  //Centra hacia la posición actual.
-        }
+    function setMarker1() {
+      if (lat1 != null && isNaN(lat1) == false && long1 != null && isNaN(long1) == false) {
+        point1.setLatLng(new L.LatLng(lat1, long1));
       }
     }
-    function setMarker(ltlg) {
-      if (ltlg[0] != null && isNaN(ltlg[0]) == false && ltlg[1] != null && isNaN(ltlg[1]) == false) {
-        circle_marker.setLatLng(new L.LatLng(ltlg[0], ltlg[1]));
-        circle.setLatLng(new L.LatLng(ltlg[0], ltlg[1]));
+    function setMarker2() {
+      if (lat2 != null && isNaN(lat2) == false && long2 != null && isNaN(long2) == false) {
+        point2.setLatLng(new L.LatLng(lat2, long2));
       }
     }
-    function setMarkers(array) {
-        array.forEach(function (obj) {
-
-            var [pos, isid]= containsID(markers, obj.id) //Verifica si el array Markers contiene el atributo id: "usuario" del objeto del array
-
-            if (isid){
-
-                markers[pos].mark.setLatLng(new L.LatLng(obj.lat, obj.long));
-                console.log('Se actualizó el marcador para la ID: "'+ markers[pos].id +'"');
-                console.log('Lat y Long de la ID: "'+ obj.lat +','+ obj.long);
-
-            }else{
-
-                markers.push(new Object({
-                    id: obj.id,
-                    mark: new L.Marker([obj.lat, obj.long]).addTo(mymap)
-                }));
-
-                console.log('Se creó el marcador para la ID: "'+ usuario +'"');
-
-            }
-
-        });
-
+    function Markerlabel() {
+      circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
     }
-    function Markerlabel(idus) {
-      circle_marker.bindPopup(idus, { autoPan: false }).openPopup()
+    function startPolyline1(ltlgp1) {
+      if (isNaN(ltlgp1) == false) {
+        polyline1 = L.polyline(ltlgp1).addTo(mymap);
+        polyline_set = 1;
+      }
     }
-    function createStartPoint1(sp) {
-      startpoint1 = L.marker(sp).addTo(mymap);
-    }
-    function createStartPoint2(sp) {
-      startpoint2 = L.marker(sp).addTo(mymap);
-    }
-    function startPolyline(ltlgp) {
-      if (isNaN(ltlgp) == false) {
-        if (document.getElementById('IDtxtID').value == "1") {
-          polyline1 = L.polyline(ltlgp).addTo(mymap);
-          polyline_set = 1;
-        } else if (document.getElementById('IDtxtID').value == "2") {
-          polyline2 = L.polyline(ltlgp).addTo(mymap);
-          polyline_set = 1;
-        }
+    function startPolyline2(ltlgp2) {
+      if (isNaN(ltlgp2) == false) {
+        polyline2 = L.polyline(ltlgp2).addTo(mymap);
+        polyline_set = 1;
       }
     }
     function start2Polyline(ltlgp1, ltlgp2) {
@@ -532,35 +451,21 @@
       }
     }
 
-    function addPolyline(ltlgap) {
+    function addPolyline1(ltlgap1) {
       if ((polyline_set == 1)) {
-        if (document.getElementById('IDtxtID').value == "1") {
-          polyline1.setLatLngs(ltlgap)
-          if (!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0) {
-            setTimeout(createStartPoint1(ltlgap[0]), 1000)
-            startpoint_was_set = 1;
-          }
-        } else if (document.getElementById('IDtxtID').value == "2") {
-          polyline2.setLatLngs(ltlgap)
-          if (!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0) {
-            setTimeout(createStartPoint2(ltlgap[0]), 1000)
-            startpoint_was_set = 1;
-          }
-        }
+          polyline1.setLatLngs(ltlgap1)
+      }
+    }
+
+    function addPolyline2(ltlgap2) {
+      if ((polyline_set == 1)) {
+          polyline2.setLatLngs(ltlgap2)
       }
     }
     function add2Polyline(ltlgap1, ltlgap2) {
       if ((polyline_set == 1)) {
         polyline1.setLatLngs(ltlgap1)
-        if (!polyline1.isEmpty() && polyline1.getLatLngs().length == 1 && startpoint_was_set == 0) {
-          setTimeout(createStartPoint1(ltlgap1[0]), 1000)
-          startpoint_was_set = 1;
-        }
         polyline2.setLatLngs(ltlgap2)
-        if (!polyline2.isEmpty() && polyline2.getLatLngs().length == 1 && startpoint_was_set == 0) {
-          setTimeout(createStartPoint2(ltlgap2[0]), 1000)
-          startpoint_was_set = 1;
-        }
       }
     }
     function clearpoly() {
@@ -576,14 +481,15 @@
       }
     }
     let mymap = L.map('mapid').setView([lat, long], 18);
+    var point1 = L.marker([lat1, long1]).addTo(mymap);
+    var point2 = L.marker([lat2, long2]).addTo(mymap);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);
     //Recepción y traducción de información del Backend
     document.addEventListener('DOMContentLoaded', function () {
-      old_user = "-";
-      io().on('change', function (data) {
+      io().on('change1', function (data) {
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
@@ -597,108 +503,119 @@
         var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
         document.getElementById('FechaID').innerHTML = datofecha;
         document.getElementById('HoraID').innerHTML = formattedTime;
-        var TaxID = document.getElementById('IDtxtID').innerHTML
+        var TaxID = document.getElementById('IDtxtID').innerHTML;
+        lat1 = data.DataLat;
+        long1 = data.DataLong;
         usuario = data.DataUsu;
-        lat = data.DataLat;
-        long = data.DataLong;
-
+        setInterval(setMarker1, 1000);
         valor = document.getElementById('switch').checked;
-          if (valor) {
-              if (usuario == "1") {
-                  setInterval(latlngsTemp1 = [lat, long], 1000);
-                  setInterval(latlngs1.push(latlngsTemp1), 1000);
-              } else if (usuario == "2") {
-                  setInterval(latlngsTemp2 = [lat, long], 1000);
-                  setInterval(latlngs2.push(latlngsTemp2), 1000);
-              }
-          } else {
-            latlngs1 = [];
-            latlngs2 = [];
-          }
-
-        if (usuario!=old_user){
-            var [pos, isid]= containsID(Taxis, usuario) //Verifica si el array Taxis contiene el atributo id: "usuario"
-            if (isid){
-                Taxis[pos].lat = data.DataLat;
-                Taxis[pos].long = data.DataLong;
-            }else{
-                Taxis.push(new Object({
-                    id: usuario,
-                    lat: lat,
-                    long: long
-                }));
-                console.log('Se creó el objeto con la ID: "'+usuario+'"');
+        if (valor) {
+            if (document.getElementById('IDtxtID').value == "1") {
+                if(latlngs1.length != 1) {
+                setInterval(latlngsTemp1 = [lat1, long1], 1000);
+                setInterval(latlngs1.push(latlngsTemp1), 1000);
+            } else {
+                startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
+                setInterval(latlngsTemp1 = [lat1, long1], 1000);
+                setInterval(latlngs1.push(latlngsTemp1), 1000);
             }
-            setInterval(setMarkers(Taxis), 1000);;
+            } else if (document.getElementById('IDtxtID').value == "2") {
+
+            } else {
+                if(latlngs1.length != 1) {
+                setInterval(latlngsTemp1 = [lat1, long1], 1000);
+                setInterval(latlngs1.push(latlngsTemp1), 1000);
+            } else {
+                startpoint1 = L.marker(latlngs1[0]).addTo(mymap);
+                setInterval(latlngsTemp1 = [lat1, long1], 1000);
+                setInterval(latlngs1.push(latlngsTemp1), 1000);
+            }
+            }
+        } else {
+          latlngs1 = [];
         }
-        
+      });
+      io().on('change2', function (data) {
+        document.getElementById('UsuID').innerHTML = data.DataUsu;
+        document.getElementById('LatID').innerHTML = data.DataLat;
+        document.getElementById('LongID').innerHTML = data.DataLong;
+        var date = new Date(parseFloat(data.DataTime));
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var month = months[date.getMonth()];
+        var hours = date.toLocaleTimeString();
+        var minutes = "0" + date.getMinutes();
+        var seconds = "0" + date.getSeconds();
+        var formattedTime = hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+        var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
+        document.getElementById('FechaID').innerHTML = datofecha;
+        document.getElementById('HoraID').innerHTML = formattedTime;
+        var TaxID = document.getElementById('IDtxtID').innerHTML;
+        lat2 = data.DataLat;
+        long2 = data.DataLong;
+        usuario = data.DataUsu;
+        setInterval(setMarker2, 1000);
+        valor = document.getElementById('switch').checked;
+        if (valor) {
+            if (document.getElementById('IDtxtID').value == "1") {
 
-       
-
-        //if (old_user != usuario) {
-        //  setTimeout(function () {
-        //    MapsetUbication();
-        //    Markerlabel();
-        //    if (valor) {
-        //      latlngs = [];
-        //      if (startpoint_was_set == 1) {
-        //        startpoint.removeFrom(mymap);
-        //        startpoint_was_set = 0;
-        //      }
-        //      clearpoly();
-        //      startPolyline();
-        //    }
-        //  }
-        //    , 1000);
-        //  old_user = usuario;
-        //}
+            } else if (document.getElementById('IDtxtID').value == "2") {
+                if(latlngs2.length != 1) {
+                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                } else {
+                    startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
+                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                }
+            } else {
+                if(latlngs2.length != 1) {
+                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                } else {
+                    startpoint2 = L.marker(latlngs2[0]).addTo(mymap);
+                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
+                    setInterval(latlngs2.push(latlngsTemp2), 1000);
+                }
+            }
+        } else {
+          latlngs2 = [];
+        }
       });
     });
-    //Funciones de los switches al trazar linea en vivo
     function condicional() {
         valor = document.getElementById('switch').checked;
         if (valor) {
           setTimeout(function () {
             clearpoly();
-            if (startpoint_was_set == 1) {
-              if (document.getElementById('IDtxtID').value == "1") {
-                startpoint1.removeFrom(mymap);
-              } else if (document.getElementById('IDtxtID').value == "2") {
-                startpoint2.removeFrom(mymap);
-              } else {
-                startpoint1.removeFrom(mymap);
-                startpoint2.removeFrom(mymap);
-              }
-              startpoint_was_set = 0;
-            }
-          }, 100)
-        }
-        else {
+            startpoint1.removeFrom(mymap);
+            startpoint2.removeFrom(mymap);
+          }, 200)
+        } else {
           if (document.getElementById('IDtxtID').value == "1") {
             console.log('latlngs1=' + latlngs1.length)
-            setTimeout(function () {
-              startPolyline(latlngs1);
-            }, 1000);
             setInterval(function () {
-              addPolyline(latlngs1);
-            }, 1000);
+              addPolyline1(latlngs1);
+            }, 200); 
+            setTimeout(function () {
+              startPolyline1(latlngs1);
+            }, 200);
           } else if (document.getElementById('IDtxtID').value == "2") {
             console.log('latlngs2=' + latlngs2.length)
-            setTimeout(function () {
-              startPolyline(latlngs2);
-            }, 1000);
             setInterval(function () {
-              addPolyline(latlngs2);
-            }, 1000);
+              addPolyline2(latlngs2);
+            }, 200);
+            setTimeout(function () {
+              startPolyline2(latlngs2);
+            }, 200);
           } else {
             console.log('latlngs1=' + latlngs1.length)
             console.log('latlngs2=' + latlngs2.length)
-            setTimeout(function () {
-              start2Polyline(latlngs1, latlngs2);
-            }, 1000);
             setInterval(function () {
               add2Polyline(latlngs1, latlngs2);
-            }, 1000);
+            }, 200);
+            setTimeout(function () {
+              start2Polyline(latlngs1, latlngs2);
+            }, 200);
           }
         }
     }
