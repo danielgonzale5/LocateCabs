@@ -119,7 +119,7 @@ setTimeout(function () {
 }, 999999999);
 //Consulta a la base de datos y conexión constante Backend-Frontend
 setInterval(function () {
-  con.query('SELECT * FROM gps ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
+  con.query('SELECT * FROM gps WHERE Usuario = 1 ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
     if (err) throw err;
     data = JSON.parse(JSON.stringify(rows))
     var dataGPS = Object.values(data[0])
@@ -127,14 +127,14 @@ setInterval(function () {
     var DataLat = parseFloat(dataGPS[2]).toFixed(6)
     var DataLong = parseFloat(dataGPS[3]).toFixed(6)
     var DataTime = parseFloat(dataGPS[4])
-    io.emit('change', {
+    io.emit('change1', {
       DataUsu: DataUsu,
       DataLat: DataLat,
       DataLong: DataLong,
       DataTime: DataTime,
     });
     io.on('connection', function (socket) {
-      socket.emit('change', {
+      socket.emit('change1', {
         DataUsu: DataUsu,
         DataLat: DataLat,
         DataLong: DataLong,
@@ -142,10 +142,35 @@ setInterval(function () {
       });
     });
   });
-}, 500);
+}, 1500);
+
+setInterval(function () {
+    con.query('SELECT * FROM gps WHERE Usuario = 2 ORDER BY idGPS DESC LIMIT 1', function (err, rows) {
+      if (err) throw err;
+      data = JSON.parse(JSON.stringify(rows))
+      var dataGPS = Object.values(data[0])
+      var DataUsu = dataGPS[1]
+      var DataLat = parseFloat(dataGPS[2]).toFixed(6)
+      var DataLong = parseFloat(dataGPS[3]).toFixed(6)
+      var DataTime = parseFloat(dataGPS[4])
+      io.emit('change2', {
+        DataUsu: DataUsu,
+        DataLat: DataLat,
+        DataLong: DataLong,
+        DataTime: DataTime,
+      });
+      io.on('connection', function (socket) {
+        socket.emit('change2', {
+          DataUsu: DataUsu,
+          DataLat: DataLat,
+          DataLong: DataLong,
+          DataTime: DataTime,
+        });
+      });
+    });
+  }, 1500);
 
 app.use(express.json({ limit: '500mb' }));
-
 app.post('/historic', function (req, res) {
   console.log("Historics sended")
   console.log(req.body);
