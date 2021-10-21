@@ -542,11 +542,10 @@
         setInterval(setMarker1, 1000);
         valor = document.getElementById('switch').checked;
         if (valor) {
-            latlngs1 = [];
-        } else {
-          latlngs1 = [];
           setInterval(latlngsTemp1 = [lat1, long1], 1000);
           setInterval(latlngs1.push(latlngsTemp1), 1000);
+        } else {
+          latlngs1 = [];
         }
       });
       io().on('change2', function (data) {
@@ -569,12 +568,12 @@
         usuario = data.DataUsu;
         setInterval(setMarker2, 1000);
         valor = document.getElementById('switch').checked;
+        console.log(valor)
         if (valor) {
-            latlngs2 = [];
-        } else {
-          latlngs2 = [];
           setInterval(latlngsTemp2 = [lat2, long2], 1000);
           setInterval(latlngs2.push(latlngsTemp2), 1000);
+        } else {
+          latlngs2 = [];
         }
       });
     });
