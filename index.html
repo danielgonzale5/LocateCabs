@@ -374,9 +374,13 @@
         <label class="inlineclass" style="width: 100px; padding-left: 10px;">Hora</label>
         <label class="inlineclass" id="HoraID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
         <div></div>
-        <h2 style="text-align: center; margin-top: 15px;">Inserte ID específica</h2>
-        <h4 style="text-align: center; margin-top: 15px;">"-" para observar todos los taxis</h4>
-        <input style="text-align: center; margin-top: 15px;" type="text" id="IDtxtID" name="IDtxt" value="-">
+        <h2 style="text-align: center; margin-top: 15px;">Seleccione ID específica</h2>
+        <h4 style="text-align: center; margin-top: 15px;">"Todos" para observar todos los taxis</h4>
+
+        <select name="cars" id="IDtxtID" style="margin-top: 10px; text-align: center; border-radius: 8px; font-size: 100%;">
+          <option value="none">Todos</option>
+        </select>
+        <!--<input style="text-align: center; margin-top: 15px;" type="text" id="IDtxtID" name="IDtxt" value="-">-->
         <h2 style="text-align: center; margin-top: 15px;">Trazar recorrido</h2>
         <div class="switch-container;" style="text-align: center; margin-top: 5px;">
           <input type="Checkbox" id="switch">
@@ -480,6 +484,7 @@
         }
       }
     }
+
     let mymap = L.map('mapid').setView([lat, long], 18);
     var point1 = L.marker([lat1, long1]).bindPopup("ID Usuario: 1", { autoPan: false }).addTo(mymap);
     var point2 = L.marker([lat2, long2]).bindPopup("ID Usuario: 2", { autoPan: false }).addTo(mymap);
@@ -487,6 +492,31 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);
+
+    //Este socket recibe el vector de usuarios de la base de datos vistos por primera vez cuando se conecta el cliente a la página.
+    io().on('init_users', function (users){
+      Userv= users.Usersvec;
+      console.log(Userv);
+      var lista_select = document.getElementById('IDtxtID');
+      for (var i = 0; i<Userv.length; i++){
+        if (Userv[i]!='' && Userv[i]!='-'){
+          var new_opt = document.createElement('option');
+          new_opt.value = Userv[i];
+          new_opt.innerHTML = Userv[i];
+          lista_select.appendChild(new_opt);
+        }
+      } 
+    });
+    //Este socket, a diferencia del anterior, detecta si hay un usuario nuevo en la base de datos y lo agrega a la lista desplegable. Esto es para que el cliente no se vea obligado a recargar la página.
+    io().on('new_user_detected', function(user){
+      usuario_detectado=user.Newuser;
+      var lista_select = document.getElementById('IDtxtID');
+      var new_opt = document.createElement('option');
+      new_opt.value = usuario_detectado;
+      new_opt.innerHTML = usuario_detectado;
+      lista_select.appendChild(new_opt);
+    })
+
     //Recepción y traducción de información del Backend
     document.addEventListener('DOMContentLoaded', function () {
       io().on('change1', function (data) {
