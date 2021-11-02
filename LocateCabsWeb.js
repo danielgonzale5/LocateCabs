@@ -33,6 +33,8 @@ app.get('/historicos', function (req, res) {
   res.sendfile(dir + '/historicos.html');
 });
 
+
+
 //Conexión al puerto establecido
 server.listen(port, function (error) {
   if (error) {
@@ -89,9 +91,9 @@ setTimeout(function(){
 }, 0);
 
 //Ingreso de variables ppro defecto
-var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, TimeStamp) VALUES ?";
+var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, TimeStamp, RPM) VALUES ?";
 var values = [
-  ["-", "-", "-", "-"],
+  ["-", "-", "-", "-", "-"],
 ];
 con.query(Imysql, [values], function (err) {
   if (err) throw err;
@@ -116,9 +118,9 @@ serverudp.on('message', function (msg, info) {
   });
   //Almacenamiento de mensaje en Base de datos
   DatosGPS = msg.toString().split(";")
-  var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, TimeStamp) VALUES ?";
+  var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, TimeStamp, RPM) VALUES ?";
   var values = [
-    [DatosGPS[0], DatosGPS[1], DatosGPS[2], DatosGPS[3]]];
+    [DatosGPS[0], DatosGPS[1], DatosGPS[2], DatosGPS[3], DatosGPS[4]]];
   con.query(Imysql, [values], function (err, result) {
     if (err) throw err;
     console.log("Records inserted: " + result.affectedRows);
@@ -158,11 +160,13 @@ setInterval(function () {
     var DataLat = parseFloat(dataGPS[2]).toFixed(6)
     var DataLong = parseFloat(dataGPS[3]).toFixed(6)
     var DataTime = parseFloat(dataGPS[4])
+    var DataRPM = parseFloat(dataGPS[5])
     io.emit('change1', {
       DataUsu: DataUsu,
       DataLat: DataLat,
       DataLong: DataLong,
       DataTime: DataTime,
+      DataRPM: DataRPM,
     });
     io.on('connection', function (socket) {
       socket.emit('change1', {
@@ -170,6 +174,7 @@ setInterval(function () {
         DataLat: DataLat,
         DataLong: DataLong,
         DataTime: DataTime,
+        DataRPM: DataRPM,
       });
     });
   });
@@ -184,11 +189,13 @@ setInterval(function () {
       var DataLat = parseFloat(dataGPS[2]).toFixed(6)
       var DataLong = parseFloat(dataGPS[3]).toFixed(6)
       var DataTime = parseFloat(dataGPS[4])
+      var DataRPM = parseFloat(dataGPS[5])
       io.emit('change2', {
         DataUsu: DataUsu,
         DataLat: DataLat,
         DataLong: DataLong,
         DataTime: DataTime,
+        DataRPM: DataRPM,
       });
       io.on('connection', function (socket) {
         socket.emit('change2', {
@@ -196,6 +203,7 @@ setInterval(function () {
           DataLat: DataLat,
           DataLong: DataLong,
           DataTime: DataTime,
+          DataRPM: DataRPM,
         });
       });
     });
@@ -231,16 +239,16 @@ setInterval(function () {
   
 }, 1500);
 
-app.use(express.json({ limit: '500mb' }));
+app.use(express.json({limit: '200mb'}));
 
 app.post('/historic', function (req, res) {
-  console.log("Historics sended")
-  console.log(req.body);
+  console.log("Historics sending")
+  //console.log(req.body);
   var HisDat = req.body;
   var TSini = HisDat.datainicio.toString();
   var TSfin = HisDat.datafin.toString();
   var TSuser = HisDat.datauser.toString();
-  console.log(TSini, TSfin, TSuser)
+  //console.log(TSini, TSfin, TSuser)
   con.query("SELECT * FROM gps WHERE TimeStamp BETWEEN ('" + TSini + "') AND ('" + TSfin + "') AND Usuario = '"+ TSuser +"';", function (err, rows) {
     if (err) throw err;
     var HistData = JSON.parse(JSON.stringify(rows))
@@ -252,11 +260,11 @@ app.post('/historic', function (req, res) {
     var timearrtemp = []
     var timearr = []
     
-    console.log(DataHist)
+    //console.log(DataHist)
     for (var i = 0; i < DataHist.length; i++) {
       ConverArray.push(Object.values(DataHist[i]))
     }
-    console.log(ConverArray)
+    //console.log(ConverArray)
     for (var j = 0; j < DataHist.length; j++) {
       UserData.push(ConverArray[j][1]);
       CoordinatesArrTemp = [ConverArray[j][2], ConverArray[j][3]];
@@ -278,4 +286,73 @@ app.post('/historic', function (req, res) {
   res.json({
     status: 'received'
   });
+  res.end("");
+
+});
+
+var loop;
+
+app.post('/multihistoric', function (req, res) {
+  console.log("MultiHistorics sending")
+  console.log(req.body);
+  var HisDat = req.body;
+  var TSini = HisDat.datainicio.toString();
+  var TSfin = HisDat.datafin.toString();
+  var Dataobj= new Array();
+
+  for (i=0; i < HisDat.multi_datauser.length;i++){
+    loop=i;
+    var TSuser= HisDat.multi_datauser[i].toString();
+    //console.log(TSini, TSfin, TSuser);
+
+    con.query("SELECT * FROM gps WHERE TimeStamp BETWEEN ('" + TSini + "') AND ('" + TSfin + "') AND Usuario = '"+ TSuser +"';", function(err, rows){
+      if (err) throw err;
+      var Datavector=new Array();
+      var HistData = JSON.parse(JSON.stringify(rows))
+      var DataHist = Object.values(HistData)
+      var ConverArray = []
+      var CoordinatesArrTemp = []
+      var CoordinatesArr = []
+      var UserData = []
+      var timearrtemp = []
+      var timearr = []
+      
+      //console.log(DataHist)
+      for (var i = 0; i < DataHist.length; i++) {
+        ConverArray.push(Object.values(DataHist[i]))
+      }
+      //console.log(ConverArray)
+      for (var j = 0; j < DataHist.length; j++) {
+        UserData.push(ConverArray[j][1]);
+        CoordinatesArrTemp = [ConverArray[j][2], ConverArray[j][3]];
+        CoordinatesArr.push(CoordinatesArrTemp);
+        timearrtemp = [ConverArray[j][4]];
+        timearr.push(timearrtemp);
+      }
+
+      var DataTimeStamp = CoordinatesArr;
+      var DatoTiempo = timearr;
+      var DataUsuario = UserData;
+
+      Dataobj.push(new Object({
+        DataUsuario: DataUsuario,
+        DataTimeStamp:DataTimeStamp,
+        DatoTiempo : DatoTiempo
+      }))
+
+      io.emit('multitimestamp', {
+        Dataobj: Dataobj
+      });
+
+
+
+    });           
+      
+  }
+
+  res.json({
+    status: 'received'
+  });
+  res.end("");
+
 });

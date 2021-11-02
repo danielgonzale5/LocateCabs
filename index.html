@@ -374,6 +374,9 @@
         <label class="inlineclass" style="width: 100px; padding-left: 10px;">Hora</label>
         <label class="inlineclass" id="HoraID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
         <div></div>
+        <label class="inlineclass" style="width: 100px; padding-left: 10px;">RPM</label>
+        <label class="inlineclass" id="RPMID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+        <div></div>
         <h2 style="text-align: center; margin-top: 15px;">Seleccione ID específica</h2>
         <h4 style="text-align: center; margin-top: 15px;">"Todos" para observar todos los taxis</h4>
 
@@ -523,6 +526,7 @@
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
+        document.getElementById('RPMID').innerHTML = data.DataRPM;
         var date = new Date(parseFloat(data.DataTime));
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var month = months[date.getMonth()];
@@ -569,6 +573,7 @@
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
+        document.getElementById('RPMID').innerHTML = data.DataRPM;
         var date = new Date(parseFloat(data.DataTime));
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var month = months[date.getMonth()];
