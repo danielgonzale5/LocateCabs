@@ -33,6 +33,8 @@ app.get('/historicos', function (req, res) {
   res.sendfile(dir + '/historicos.html');
 });
 
+
+
 //Conexión al puerto establecido
 server.listen(port, function (error) {
   if (error) {
@@ -231,16 +233,16 @@ setInterval(function () {
   
 }, 1500);
 
-app.use(express.json({ limit: '500mb' }));
+app.use(express.json({limit: '200mb'}));
 
 app.post('/historic', function (req, res) {
-  console.log("Historics sended")
-  console.log(req.body);
+  console.log("Historics sending")
+  //console.log(req.body);
   var HisDat = req.body;
   var TSini = HisDat.datainicio.toString();
   var TSfin = HisDat.datafin.toString();
   var TSuser = HisDat.datauser.toString();
-  console.log(TSini, TSfin, TSuser)
+  //console.log(TSini, TSfin, TSuser)
   con.query("SELECT * FROM gps WHERE TimeStamp BETWEEN ('" + TSini + "') AND ('" + TSfin + "') AND Usuario = '"+ TSuser +"';", function (err, rows) {
     if (err) throw err;
     var HistData = JSON.parse(JSON.stringify(rows))
@@ -252,11 +254,11 @@ app.post('/historic', function (req, res) {
     var timearrtemp = []
     var timearr = []
     
-    console.log(DataHist)
+    //console.log(DataHist)
     for (var i = 0; i < DataHist.length; i++) {
       ConverArray.push(Object.values(DataHist[i]))
     }
-    console.log(ConverArray)
+    //console.log(ConverArray)
     for (var j = 0; j < DataHist.length; j++) {
       UserData.push(ConverArray[j][1]);
       CoordinatesArrTemp = [ConverArray[j][2], ConverArray[j][3]];
@@ -278,4 +280,73 @@ app.post('/historic', function (req, res) {
   res.json({
     status: 'received'
   });
+  res.end("");
+
+});
+
+var loop;
+
+app.post('/multihistoric', function (req, res) {
+  console.log("MultiHistorics sending")
+  console.log(req.body);
+  var HisDat = req.body;
+  var TSini = HisDat.datainicio.toString();
+  var TSfin = HisDat.datafin.toString();
+  var Dataobj= new Array();
+
+  for (i=0; i < HisDat.multi_datauser.length;i++){
+    loop=i;
+    var TSuser= HisDat.multi_datauser[i].toString();
+    //console.log(TSini, TSfin, TSuser);
+
+    con.query("SELECT * FROM gps WHERE TimeStamp BETWEEN ('" + TSini + "') AND ('" + TSfin + "') AND Usuario = '"+ TSuser +"';", function(err, rows){
+      if (err) throw err;
+      var Datavector=new Array();
+      var HistData = JSON.parse(JSON.stringify(rows))
+      var DataHist = Object.values(HistData)
+      var ConverArray = []
+      var CoordinatesArrTemp = []
+      var CoordinatesArr = []
+      var UserData = []
+      var timearrtemp = []
+      var timearr = []
+      
+      //console.log(DataHist)
+      for (var i = 0; i < DataHist.length; i++) {
+        ConverArray.push(Object.values(DataHist[i]))
+      }
+      //console.log(ConverArray)
+      for (var j = 0; j < DataHist.length; j++) {
+        UserData.push(ConverArray[j][1]);
+        CoordinatesArrTemp = [ConverArray[j][2], ConverArray[j][3]];
+        CoordinatesArr.push(CoordinatesArrTemp);
+        timearrtemp = [ConverArray[j][4]];
+        timearr.push(timearrtemp);
+      }
+
+      var DataTimeStamp = CoordinatesArr;
+      var DatoTiempo = timearr;
+      var DataUsuario = UserData;
+
+      Dataobj.push(new Object({
+        DataUsuario: DataUsuario,
+        DataTimeStamp:DataTimeStamp,
+        DatoTiempo : DatoTiempo
+      }))
+
+      io.emit('multitimestamp', {
+        Dataobj: Dataobj
+      });
+
+
+
+    });           
+      
+  }
+
+  res.json({
+    status: 'received'
+  });
+  res.end("");
+
 });
