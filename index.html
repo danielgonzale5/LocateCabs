@@ -374,17 +374,20 @@
         <label class="inlineclass" style="width: 100px; padding-left: 10px;">Hora</label>
         <label class="inlineclass" id="HoraID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
         <div></div>
-        <h2 style="text-align: center; margin-top: 15px;">Seleccione ID específica</h2>
-        <h4 style="text-align: center; margin-top: 15px;">"Todos" para observar todos los taxis</h4>
+        <label class="inlineclass" style="width: 100px; padding-left: 10px;">RPM</label>
+        <label class="inlineclass" id="RPMID" style="text-align: center; border: 1px solid black; border-radius: 8px; width: 300px; background-color: white;">-</label>
+        <div></div>
+        <h2 style="text-align: center; margin-top: 15px;">Rastrear ID específica</h2>
+        <h4 style="text-align: center; margin-top: 15px; cursor: default;">Seleccione la ID del Taxi para ver su información</h4>
 
         <select name="cars" id="IDtxtID" style="margin-top: 10px; text-align: center; border-radius: 8px; font-size: 100%;">
-          <option value="none">Todos</option>
+          <option value="all">Todas las ID's</option>
         </select>
         <!--<input style="text-align: center; margin-top: 15px;" type="text" id="IDtxtID" name="IDtxt" value="-">-->
-        <h2 style="text-align: center; margin-top: 15px;">Trazar recorrido</h2>
+        <h2 style="text-align: center; margin-top: 15px; visibility:hidden;">Trazar recorrido</h2>
         <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-          <input type="Checkbox" id="switch">
-          <label for="switch" onclick="condicional();" class="sw"></label>
+          <input type="Checkbox" id="switch" style="visibility:hidden;">
+          <label for="switch" onclick="condicional();" class="sw" style="visibility:hidden;"></label>
         </div>
       </div>
     </div>
@@ -417,7 +420,13 @@
     var latlngsTemp1 = [];
     var latlngs2 = [];
     var latlngsTemp2 = [];
-
+    var usuarios_conectados;
+    var Usuarios= new Array();
+    var DataObj = new Array();
+    var Vehiculos = new Array();
+    var first_time = true;
+    var circle_markers = new Array();
+    var Usuarios_marcados = new Array();
     //Serie de funciones para el mapa
     function MapsetUbication() {
       mymap.setView(new L.LatLng(lat, long));
@@ -485,9 +494,144 @@
       }
     }
 
-    let mymap = L.map('mapid').setView([lat, long], 18);
-    var point1 = L.marker([lat1, long1]).bindPopup("ID Usuario: 1", { autoPan: false }).addTo(mymap);
-    var point2 = L.marker([lat2, long2]).bindPopup("ID Usuario: 2", { autoPan: false }).addTo(mymap);
+    //Esta función genera un color oscuro hexadecimal aleatorio (Esto para el caso de generar múltiples polilíneas y diferenciar cada una)
+    function random_hex_color_code(){
+      var simbolos, color;
+      simbolos = "0123456789ABCDEF";
+      colorg = "#55";
+      for(var i = 0; i < 4; i++){
+        colorg = colorg + simbolos[Math.floor(Math.random() * 16)];
+      }
+      return colorg;
+    }
+
+    function createMarkers(vector_obj){
+        vector_obj.forEach(function(obj){
+            var color=random_hex_color_code();
+            circle_markers.push(L.circleMarker([obj.Latitud, obj.Longitud], { color: color }).bindPopup("ID: " + obj.Usuario, { autoPan: false, autoClose: false }).addTo(mymap).openPopup());
+            Usuarios_marcados.push(obj.Usuario);
+        });
+
+        mymap.setView([vector_obj[vector_obj.length-1].Latitud, vector_obj[vector_obj.length-1].Longitud]);
+        
+    }
+
+    //Función para buscar el atributo "Usuario" dentro de un array.
+    function containsID(array, attribute){ 
+
+        var found = false;
+        for(var i = 0; i < array.length; i++) {
+            if (array[i].Usuario == attribute) {
+                found = true;
+                var pos=i;
+                break;
+            }
+        }
+
+        return [pos,found];
+
+    }
+
+    function updateMarkers(vector_obj){
+        vector_obj.forEach(function(obj){
+            if (Usuarios_marcados.includes(obj.Usuario)){
+                let posicion=Usuarios_marcados.indexOf(obj.Usuario);
+                circle_markers[posicion].setLatLng(new L.LatLng(obj.Latitud, obj.Longitud));
+            } else{
+                var color=random_hex_color_code();
+                circle_markers.push(L.circleMarker([obj.Latitud, obj.Longitud], { color: color }).bindPopup("ID: " + obj.Usuario, { autoPan: false, autoClose: false }).addTo(mymap).openPopup());
+                mymap.setView([obj.Latitud, obj.Longitud]);
+                Usuarios_marcados.push(obj.Usuario);
+                       
+                //Vector de orden global: "Usuarios" [1,2,3,4,5...]
+                //Vector de lista: "lista_select.options" [all, 1, 5, 7]
+                //Num que se agregará: "obj.Usuario"
+
+                var lista_select = document.getElementById('IDtxtID');
+                var new_opt = document.createElement('option');
+                new_opt.value = obj.Usuario;
+                new_opt.innerHTML = obj.Usuario;
+                //var vector_lista = new Array();
+                var posiciones_lista = new Array();
+                //var posiciones_lista_ordenado = new Array();
+                let posicion_usuario_nuevo= Usuarios.indexOf(obj.Usuario);
+                var index = 1;
+                var menor_a_todos=true;
+                var mayor_a_todos=false;
+
+                for (var i=1; i<lista_select.length; i++){
+
+                  posiciones_lista.push(Usuarios.indexOf(lista_select.options[i].value));
+
+                }
+
+                for (var j=0; j<posiciones_lista.length; j++){
+                  if(posicion_usuario_nuevo > posiciones_lista[j]){                                      
+                    if (posicion_usuario_nuevo > posiciones_lista[posiciones_lista.length - 1]){
+                      mayor_a_todos=true;
+                    } else{
+                      for(var k=j; k<posiciones_lista.length; k++){
+                        if (posicion_usuario_nuevo < posiciones_lista[k]){
+                          index = k + 1;
+                          break;
+                        }
+                      }
+                    }
+                    menor_a_todos=false;
+                    break;
+                  }
+                }
+
+                if (!menor_a_todos){
+                  if (!mayor_a_todos){
+                    lista_select.insertBefore(new_opt, lista_select.options[index]);
+                  } else{
+                    lista_select.appendChild(new_opt)
+                  }
+                  
+                }else{
+
+                  lista_select.insertBefore(new_opt, lista_select.options[index]);
+
+                }
+
+            }
+        });
+
+        //(Opcional) Desaparición del marcador, si el vehículo ya no aparece en el vector "Vehiculos".
+        Usuarios_marcados.forEach(function(user){
+            [pos, found] = containsID(vector_obj, user);
+            if (!found){
+                let posicion_d = Usuarios_marcados.indexOf(user);
+                let marker_removed = circle_markers[posicion_d];
+                mymap.removeLayer(marker_removed);
+                circle_markers.splice(posicion_d, 1);
+                Usuarios_marcados.splice(posicion_d, 1);
+
+                var lista_select = document.getElementById('IDtxtID');
+
+                for (var i=1; i<lista_select.length; i++){
+                  if (lista_select.options[i].value==user){
+                    lista_select.removeChild(lista_select.options[i]);
+                  }
+                }
+
+            }
+        });
+
+    }
+
+    function clearMarkers(){
+        circle_markers.forEach(function (item){   
+            mymap.removeLayer(item);
+        })
+        circle_markers=[];
+        Usuarios_marcados=[];
+    }
+
+    let mymap = L.map('mapid').setView([lat, long], 14);
+    //var point1 = L.marker([lat1, long1]).bindPopup("ID Usuario: 1", { autoPan: false }).addTo(mymap);
+    //var point2 = L.marker([lat2, long2]).bindPopup("ID Usuario: 2", { autoPan: false }).addTo(mymap);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
@@ -496,33 +640,150 @@
     //Este socket recibe el vector de usuarios de la base de datos vistos por primera vez cuando se conecta el cliente a la página.
     io().on('init_users', function (users){
       Userv= users.Usersvec;
-      console.log(Userv);
-      var lista_select = document.getElementById('IDtxtID');
+      //console.log(Userv);
+      //var lista_select = document.getElementById('IDtxtID');
       for (var i = 0; i<Userv.length; i++){
         if (Userv[i]!='' && Userv[i]!='-'){
-          var new_opt = document.createElement('option');
-          new_opt.value = Userv[i];
-          new_opt.innerHTML = Userv[i];
-          lista_select.appendChild(new_opt);
+          Usuarios.push(Userv[i]);
+          //var new_opt = document.createElement('option');
+          //new_opt.value = Userv[i];
+          //new_opt.innerHTML = Userv[i];
+          //lista_select.appendChild(new_opt);
         }
       } 
+
+      Usuarios=Usuarios.sort(function(a, b){
+        return a-b
+      });
+      console.log(Usuarios);
     });
+    
     //Este socket, a diferencia del anterior, detecta si hay un usuario nuevo en la base de datos y lo agrega a la lista desplegable. Esto es para que el cliente no se vea obligado a recargar la página.
     io().on('new_user_detected', function(user){
       usuario_detectado=user.Newuser;
-      var lista_select = document.getElementById('IDtxtID');
-      var new_opt = document.createElement('option');
-      new_opt.value = usuario_detectado;
-      new_opt.innerHTML = usuario_detectado;
-      lista_select.appendChild(new_opt);
+      Usuarios.push(usuario_detectado);
+      Usuarios=Usuarios.sort(function(a, b){
+        return a-b
+      });
+      console.log(Usuarios)
+      //var lista_select = document.getElementById('IDtxtID');
+      //var new_opt = document.createElement('option');
+      //new_opt.value = usuario_detectado;
+      //new_opt.innerHTML = usuario_detectado;
+      //lista_select.appendChild(new_opt);
+      
     })
+
+    //Este socket detecta los usuarios conectados o que se encuentran enviando información desde el Backend.
+    io().on('connectedusers', (usuarios_analizados) =>{
+        usuarios_conectados=usuarios_analizados.Cantidad;
+    });
 
     //Recepción y traducción de información del Backend
     document.addEventListener('DOMContentLoaded', function () {
+        //Este socket recibe el vector de objetos o vehículos con sus atributos de latitud, longitud, tiempo y RPM, enviado desde el Backend.
+        io().on('change', function(data){
+            
+            if (data.GPSobj.length==usuarios_conectados){
+                Vehiculos=[];
+                console.log('Información recibida!');
+                console.log('Cantidad de usuarios conectados: ' + data.GPSobj.length);
+                DataObj = data.GPSobj;
+                DataObj.forEach(function (obj){
+                    var date = new Date(parseFloat(obj.DataTime));
+                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    var month = months[date.getMonth()];
+                    var hours = date.toLocaleTimeString();
+                    var minutes = "0" + date.getMinutes();
+                    var seconds = "0" + date.getSeconds();
+                    var formattedTime = hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                    var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
+                    
+                    Vehiculos.push(new Object({
+                        Usuario: obj.DataUsu,
+                        Latitud: obj.DataLat,
+                        Longitud: obj.DataLong,
+                        Fecha: datofecha,
+                        Hora: formattedTime,
+                        RPM: obj.DataRPM
+                    }));
+                });
+
+                if (first_time){
+                    createMarkers(Vehiculos);
+                    Usuarios.forEach( (user) => {
+                      var lista_select = document.getElementById('IDtxtID');
+                      if (Usuarios_marcados.includes(user)){ 
+                        var new_opt = document.createElement('option');
+                        new_opt.value = user;
+                        new_opt.innerHTML = user;
+                        lista_select.appendChild(new_opt);
+                      }
+                    });
+                      
+
+                    
+                    first_time=false;
+                } else{
+                    updateMarkers(Vehiculos);                    
+                }
+
+                var lista_select = document.getElementById('IDtxtID');
+                var selected_value = lista_select.options[lista_select.selectedIndex].value;
+
+                if (selected_value=='all'){
+
+                  document.getElementById('UsuID').innerHTML = '-';
+                  document.getElementById('LatID').innerHTML = '-';
+                  document.getElementById('LongID').innerHTML = '-';
+                  document.getElementById('FechaID').innerHTML = '-';
+                  document.getElementById('HoraID').innerHTML = '-';
+                  document.getElementById('RPMID').innerHTML = '-';
+
+                } else{
+
+                  [pos, found] = containsID(Vehiculos, selected_value);
+                  document.getElementById('UsuID').innerHTML = Vehiculos[pos].Usuario;
+                  document.getElementById('LatID').innerHTML = Vehiculos[pos].Latitud;
+                  document.getElementById('LongID').innerHTML = Vehiculos[pos].Longitud;
+                  document.getElementById('FechaID').innerHTML = Vehiculos[pos].Fecha;
+                  document.getElementById('HoraID').innerHTML = Vehiculos[pos].Hora;
+                  document.getElementById('RPMID').innerHTML = Vehiculos[pos].RPM;
+
+                }
+
+
+            }
+        });
+
+        //Este socket detecta si no hay ningún usuario conectado en el mapa.
+        io().on('nousersconnected', function(){
+            clearMarkers();
+            var lista_select = document.getElementById("IDtxtID");
+
+            if (lista_select.length>1){
+              let loops=lista_select.length;
+              for (var i=0; i<loops; i++) {
+                lista_select.remove(1);      
+              }
+            }
+
+            document.getElementById('UsuID').innerHTML = '-';
+            document.getElementById('LatID').innerHTML = '-';
+            document.getElementById('LongID').innerHTML = '-';
+            document.getElementById('FechaID').innerHTML = '-';
+            document.getElementById('HoraID').innerHTML = '-';
+            document.getElementById('RPMID').innerHTML = '-';
+
+            console.log('NO HAY USUARIOS CONECTADOS! ADONDEFUERON?');
+        });
+
+
       io().on('change1', function (data) {
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
+        document.getElementById('RPMID').innerHTML = data.DataRPM;
         var date = new Date(parseFloat(data.DataTime));
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var month = months[date.getMonth()];
@@ -569,6 +830,7 @@
         document.getElementById('UsuID').innerHTML = data.DataUsu;
         document.getElementById('LatID').innerHTML = data.DataLat;
         document.getElementById('LongID').innerHTML = data.DataLong;
+        document.getElementById('RPMID').innerHTML = data.DataRPM;
         var date = new Date(parseFloat(data.DataTime));
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var month = months[date.getMonth()];
