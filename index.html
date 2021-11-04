@@ -703,24 +703,36 @@
       //Agrega las polilíneas de las ID's que aparezcan "de casualidad" en el mapa.
       var datos_para_agregar = new Array();
 
-      lista_vec.forEach((element) =>{
-        if(!Usuarios_recorridos.includes(element)){
-          datos_para_agregar.push(element);
-        }       
-      });
-      var n=0;
+      if (selected_value=='all'){
+
+        lista_vec.forEach((element) =>{
+          if(!Usuarios_recorridos.includes(element)){
+            datos_para_agregar.push(element);
+          }       
+        });
+
+      } else{
+
+        if(!Usuarios_recorridos.includes(selected_value)){
+            datos_para_agregar.push(selected_value);
+        }   
+
+      }
+      
+
       if (datos_para_agregar.length!=0){
         datos_para_agregar.forEach((dato) =>{
           if (!Usuarios_recorridos.includes(dato)){
-            var [pos, found] = containsID(Vehiculos, dato);
-            var latlng= new Array(Vehiculos[pos].Latitud, Vehiculos[pos].Longitud);
+            var [posn, found] = containsID(Vehiculos, dato);
+            var latlng= new Array(Vehiculos[posn].Latitud, Vehiculos[posn].Longitud);
             polylines.push(L.polyline(new Array(latlng), {color: 'red'}).addTo(mymap));
-            n++;
-            console.log('Se agregó ' + n + 'marcador(es)');
-            //startpoints.push(L.marker(latlng).bindPopup("Inicio ID: " + dato, { autoPan: false, autoClose: false }).addTo(mymap).openPopup());       
+            startpoints.push(L.marker(latlng).bindPopup("Inicio ID: " + dato, { autoPan: false, autoClose: false }).addTo(mymap).openPopup());                 
             latlongVec.push(new Array(latlng));
             Usuarios_recorridos.push(dato);
-          }         
+          }    
+          
+          
+
         });
       }
 
