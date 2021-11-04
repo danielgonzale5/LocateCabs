@@ -714,7 +714,7 @@
             var [pos, found] = containsID(Vehiculos, dato);
             var latlng= new Array(Vehiculos[pos].Latitud, Vehiculos[pos].Longitud);
             polylines.push(L.polyline(new Array(latlng), {color: 'red'}).addTo(mymap));
-            startpoints.push(L.marker(latlng).bindPopup("Inicio ID: " + dato, { autoPan: false, autoClose: false }).addTo(mymap).openPopup());
+            //startpoints.push(L.marker(latlng).bindPopup("Inicio ID: " + dato, { autoPan: false, autoClose: false }).addTo(mymap).openPopup());
             latlongVec.push(new Array(latlng));
             Usuarios_recorridos.push(dato);
           }         
@@ -897,9 +897,6 @@
 
                 if (valor){
                   if (!poly_created){
-                    startpoints.forEach(function(item){
-                      mymap.removeLayer(item);
-                    });
                     startPolyline(selected_value);
                   }else{
                     updatePolyline(selected_value);
