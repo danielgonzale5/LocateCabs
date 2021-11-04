@@ -424,6 +424,9 @@
     let tiempotran=[];
     let tiempotran2=[];
     let multi_tiempotran= new Array();
+    let rpmvector=[];
+    let rpmvector2=[];
+    let multi_rpmvector= new Array();
     var Usuarios= new Array();
     var Usuarios_validos= new Array();
     var DataobjB= new Array();
@@ -468,7 +471,7 @@
         var posicion=Usuarios_validos.indexOf(valor_dropdown_2)
         console.log("Moviéndose a la posición ("+ slide_valor + ") del vector de polilínea generado para el usuario: " + valor_dropdown_2);
         latlng = multipolylineHistoric[posicion].getLatLngs()[slide_valor];
-        let info = multi_tiempotran[posicion][slide_valor].toString() + " Ubicación: " + latlng.toString();
+        let info = multi_tiempotran[posicion][slide_valor].toString() + " Ubicación: " + latlng.toString() + " RPM: " + multi_rpmvector[posicion][i].toString();
         popuphistorico = L.popup().setLatLng(latlng).setContent(info).openOn(mymap);
       }
 
@@ -583,7 +586,7 @@
 
             }
 
-            var info =  multi_tiempotran[posicion][i].toString()+" Ubicación: " + e.latlng.toString();
+            var info =  multi_tiempotran[posicion][i].toString()+" Ubicación: " + e.latlng.toString() + " RPM: " + multi_rpmvector[posicion][i].toString();
             L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);   
 
             })
@@ -689,6 +692,12 @@
             tiempotran2.push(formattedTime);
           }
 
+          rpm2= obj.DataRPM;
+          rpmvector2=[];
+          for (var i=0; i < rpm2.length; i++){
+            var rpmTemp = RPM[i];
+            rpmvector2.push(rpmTemp);
+          }
 
           multipolylineHistoric.push(L.polyline(obj.DataTimeStamp, { color: color }).addTo(mymap));
 
@@ -698,7 +707,7 @@
           multistartpointHist.push(L.marker(obj.DataTimeStamp[0], {icon: greenIcon }).addTo(mymap).bindPopup("Inicio", { autoPan: false, autoClose: false }).openPopup());
           multifinalpointHist.push(L.marker(obj.DataTimeStamp[obj.DataTimeStamp.length - 1]).addTo(mymap).bindPopup("Fin", { autoPan: false, autoClose: false }).openPopup());
           multi_tiempotran.push(tiempotran2);
-
+          multi_rpmvector.push(rpmvector2);
           
 
           Usuarios_validos.push(Usuarios[n]);
@@ -815,6 +824,7 @@
       User = dataTS.DataUsuario;
       Coordinates = dataTS.DataTimeStamp;
       tiempo = dataTS.DatoTiempo;
+      RPM = dataTS.DataRPM;
       //console.log('io-on-timestamp Coordinates received ' + Coordinates)
       console.log('io-on-timestamp Coordinates received');
       tiempotran=[];
@@ -827,6 +837,12 @@
         var seconds = "0" + date.getSeconds();
         var formattedTime = 'Tiempo: '+hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2)+' Fecha: '+date.getDate() + "/" + month + "/" + date.getFullYear();
         tiempotran.push(formattedTime);
+      }
+
+      rpmvector=[];
+      for (var i=0; i < RPM.length; i++){
+        var rpmTemp = RPM[i];
+        rpmvector.push(rpmTemp);
       }
 
 
@@ -858,7 +874,7 @@
 
                 }
 
-                let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString();
+                let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString() + " RPM: " + rpmvector[i].toString();
                 L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
               })
               hist_was_set=1;
@@ -901,7 +917,7 @@
 
                       }
 
-                      let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString();
+                      let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString() + " RPM: " + rpmvector[i].toString();
                       L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
 
                     })
@@ -945,7 +961,7 @@
 
                   }
 
-                  let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString();
+                  let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString() + " RPM: " + rpmvector[i].toString();
                   L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
                 })
               }, 300)

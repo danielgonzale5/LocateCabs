@@ -173,10 +173,10 @@ serverudp.on('message', function (msg, info) {
   //Inserta los datos enviados al socket UDP hacia la base de datos, insertando una nueva fila.
   DatosGPS = msg.toString().split(";")
   var Imysql = "INSERT INTO gps (Usuario, Latitud, Longitud, TimeStamp, RPM) VALUES ?";
-  var RPM_vec=[0, 100, 200.1, 300, 300.530, 400, 500, 600, 700.72, 800, 900, 1000.059, 1100.2, 1200, 1300.4, 1400, 1500.02, 1600, 1700, 1800, 1900, 2000];
-  var RPM_test=RPM_vec[Math.floor(Math.random() * 22)].toString();
+  //var RPM_vec=[0, 100, 200.1, 300, 300.530, 400, 500, 600, 700.72, 800, 900, 1000.059, 1100.2, 1200, 1300.4, 1400, 1500.02, 1600, 1700, 1800, 1900, 2000];
+  //var RPM_test=RPM_vec[Math.floor(Math.random() * 22)].toString();
   var values = [
-    [DatosGPS[0], DatosGPS[1], DatosGPS[2], DatosGPS[3], RPM_test]];
+    [DatosGPS[0], DatosGPS[1], DatosGPS[2], DatosGPS[3], DatosGPS[4]]];
   con.query(Imysql, [values], function (err, result) {
     if (err) throw err;
     console.log("Records inserted: " + result.affectedRows);
@@ -244,7 +244,7 @@ setInterval(function() {
         var DataLat = parseFloat(dataGPS[2]).toFixed(6);
         var DataLong = parseFloat(dataGPS[3]).toFixed(6);
         var DataTime = parseFloat(dataGPS[4]);
-        var DataRPM = parseFloat(dataGPS[5]).toFixed(2);
+        var DataRPM = parseFloat(dataGPS[5]);
 
         GPSobj.push(new Object({
           DataUsu: DataUsu,
@@ -288,6 +288,7 @@ app.post('/historic', function (req, res) {
     var UserData = []
     var timearrtemp = []
     var timearr = []
+    var RPMData = []
     
     //console.log(DataHist)
     for (var i = 0; i < DataHist.length; i++) {
@@ -295,6 +296,7 @@ app.post('/historic', function (req, res) {
     }
     //console.log(ConverArray)
     for (var j = 0; j < DataHist.length; j++) {
+      RPMData.push(ConverArray[j][5]);
       UserData.push(ConverArray[j][1]);
       CoordinatesArrTemp = [ConverArray[j][2], ConverArray[j][3]];
       CoordinatesArr.push(CoordinatesArrTemp);
@@ -305,10 +307,13 @@ app.post('/historic', function (req, res) {
     var DataTimeStamp = CoordinatesArr;
     var DatoTiempo = timearr;
     var DataUsuario = UserData;
+    var DataRPM = RPMData;
+
     io.emit('timestamp', {
       DataUsuario: DataUsuario,
       DataTimeStamp: DataTimeStamp,
-      DatoTiempo : DatoTiempo
+      DatoTiempo : DatoTiempo,
+      DataRPM: DataRPM
     });
 
   });
@@ -344,13 +349,15 @@ app.post('/multihistoric', function (req, res) {
       var UserData = []
       var timearrtemp = []
       var timearr = []
-      
+      var RPMData = []
+
       //console.log(DataHist)
       for (var i = 0; i < DataHist.length; i++) {
         ConverArray.push(Object.values(DataHist[i]))
       }
       //console.log(ConverArray)
       for (var j = 0; j < DataHist.length; j++) {
+        RPMData.push(ConverArray[j][5]);
         UserData.push(ConverArray[j][1]);
         CoordinatesArrTemp = [ConverArray[j][2], ConverArray[j][3]];
         CoordinatesArr.push(CoordinatesArrTemp);
@@ -361,11 +368,13 @@ app.post('/multihistoric', function (req, res) {
       var DataTimeStamp = CoordinatesArr;
       var DatoTiempo = timearr;
       var DataUsuario = UserData;
+      var DataRPM = RPMData;
 
       Dataobj.push(new Object({
         DataUsuario: DataUsuario,
         DataTimeStamp:DataTimeStamp,
-        DatoTiempo : DatoTiempo
+        DatoTiempo: DatoTiempo,
+        DataRPM: DataRPM
       }))
 
       io.emit('multitimestamp', {

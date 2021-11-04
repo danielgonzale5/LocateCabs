@@ -407,19 +407,6 @@
     //Declaración de Variables Globales
     let lat = 10.984719;
     let long = -74.811302;
-    var lat1 = 10.984719;
-    var long1 = -74.811302;
-    var lat2 = 10.984719;
-    var long2 = -74.811302;
-    var polyline1;
-    var polyline2;
-    var polyline_set = 0;
-    var startpoint1;
-    var startpoint2;
-    var latlngs1 = [];
-    var latlngsTemp1 = [];
-    var latlngs2 = [];
-    var latlngsTemp2 = [];
     var usuarios_conectados;
     var Usuarios= new Array();
     var DataObj = new Array();
@@ -433,73 +420,8 @@
     var startpoints = new Array();
     var latlongVec = new Array();
     var Usuarios_recorridos = new Array();
+    
     //Serie de funciones para el mapa
-    function MapsetUbication() {
-      mymap.setView(new L.LatLng(lat, long));
-    }
-    function setMarker1() {
-      if (lat1 != null && isNaN(lat1) == false && long1 != null && isNaN(long1) == false) {
-        point1.setLatLng(new L.LatLng(lat1, long1));
-      }
-    }
-    function setMarker2() {
-      if (lat2 != null && isNaN(lat2) == false && long2 != null && isNaN(long2) == false) {
-        point2.setLatLng(new L.LatLng(lat2, long2));
-      }
-    }
-    function Markerlabel() {
-      circle_marker.bindPopup(usuario, { autoPan: false }).openPopup()
-    }
-    function startPolyline1(ltlgp1) {
-      if (isNaN(ltlgp1) == false) {
-        polyline1 = L.polyline(ltlgp1).addTo(mymap);
-        polyline_set = 1;
-      }
-    }
-    function startPolyline2(ltlgp2) {
-      if (isNaN(ltlgp2) == false) {
-        polyline2 = L.polyline(ltlgp2).addTo(mymap);
-        polyline_set = 1;
-      }
-    }
-    function start2Polyline(ltlgp1, ltlgp2) {
-      if (isNaN(ltlgp1) == false && isNaN(ltlgp2) == false) {
-        polyline1 = L.polyline(ltlgp1).addTo(mymap);
-        polyline2 = L.polyline(ltlgp2).addTo(mymap);
-        polyline_set = 1;
-      }
-    }
-
-    function addPolyline1(ltlgap1) {
-      if ((polyline_set == 1)) {
-          polyline1.setLatLngs(ltlgap1)
-      }
-    }
-
-    function addPolyline2(ltlgap2) {
-      if ((polyline_set == 1)) {
-          polyline2.setLatLngs(ltlgap2)
-      }
-    }
-    function add2Polyline(ltlgap1, ltlgap2) {
-      if ((polyline_set == 1)) {
-        polyline1.setLatLngs(ltlgap1)
-        polyline2.setLatLngs(ltlgap2)
-      }
-    }
-    function clearpoly() {
-      if (polyline_set == 1) {
-        if (document.getElementById('IDtxtID').value == "1") {
-          polyline1.removeFrom(mymap)
-        } else if (document.getElementById('IDtxtID').value == "2") {
-          polyline2.removeFrom(mymap)
-        } else {
-          polyline1.removeFrom(mymap)
-          polyline2.removeFrom(mymap)
-        }
-      }
-    }
-
     function selectedChanged(){
       dropdownChanged=true;
     }
@@ -553,17 +475,11 @@
                 mymap.setView([obj.Latitud, obj.Longitud]);
                 Usuarios_marcados.push(obj.Usuario);
                        
-                //Vector de orden global: "Usuarios" [1,2,3,4,5...]
-                //Vector de lista: "lista_select.options" [all, 1, 5, 7]
-                //Num que se agregará: "obj.Usuario"
-
                 var lista_select = document.getElementById('IDtxtID');
                 var new_opt = document.createElement('option');
                 new_opt.value = obj.Usuario;
                 new_opt.innerHTML = obj.Usuario;
-                //var vector_lista = new Array();
                 var posiciones_lista = new Array();
-                //var posiciones_lista_ordenado = new Array();
                 let posicion_usuario_nuevo= Usuarios.indexOf(obj.Usuario);
                 var index = 1;
                 var menor_a_todos=true;
@@ -781,8 +697,6 @@
     }
 
     let mymap = L.map('mapid').setView([lat, long], 14);
-    //var point1 = L.marker([lat1, long1]).bindPopup("ID Usuario: 1", { autoPan: false }).addTo(mymap);
-    //var point2 = L.marker([lat2, long2]).bindPopup("ID Usuario: 2", { autoPan: false }).addTo(mymap);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
@@ -791,15 +705,9 @@
     //Este socket recibe el vector de usuarios de la base de datos vistos por primera vez cuando se conecta el cliente a la página.
     io().on('init_users', function (users){
       Userv= users.Usersvec;
-      //console.log(Userv);
-      //var lista_select = document.getElementById('IDtxtID');
       for (var i = 0; i<Userv.length; i++){
         if (Userv[i]!='' && Userv[i]!='-'){
           Usuarios.push(Userv[i]);
-          //var new_opt = document.createElement('option');
-          //new_opt.value = Userv[i];
-          //new_opt.innerHTML = Userv[i];
-          //lista_select.appendChild(new_opt);
         }
       } 
 
@@ -816,13 +724,7 @@
       Usuarios=Usuarios.sort(function(a, b){
         return a-b
       });
-      console.log(Usuarios)
-      //var lista_select = document.getElementById('IDtxtID');
-      //var new_opt = document.createElement('option');
-      //new_opt.value = usuario_detectado;
-      //new_opt.innerHTML = usuario_detectado;
-      //lista_select.appendChild(new_opt);
-      
+      console.log(Usuarios)      
     })
 
     //Este socket detecta los usuarios conectados o que se encuentran enviando información desde el Backend.
@@ -949,140 +851,8 @@
 
             console.log('NO HAY USUARIOS CONECTADOS! ADONDEFUERON?');
         });
-
-
-      io().on('change1', function (data) {
-        document.getElementById('UsuID').innerHTML = data.DataUsu;
-        document.getElementById('LatID').innerHTML = data.DataLat;
-        document.getElementById('LongID').innerHTML = data.DataLong;
-        document.getElementById('RPMID').innerHTML = data.DataRPM;
-        var date = new Date(parseFloat(data.DataTime));
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var month = months[date.getMonth()];
-        var hours = date.toLocaleTimeString();
-        var minutes = "0" + date.getMinutes();
-        var seconds = "0" + date.getSeconds();
-        var formattedTime = hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-        var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
-        document.getElementById('FechaID').innerHTML = datofecha;
-        document.getElementById('HoraID').innerHTML = formattedTime;
-        var TaxID = document.getElementById('IDtxtID').innerHTML;
-        lat1 = data.DataLat;
-        long1 = data.DataLong;
-        usuario = data.DataUsu;
-        setInterval(setMarker1, 1000);
-        valor = document.getElementById('switch').checked;
-        if (valor) {
-            if (document.getElementById('IDtxtID').value == "1") {
-                if(latlngs1.length != 1) {
-                setInterval(latlngsTemp1 = [lat1, long1], 1000);
-                setInterval(latlngs1.push(latlngsTemp1), 1000);
-            } else {
-                startpoint1 = L.marker(latlngs1[0]).bindPopup("Inicio ID: 1", { autoPan: false }).addTo(mymap);
-                setInterval(latlngsTemp1 = [lat1, long1], 1000);
-                setInterval(latlngs1.push(latlngsTemp1), 1000);
-            }
-            } else if (document.getElementById('IDtxtID').value == "2") {
-
-            } else {
-                if(latlngs1.length != 1) {
-                setInterval(latlngsTemp1 = [lat1, long1], 1000);
-                setInterval(latlngs1.push(latlngsTemp1), 1000);
-            } else {
-                startpoint1 = L.marker(latlngs1[0]).bindPopup("Inicio ID: 1", { autoPan: false }).addTo(mymap);
-                setInterval(latlngsTemp1 = [lat1, long1], 1000);
-                setInterval(latlngs1.push(latlngsTemp1), 1000);
-            }
-            }
-        } else {
-          latlngs1 = [];
-        }
-      });
-      io().on('change2', function (data) {
-        document.getElementById('UsuID').innerHTML = data.DataUsu;
-        document.getElementById('LatID').innerHTML = data.DataLat;
-        document.getElementById('LongID').innerHTML = data.DataLong;
-        document.getElementById('RPMID').innerHTML = data.DataRPM;
-        var date = new Date(parseFloat(data.DataTime));
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var month = months[date.getMonth()];
-        var hours = date.toLocaleTimeString();
-        var minutes = "0" + date.getMinutes();
-        var seconds = "0" + date.getSeconds();
-        var formattedTime = hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-        var datofecha = date.getDate() + "/" + month + "/" + date.getFullYear();
-        document.getElementById('FechaID').innerHTML = datofecha;
-        document.getElementById('HoraID').innerHTML = formattedTime;
-        var TaxID = document.getElementById('IDtxtID').innerHTML;
-        lat2 = data.DataLat;
-        long2 = data.DataLong;
-        usuario = data.DataUsu;
-        setInterval(setMarker2, 1000);
-        valor = document.getElementById('switch').checked;
-        if (valor) {
-            if (document.getElementById('IDtxtID').value == "1") {
-
-            } else if (document.getElementById('IDtxtID').value == "2") {
-                if(latlngs2.length != 1) {
-                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
-                    setInterval(latlngs2.push(latlngsTemp2), 1000);
-                } else {
-                    startpoint2 = L.marker(latlngs2[0]).bindPopup("Inicio ID: 2", { autoPan: false }).addTo(mymap);
-                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
-                    setInterval(latlngs2.push(latlngsTemp2), 1000);
-                }
-            } else {
-                if(latlngs2.length != 1) {
-                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
-                    setInterval(latlngs2.push(latlngsTemp2), 1000);
-                } else {
-                    startpoint2 = L.marker(latlngs2[0]).bindPopup("Inicio ID: 2", { autoPan: false }).addTo(mymap);
-                    setInterval(latlngsTemp2 = [lat2, long2], 1000);
-                    setInterval(latlngs2.push(latlngsTemp2), 1000);
-                }
-            }
-        } else {
-          latlngs2 = [];
-        }
-      });
     });
-    function condicional() {
-        valor = document.getElementById('switch').checked;
-        if (valor) {
-          setTimeout(function () {
-            clearpoly();
-            startpoint1.removeFrom(mymap);
-            startpoint2.removeFrom(mymap);
-          }, 200)
-        } else {
-          if (document.getElementById('IDtxtID').value == "1") {
-            console.log('latlngs1=' + latlngs1.length)
-            setInterval(function () {
-              addPolyline1(latlngs1);
-            }, 200); 
-            setTimeout(function () {
-              startPolyline1(latlngs1);
-            }, 200);
-          } else if (document.getElementById('IDtxtID').value == "2") {
-            console.log('latlngs2=' + latlngs2.length)
-            setInterval(function () {
-              addPolyline2(latlngs2);
-            }, 200);
-            setTimeout(function () {
-              startPolyline2(latlngs2);
-            }, 200);
-          } else {
-            console.log('latlngs1=' + latlngs1.length)
-            console.log('latlngs2=' + latlngs2.length)
-            setInterval(function () {
-              add2Polyline(latlngs1, latlngs2);
-            }, 200);
-            setTimeout(function () {
-              start2Polyline(latlngs1, latlngs2);
-            }, 200);
-          }
-        }
-    }
+
   </script>
 </body>
 
