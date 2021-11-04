@@ -647,6 +647,7 @@
         }
 
       } else{
+        startpoints=[];
         var [pos, found] = containsID(Vehiculos, selected_value);
         var latlng= new Array(Vehiculos[pos].Latitud, Vehiculos[pos].Longitud);
         polylines.push(L.polyline(new Array(latlng), {color: 'red'}).addTo(mymap));
