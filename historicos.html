@@ -661,8 +661,13 @@
 
     //Esta función genera un color hexadecimal aleatorio (Esto para el caso de generar múltiples polilíneas y diferenciar cada una)
     function random_hex_color_code(){
-      let n = Math.floor(Math.random()*55777215).toString(16);
-      return '#' + n.slice(0, 6);
+      var simbolos, color;
+      simbolos = "0123456789ABCDEF";
+      colorg = "#55";
+      for(var i = 0; i < 4; i++){
+        colorg = colorg + simbolos[Math.floor(Math.random() * 16)];
+      }
+      return colorg;
     }
 
     //Esta función genera por primera vez múltiples polilíneas.
@@ -768,6 +773,7 @@
         mymap.removeLayer(item);
 
       })
+      multipolylineHistoric=[];
       Usuarios_validos=[];
       hist_was_set = 0;
     }
@@ -1020,7 +1026,7 @@
               })
             }
             startmultiPolyHist(DataobjB);
-
+            changeslider();
           }
 
           historic_updated=false;        
