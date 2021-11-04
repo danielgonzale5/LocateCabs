@@ -461,7 +461,7 @@
 
         console.log("Moviéndose a la posición ("+ slide_valor + ") del vector de polilínea generado");
         latlng = polylineHistoric.getLatLngs()[slide_valor];
-        let info = tiempotran[slide_valor].toString() + " Ubicación: " + latlng.toString();
+        let info = tiempotran[slide_valor].toString() + " Ubicación: " + latlng.toString() + " RPM: " + rpmvector[slide_valor].toString();
         popuphistorico = L.popup().setLatLng(latlng).setContent(info).openOn(mymap);
 
 
@@ -471,7 +471,7 @@
         var posicion=Usuarios_validos.indexOf(valor_dropdown_2)
         console.log("Moviéndose a la posición ("+ slide_valor + ") del vector de polilínea generado para el usuario: " + valor_dropdown_2);
         latlng = multipolylineHistoric[posicion].getLatLngs()[slide_valor];
-        let info = multi_tiempotran[posicion][slide_valor].toString() + " Ubicación: " + latlng.toString() + " RPM: " + multi_rpmvector[posicion][i].toString();
+        let info = multi_tiempotran[posicion][slide_valor].toString() + " Ubicación: " + latlng.toString() + " RPM: " + multi_rpmvector[posicion][slide_valor].toString();
         popuphistorico = L.popup().setLatLng(latlng).setContent(info).openOn(mymap);
       }
 
