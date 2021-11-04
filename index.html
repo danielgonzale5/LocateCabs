@@ -897,6 +897,9 @@
 
                 if (valor){
                   if (!poly_created){
+                    startpoints.forEach(function(item){
+                      mymap.removeLayer(item);
+                    });
                     startPolyline(selected_value);
                   }else{
                     updatePolyline(selected_value);
