@@ -380,14 +380,14 @@
         <h2 style="text-align: center; margin-top: 15px;">Rastrear ID específica</h2>
         <h4 style="text-align: center; margin-top: 15px; cursor: default;">Seleccione la ID del Taxi para ver su información</h4>
 
-        <select name="cars" id="IDtxtID" style="margin-top: 10px; text-align: center; border-radius: 8px; font-size: 100%;">
+        <select name="cars" id="IDtxtID" onchange="selectedChanged()" style="margin-top: 10px; text-align: center; border-radius: 8px; font-size: 100%;">
           <option value="all">Todas las ID's</option>
         </select>
         <!--<input style="text-align: center; margin-top: 15px;" type="text" id="IDtxtID" name="IDtxt" value="-">-->
-        <h2 style="text-align: center; margin-top: 15px; visibility:hidden;">Trazar recorrido</h2>
+        <h2 id="label_recorrido" style="text-align: center; margin-top: 15px; visibility:hidden;">Trazar recorrido</h2>
         <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-          <input type="Checkbox" id="switch" style="visibility:hidden;">
-          <label for="switch" onclick="condicional();" class="sw" style="visibility:hidden;"></label>
+          <input type="Checkbox" id="switch">
+          <label for="switch" class="sw" id="layer_switch" style="visibility:hidden;"></label>
         </div>
       </div>
     </div>
@@ -427,6 +427,12 @@
     var first_time = true;
     var circle_markers = new Array();
     var Usuarios_marcados = new Array();
+    var dropdownChanged = false;
+    var poly_created = false;
+    var polylines = new Array();
+    var startpoints = new Array();
+    var latlongVec = new Array();
+    var Usuarios_recorridos = new Array();
     //Serie de funciones para el mapa
     function MapsetUbication() {
       mymap.setView(new L.LatLng(lat, long));
@@ -492,6 +498,10 @@
           polyline2.removeFrom(mymap)
         }
       }
+    }
+
+    function selectedChanged(){
+      dropdownChanged=true;
     }
 
     //Esta función genera un color oscuro hexadecimal aleatorio (Esto para el caso de generar múltiples polilíneas y diferenciar cada una)
@@ -621,12 +631,137 @@
 
     }
 
+    function startPolyline(selected_value){
+
+      if (selected_value=='all'){
+
+        var lista_select = document.getElementById('IDtxtID');
+        for (var i=1; i<lista_select.length; i++){
+          var [pos, found] = containsID(Vehiculos, lista_select.options[i].value);
+          var latlng= new Array(Vehiculos[pos].Latitud, Vehiculos[pos].Longitud);
+          polylines.push(L.polyline(new Array(latlng), {color: 'red'}).addTo(mymap));
+          startpoints.push(L.marker(latlng).bindPopup("Inicio ID: " + lista_select.options[i].value, { autoPan: false, autoClose: false }).addTo(mymap).openPopup());
+          latlongVec.push(new Array(latlng));
+          Usuarios_recorridos.push(lista_select.options[i].value);
+          console.log('Longitud vector de vector de vectores: ' + latlongVec.length)
+        }
+
+      } else{
+        var [pos, found] = containsID(Vehiculos, selected_value);
+        var latlng= new Array(Vehiculos[pos].Latitud, Vehiculos[pos].Longitud);
+        polylines.push(L.polyline(new Array(latlng), {color: 'red'}).addTo(mymap));
+        startpoints.push(L.marker(latlng).bindPopup("Inicio ID: " + selected_value, { autoPan: false, autoClose: false }).addTo(mymap).openPopup());
+        latlongVec.push(new Array(latlng));
+        Usuarios_recorridos.push(selected_value);
+      }
+
+      poly_created=true;
+
+    }
+
+
+    function updatePolyline(selected_value){
+
+      console.log('Actualizando polilíneas...')
+
+      //Elimina las polilíneas de las ID's que se borraron en el mapa.
+      var lista_select = document.getElementById('IDtxtID');
+      var lista_vec = new Array();
+      var datos_para_eliminar = new Array();
+      for (var i=1; i<lista_select.length; i++){
+        lista_vec.push(lista_select.options[i].value);
+      }
+
+      Usuarios_recorridos.forEach((element) => {
+        if(!lista_vec.includes(element)){
+          datos_para_eliminar.push(element);
+        }
+      });
+
+      if (datos_para_eliminar.length!=0){
+
+        datos_para_eliminar.forEach((dato) =>{
+
+        if (Usuarios_recorridos.includes(dato)){
+
+          posicion_dato=Usuarios_recorridos.indexOf(dato);
+          var polyline_removed = polylines[posicion_dato];
+          var startpoint_removed = startpoints[posicion_dato];
+          mymap.removeLayer(polyline_removed);
+          mymap.removeLayer(startpoint_removed);
+          polylines.splice(posicion_dato, 1);
+          startpoints.splice(posicion_dato, 1);
+          Usuarios_recorridos.splice(posicion_dato, 1);
+          latlongVec.splice(posicion_dato, 1);
+        }
+
+        });
+
+      }
+      
+      //Agrega las polilíneas de las ID's que aparezcan "de casualidad" en el mapa.
+      var datos_para_agregar = new Array();
+
+      lista_vec.forEach((element) =>{
+        if(!Usuarios_recorridos.includes(element)){
+          datos_para_agregar.push(element);
+        }       
+      });
+
+      if (datos_para_agregar.length!=0){
+        datos_para_agregar.forEach((dato) =>{
+          if (!Usuarios_recorridos.includes(dato)){
+            var [pos, found] = containsID(Vehiculos, dato);
+            var latlng= new Array(Vehiculos[pos].Latitud, Vehiculos[pos].Longitud);
+            polylines.push(L.polyline(new Array(latlng), {color: 'red'}).addTo(mymap));
+            startpoints.push(L.marker(latlng).bindPopup("Inicio ID: " + dato, { autoPan: false, autoClose: false }).addTo(mymap).openPopup());
+            latlongVec.push(new Array(latlng));
+            Usuarios_recorridos.push(dato);
+          }         
+        });
+      }
+
+      if (selected_value=='all'){
+        console.log('Se seleccionó todos')
+        for(var i=0; i<polylines.length; i++){
+          var attr=Usuarios_recorridos[i];
+          var [pos_latlong, found] = containsID(Vehiculos, attr);
+          var latlngTemp = new Array(Vehiculos[pos_latlong].Latitud, Vehiculos[pos_latlong].Longitud);
+          latlongVec[i].push(latlngTemp);
+          polylines[i].setLatLngs(latlongVec[i]);
+        }
+
+
+      } else{
+        console.log('Se seleccionó ' + selected_value);
+        var [pos_latlongx, foundx] = containsID(Vehiculos, selected_value);
+        var latlngTemp = new Array(Vehiculos[pos_latlongx].Latitud, Vehiculos[pos_latlongx].Longitud);
+        latlongVec[0].push(latlngTemp);
+        polylines[0].setLatLngs(latlongVec[0]);
+
+      }
+
+    }
+
     function clearMarkers(){
-        circle_markers.forEach(function (item){   
-            mymap.removeLayer(item);
-        })
-        circle_markers=[];
-        Usuarios_marcados=[];
+      circle_markers.forEach(function (item){   
+        mymap.removeLayer(item);
+      })
+      circle_markers=[];
+      Usuarios_marcados=[];
+    }
+
+    function clearPolylines(){
+      polylines.forEach(function(item){
+        mymap.removeLayer(item);
+      });
+      startpoints.forEach(function(item){
+        mymap.removeLayer(item);
+      });
+      polylines=[];
+      Usuarios_recorridos=[];
+      latlongVec=[];
+      poly_created=false;
     }
 
     let mymap = L.map('mapid').setView([lat, long], 14);
@@ -719,17 +854,22 @@
                         new_opt.innerHTML = user;
                         lista_select.appendChild(new_opt);
                       }
-                    });
-                      
-
-                    
+                    });                           
                     first_time=false;
                 } else{
                     updateMarkers(Vehiculos);                    
                 }
 
+                var label= document.getElementById('label_recorrido');
+                var sw= document.getElementById('layer_switch');
                 var lista_select = document.getElementById('IDtxtID');
                 var selected_value = lista_select.options[lista_select.selectedIndex].value;
+
+                label.style.visibility="visible"; sw.style.visibility="visible";
+                if (dropdownChanged && poly_created){
+                  clearPolylines();
+                  dropdownChanged=false;
+                }
 
                 if (selected_value=='all'){
 
@@ -752,13 +892,27 @@
 
                 }
 
+                var valor = document.getElementById('switch').checked;
 
+                if (valor){
+                  if (!poly_created){
+                    startPolyline(selected_value);
+                  }else{
+                    updatePolyline(selected_value);
+                  }
+                } else{
+                  if (poly_created){
+                    clearPolylines();
+                  }
+                }
             }
         });
 
         //Este socket detecta si no hay ningún usuario conectado en el mapa.
         io().on('nousersconnected', function(){
-            clearMarkers();
+            clearMarkers(); clearPolylines();
+            var label= document.getElementById('label_recorrido');
+            var sw= document.getElementById('layer_switch');
             var lista_select = document.getElementById("IDtxtID");
 
             if (lista_select.length>1){
@@ -767,6 +921,8 @@
                 lista_select.remove(1);      
               }
             }
+            document.getElementById('switch').checked=false;
+            label.style.visibility="hidden"; sw.style.visibility="hidden";
 
             document.getElementById('UsuID').innerHTML = '-';
             document.getElementById('LatID').innerHTML = '-';
