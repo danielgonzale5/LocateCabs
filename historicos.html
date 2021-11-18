@@ -65,20 +65,20 @@
       </div>
     </header>
 
-    <div class="menu-up" style="display: none" id="panel-arriba">
+    <div class="menu-up" style="display: none; margin: 0 auto; opacity: 1; transition: margin 1.25s, opacity 1.25s; width: auto; pointer-events: auto;" id="panel-arriba">
       <div style="display: flex; vertical-align: middle;">
         <div class="slidecontainer">
-          <label style="font-size: 1rem; visibility:hidden;" id="label_recorrido">Recorrer ID:</label>
-          <select name="cars2" id="vehiculo2" onchange="changeslider()" style="margin-top: 10px; height: 2rem; text-align: center; border-radius: 8px; font-size: 100%; visibility:hidden;">
+          <label style="display: block; font-size: 1rem; visibility:hidden;" id="label_recorrido">Recorrer ID:</label>
+          <select name="cars2" id="vehiculo2" onchange="changeslider()" style="display: inline-block; margin-top: 10px; height: 2rem; text-align: center; border-radius: 8px; font-size: 100%; visibility:hidden;">
             <option value="none">Seleccionar ID</option>
           </select>  
         </div>   
         <div class="slidecontainer">
-          <label style="font-size: 1rem; text-align: center; cursor: default; visibility:hidden;" id="guia_recorrido" >Inicio - Fin</label>
+          <label style="display: block; font-size: 1rem; text-align: center; cursor: default; visibility:hidden;" id="guia_recorrido" >Inicio - Fin</label>
           <input type="range" min="0" max="100" value="0" class="slider" id="myRange" onchange="imprimirValor();" style="display: inline;  margin-top: 15px; margin-bottom: 15px; visibility:hidden;">
         </div>
       </div>
-      <h4 style="text-align: center; margin-top: 15px; background-color: #1111117a; text-shadow: 0px 0px 3px var(--white); visibility:hidden;" id="title_poly">Recorrer Polilínea</h4> 
+      <h4 style="cursor: pointer; text-align: center; margin-top: 15px; background-color: #1111117a; text-shadow: 0px 0px 3px var(--white); visibility:hidden; pointer-events: auto" onclick="test()" id="title_poly">Recorrer Polilínea</h4> 
     </div>
 
     <div class="wrapper">
@@ -108,7 +108,7 @@
       </div>  
     </div>
   </div>
-   <footer> 
+   <footer>
       <div class="footer-content">
         <p>Visita nuestro Repositorio <img src="/heart.svg#Layer_1" class="filter-redv" style="display: inline-block; height: 1.25rem;"></img> : </p>
         <li><a href="https://github.com/danielgonzale5/LocateCabs" target="_blank"><img src="/github.svg" id="gitimg" style="width: 45px;"/></a></li>
@@ -129,6 +129,40 @@
       a.click();
       a.remove();
     }
+
+
+    //Testing
+    var hide_bar=false;
+    function test(){
+      var guia= document.getElementById('guia_recorrido'); //Display: Block
+      var label= document.getElementById('label_recorrido'); //Display: Block
+      var dropdown_2= document.getElementById('vehiculo2'); //Display: Inline-block
+      var slider= document.getElementById('myRange'); //Display: Inline
+      var panel= document.getElementById('panel-arriba');
+      console.log('Se presionó recorrer polilínea');
+      
+      if (!hide_bar){
+        guia.style.display="none"; label.style.display="none"; dropdown_2.style.display="none"; slider.style.display="none";
+        //panel.style.margin="-6.5rem auto";
+        panel.style.width="18rem";
+        panel.style.margin="-2rem auto";
+        setTimeout(function(){
+          panel.style.margin="0 auto";
+          panel.style.opacity="0.5";
+        }, 500);
+        panel.style.pointerEvents="none";
+        hide_bar=true;
+      } else{
+
+        guia.style.display="block"; label.style.display="block"; dropdown_2.style.display="inline-block"; slider.style.display="inline";
+        //panel.style.margin="0 auto";
+        panel.style.width="auto";
+        panel.style.opacity="1";
+        panel.style.pointerEvents="auto";
+        hide_bar=false;
+      }
+    }
+
 
     //-----------Declaración de Variables Globales 
     let lat = 10.984719;

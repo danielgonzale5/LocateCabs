@@ -598,9 +598,7 @@ footer{
     position: relative;
     z-index: 2;
     text-align: center;
-    margin: 0 auto;
     align-items: center;
-    width: auto;
     border-radius: 0px 0px 15px 15px;
     cursor: default;
     padding: 2px 3px;
