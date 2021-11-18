@@ -22,8 +22,14 @@ app.post('/github', function (req, res) {
 app.get('/', function (req, res) {
   res.sendFile(dir + '/index.html');
 });
-app.get('/logo.png', function (req, res) {
-  res.sendFile(dir + '/logo.png');
+app.get('/idxstyle.css', function (req, res) {
+  res.sendFile(dir + '/idxstyle.css');
+});
+app.get('/histstyle.css', function (req, res) {
+  res.sendFile(dir + '/histstyle.css');
+});
+app.get('/logo.svg', function (req, res) {
+  res.sendFile(dir + '/logo.svg');
 });
 app.get('/favicon.ico', function (req, res) {
   res.sendFile(dir + '/favicon.ico');
@@ -37,7 +43,27 @@ app.get('/github.svg', function (req, res) {
 app.get('/historicos', function (req, res) {
   res.sendFile(dir + '/historicos.html');
 });
-
+app.get('/times.svg', function (req, res) {
+  res.sendFile(dir + '/times.svg');
+});
+app.get('/gps.svg', function (req, res) {
+  res.sendFile(dir + '/gps.svg');
+});
+app.get('/download.svg', function (req, res) {
+  res.sendFile(dir + '/download.svg');
+});
+app.get('/heart.svg', function (req, res) {
+  res.sendFile(dir + '/heart.svg');
+});
+app.get('/historico.svg', function (req, res) {
+  res.sendFile(dir + '/historico.svg');
+});
+app.get('/app-release.apk', function (req, res) {
+  res.sendFile(dir + '/app-release.apk');
+});
+app.get('/cursor.png', function (req, res) {
+  res.sendFile(dir + '/cursor.png');
+});
 
 //Conexión al puerto del servidor web basado en Javascript.
 server.listen(port, function (error) {
@@ -115,16 +141,19 @@ serverudp.bind(3020);
 var objTemp= new Array();
 var DataAnalized= new Array();
 var contador=0;
-const livetime=5;  //Tiempo de vida o duración máxima, en segundos, del marcador de un vehículo en el mapa, si es que éste pierde la conexión o deja de enviar datos en ese rango de tiempo.
+const lifetime=10;  //Tiempo de vida o duración máxima, en segundos, del marcador de un vehículo en el mapa, si es que éste pierde la conexión o deja de enviar datos en ese rango de tiempo.
 
 setInterval(function(){
-  if (contador!=livetime){
+
+  if (contador!=lifetime){
     contador+=1;
+    console.log('Remaining Lifetime (seconds) = '+ (lifetime+1-contador));
   } else{
     updateData();
     contador=0;
+    console.log('Lifetime was reset.' + '\n');
   }
-  console.log('Contador = '+ contador + '\n');
+  
 },1000);
 
 //Función para actualizar el vector de datos de usuarios o ID's de vehículos que van a ser analizados por la base de datos.
