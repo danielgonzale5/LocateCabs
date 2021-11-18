@@ -121,6 +121,15 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
 
+    //Descarga la Apk
+    function downloadApk(){
+      var a = document.createElement("a");
+      a.href = "/app-release.apk";
+      a.setAttribute("download", "app-release.apk");
+      a.click();
+      a.remove();
+    }
+
     //-----------Declaración de Variables Globales 
     let lat = 10.984719;
     let long = -74.811302;
