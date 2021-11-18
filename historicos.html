@@ -6,6 +6,7 @@
   <meta charset="utf-8">
   <title>LocateCabs Históricos</title>
   <link rel="icon" href="/favicon.ico"/>
+  <link rel="stylesheet" href="/histstyle.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -14,403 +15,146 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
     crossorigin="">
-    </script>
+  </script>
+  <link rel="stylesheet preload prefetch" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" type="text/css" as="style">
 </head>
-<style>
-  *{
-    padding: 0;
-    margin: 0;
-    text-decoration: none;
-    list-style: none;
-    box-sizing: border-box;
-  }
-  h1:hover{
-    cursor: default;
-  }
-  h2:hover{
-    cursor: default;
-  }
-  body{
-    font-family: sans-serif;
-    background-image: url('/bg.png');
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  label {
-    margin:5px;
-    font-size: 120%;
-    display: inline-block;
-  }
-  button {
-    background-color: #F4D03F;
-    border: none;
-    color: black;
-    padding: 12px 29px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 100%;
-  }
-  button:hover {
-    background-color: #F4D03F;
-  }
-  button:active {
-    background-color: #F4D03F;
-    /* box-shadow: 0 5px #666; */
-    transform: translateY(4px);
-  }
-  nav{
-    background: rgba(255, 212, 20, 0.8);
-    height: 80px;
-    width: 100%;
-  }
-  .padre{
-    position: relative;
-  }
-  .cabecera{
-    position: relative;
-    z-index: 2;
-  }
-  .logo{
-    display: inline-block;
-    margin-top: 2px;
-    padding: 0 40px;
-  }
-  #logoimg{
-      height: 70px;
-      width: 380px;
-  }
-  nav ul{
-    float: right;
-    margin-right: 20px;
-  }
-  nav ul li{
-    display: inline-block;
-    line-height: 80px;
-  }
-  nav ul li a{
-    color: rgb(17, 17, 17);
-    font-size: 17px;
-    font-weight: bold;
-    padding: 30px 13px; 
-    text-transform: uppercase;
-  }
-  a.menulink.active,a.menulink:hover{
-    background: rgb(19, 19, 19);
-    color: rgb(255, 255, 255); 
-    transition: .2s;
-    border-bottom:4px solid rgb(0, 130, 230);
-  }
-  .checkbtn{
-    font-size: 30px;
-    color: rgb(15, 15, 15);
-    float: left;
-    line-height: 80px;
-    margin-left: 15px;
-    cursor: pointer;
-    display: none;
-  }
-  #check{
-    display: none;
-  }
-  #mapid {
-    margin: 5px;
-    height: 650px;
-    width: 60%;
-    float: left;
-    border: 5px solid rgb(12, 12, 12);
-    border-radius: 15px;
-  }
-  #container {
-    background-color: rgba(255, 212, 20, .8);
-    margin: 1px;
-    height: auto;
-    width: auto;
-    border: 5px solid rgba(12, 12, 12, .8);
-    border-radius: 15px;
-    overflow: hidden;
-  }
-  .inlineclass {
-    display: inline-block;
-  }
-  .CenterButton {
-    width: 200;
-    padding: 5px 50px 5px 5px;
-  }
-  .sw {
-    display: inline-block;
-    width: 100px;
-    height: 35px;
-    background: rgb(19, 19, 19);
-    border-radius: 100px;
-    cursor: pointer;
-    position: relative;
-    transition: .5s;
-  }
-  .sw::after {
-    content: "";
-    display: block;
-    width: 25px;
-    height: 25px;
-    background-color: snow;
-    border-radius: 100px;
-    position: absolute;
-    top: 5px;
-    left: 4px;
-    transition: .5s;
-  }
-  #switch2:checked+.sw::after {
-    left: 70px;
-  }
-  #switch2:checked+.sw {
-    left: 0px;
-    background-color: rgb(184, 194, 42);
-  }
-  #switch2 {
-    display: none;
-  }
-
-  .wrapper {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    float: center;
-    margin-top: 5%;
-    position: relative;
-    z-index: 1;
-  }
-  @media (max-width: 860px){
-    .logo{
-      margin-top: 20px;
-      padding-left: 5px;
-    }
-    #logoimg{
-      height: 50px;
-      width: 210px;
-    }
-    .wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-    }
-    #mapid {
-      height: 300px;
-      width: 90%;
-      border-radius: 15px;
-
-    }
-    #container {
-      height: auto;
-      width: 90%;
-      
-    }
-    .checkbtn{
-      display: block;
-    }
-    ul{
-      position: absolute;
-      width: 65%;
-      height: auto;
-      background: rgba(58, 58, 58, 0.9);
-      top: 80px;
-      left: -100%;
-      text-align: center;
-      transition: all .5s;
-    }
-    nav ul li{
-      display: block;
-      margin: 65px 0;
-      line-height: 30px;
-    }
-    nav ul li a{
-      font-size: 20px;
-    }
-    a.menulink:hover,a.menulink.active{
-      background: none;
-      color: rgb(0, 130, 230);
-    }
-    #check:checked ~ ul{
-      left: 0;
-    }
-  }
-  @media (max-width: 300px){
-    #logoimg{
-      height: 50px;
-      width: 20vh;
-
-    }
-
-  }
-  @media (max-width: 267px){
-    #logoimg{
-      display: none;
-
-    }
-    
-  }
-  section{
-    background: url(bg1.jpg) no-repeat;
-    background-size: cover;
-    height: calc(100vh - 80px);
-  }
-
-  footer{
-    position: relative;
-    background:rgba(17, 17, 17, 0.9);
-    height: auto;
-    width: 100%;
-    bottom: 0px;
-    font-family: "Open Sans";
-    color:rgb(255, 255, 255);
-    z-index: 1;
-  }
-  .footer-content{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-  }
-  .footer-content h3{
-    font-size: 1.8rem;
-    font-weight: 400;
-    text-transform: capitalize;
-    line-height: 3rem;
-  }
-  .footer-content p{
-    margin: 2px auto;
-    line-height: 28px;
-    font-size: 14px;
-  }
-  .footer-bottom{
-    background: rgba(17, 17, 17, 0.96);
-    width: 100%;
-    padding: 5px 0;
-    text-align: center;
-  }
-  .footer-bottom span{
-    color:rgba(255, 212, 20);
-    text-transform: uppercase;
-    font-weight: 200;
-  }
-
-  .slider {
-    -webkit-appearance: none;
-    width: auto;
-    height: 15px;
-    border-radius: 5px;  
-    background: #181818;
-    outline: none;
-    opacity: 0.7;
-    -webkit-transition: .2s;
-    transition: opacity .2s;
-  }
-
-  .slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%; 
-    background: rgb(255, 255, 255);
-    cursor: pointer;
-  }
-
-  .slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: rgb(255, 255, 255);
-    cursor: pointer;
-  }
-
-</style>
 <body>
-  <div class="padre">
-    <div class="cabecera">
-      <nav>
-        <input type="checkbox" id="check">
-        <label for="check" class="checkbtn">
-          <i class="fas fa-bars"></i>
-        </label>
-        <a href="/" class="logo"><img src="/logo.png" id="logoimg" /></a>
-        <ul>
-          <li><a class="menulink" href="../">Home</a></li>
-          <li><a class="menulink"  style="background: rgb(19, 19, 19); color: rgb(255, 255, 255); border-bottom:4px solid rgb(0, 130, 230);">Históricos</a></li>
-        </ul>
-      </nav>
+
+  <input type="checkbox" id="btn-menu">
+  <div id="aa-wp">
+    <header id="header" class="primary-bg por z3">
+      <div class="cont dfx aiec">  
+        <figure class="logo pdy1 pdr1 por dfx aiec sm-mar1">
+          <label for="btn-menu" class="btn btn-menu btn-lg secondary-bg mar1 z2">
+            <i class="menu-icon" aria-hidden="true">menu</i>
+          </label>    
+          <a href="/" ><img src="/logo.svg" id="logoimg" /></a>    
+        </figure>
+
+        <nav  class="menu-a">
+          <ul>
+            <button class="btn" onclick="downloadApk()"><img src="/download.svg#Layer_1" class="filter-yellow" style="height: 2rem; "></img>Descargar <span>Apk</span></button>
+          </ul>
+        </nav>
+
+        <nav class="menu white-bg pdy2 z3" id="navbar">
+          <label for="btn-menu" class="btn btn-link btn-closeMenu sec-co fz5">
+            <img src="/times.svg#Layer_1" class="filter-red"></img>
+          </label>
+          <p class="ttu fwb fz3 mab2 pdx3 pdt1 primary-co">Servicios</p>
+          <ul class="pdb3 mab3">
+            <li class="fa-svg">
+              <a aria-label="Geolocalization" class="page-link" href="/">
+                <svg class="ic">
+                   <use href="/gps.svg#Layer_1" class="filter-green"></use>
+                </svg>
+                Geolocalización
+              </a>
+  
+            </li>
+            <li class="fa-svg" id="current-pageli">
+              <a aria-label="Historial">
+                <svg class="ic" style="margin-left: .3rem">
+                   <use href="/historico.svg#Layer_1" class="filter-green"></use>
+                </svg>
+                Históricos
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="menu-up" style="display: none" id="panel-arriba">
+      <div style="display: flex; vertical-align: middle;">
+        <div class="slidecontainer">
+          <label style="font-size: 1rem; visibility:hidden;" id="label_recorrido">Recorrer ID:</label>
+          <select name="cars2" id="vehiculo2" onchange="changeslider()" style="margin-top: 10px; height: 2rem; text-align: center; border-radius: 8px; font-size: 100%; visibility:hidden;">
+            <option value="none">Seleccionar ID</option>
+          </select>  
+        </div>   
+        <div class="slidecontainer">
+          <label style="font-size: 1rem; text-align: center; cursor: default; visibility:hidden;" id="guia_recorrido" >Inicio - Fin</label>
+          <input type="range" min="0" max="100" value="0" class="slider" id="myRange" onchange="imprimirValor();" style="display: inline;  margin-top: 15px; margin-bottom: 15px; visibility:hidden;">
+        </div>
+      </div>
+      <h4 style="text-align: center; margin-top: 15px; background-color: #1111117a; text-shadow: 0px 0px 3px var(--white); visibility:hidden;" id="title_poly">Recorrer Polilínea</h4> 
     </div>
+
     <div class="wrapper">
       <div class="inlineclass" id="mapid"></div>
       <div class="inlineclass" style="text-align: center;" id="container">
-        <h2 style="text-align: center; margin-top: 15px;">Consultar historial del trayecto</h2>
-        <div></div>
-        <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="IHist">Inicio:</label>
-        <input class="inlineclass" style="text-align: center;" type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00"
-          min="2021-06-01T00:00" max="2044-06-01T00:00">
-        <div></div>
-        <label class="inlineclass" style="width: 140px; padding-left: 10px;" for="FHist">Fin:</label>
-        <input class="inlineclass" style="text-align: center;" type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00"
-          min="2021-06-01T00:00" max="2044-06-01T00:00">
-        <div></div>
-        <label class="inlineclass" style="width: 140px;" for="vehiculo">ID del vehículo:</label>
-        <select name="cars" id="vehiculo" onchange="changehist()" style="margin-top: 10px; text-align: center; border-radius: 8px; font-size: 100%;">
-          <option value="none">Seleccionar ID</option>
-        </select>
-
-        <div></div>
-        <div class="switch-container;" style="text-align: center; margin-top: 5px;">
-          <input type="Checkbox" id="switch2">
-          <label for="switch2" onclick="condicional_switch_historico(); " class="sw"></label>
+        <h4 style="display: block; background-color: #1111117a; text-shadow: 0px 0px 3px var(--white); cursor: default;">Consultar historial del trayecto</h4>
+        <div class="selection">
+          <label class="txt-label">Inicio:</label>
+          <input class="txt-box" type="datetime-local" id="IHist" onchange="changehist()" name="InitialHistoric" value="2021-06-01T00:00"
+            min="2021-06-01T00:00" max="2044-06-01T00:00" style="cursor: pointer;">
+          <label class="txt-label">Fin:</label>
+          <input class="txt-box" type="datetime-local" id="FHist" onchange="changehist()" name="FinalHistoric" value="2021-06-02T00:00"
+            min="2021-06-01T00:00" max="2044-06-01T00:00" style="cursor: pointer;">
         </div>
-        <div></div>
-        
-        <h2 style="text-align: center; margin-top: 15px; visibility:hidden;" id="title_poly">Recorrer Polilínea</h2> 
-        <div></div>
-
-        <div class="slidecontainer">
-          <h4 style="text-align: center; visibility:hidden;" id="guia_recorrido" >Inicio - Fin</h4>
-          <input type="range" min="0" max="100" value="0" class="slider" id="myRange" onchange="imprimirValor();" style=" margin-top: 15px; margin-bottom: 15px; visibility:hidden;">
+        <div class="switch-container" style="text-align: center;">
+          <label class="inlineclass" style="width: 140px;" >ID del vehículo:</label>
+          <select name="cars" id="vehiculo" onchange="changehist()" style="margin-top: .3rem; height: 2rem; justify-content: center; text-align: center; border-radius: 2px;">
+            <option value="none">Seleccionar ID</option>
+            <option value="all">Todas las ID's</option>
+          </select>
+          <label id="histola">Trazar historial:</label>
+          <div style="display: block;">
+            <input type="checkbox" id="switch2">
+            <label for="switch2"  onclick="condicional_switch_historico();" class="sw"></label>
+          </div>             
         </div>
-      </div>
+      </div>  
     </div>
-    
-    <footer>
+  </div>
+   <footer>
       <div class="footer-content">
-        <h3>LocateCABS</h3>
-        <p>Repositorio</p>
+        <p>Visita nuestro Repositorio <img src="/heart.svg#Layer_1" class="filter-redv" style="display: inline-block; height: 1.25rem;"></img> : </p>
         <li><a href="https://github.com/danielgonzale5/LocateCabs" target="_blank"><img src="/github.svg" id="gitimg" style="width: 45px;"/></a></li>
         <div class="footer-bottom">
-          <p style="font-weight: bold; text-shadow: 2px 2px 8px #ffffff;">Copyright &copy;2021-2022 LocateCABS. designed by: <span>DanielG LeonardoC BozidarY JuanM & JorgeR</span></p>
+          <p style="font-weight: bold; text-shadow: 2px 2px 8px #ffffff;">Copyright &copy;2021-2022 LocateCABS. Designed by: <span>DanielG LeonardoC BozidarY JuanM & JorgeR</span></p>
         </div>
       </div>
-    </footer>
-  </div>
-
+  </footer>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
 
-    //-----------Declaración de Variables Globales
+    //-----------Declaración de Variables Globales 
     let lat = 10.984719;
     let long = -74.811302;
     var datainicio;
     var datafin;
+    var multi_datauser;
     var polylineHistoric;
     var hist_was_set = 0;
     var startpointHist;
+    var multistartpointHist= new Array();
     var finalpointHist;
+    var multifinalpointHist= new Array();
     let User = [];
     let Coordinates = [];
+    var Coordinates2 = [];
     var switch_turned_on=false;
     var historic_updated=false;
     var popuphistorico;
     let tiempo=[];
+    let tiempo2=[];
     let tiempotran=[];
+    let tiempotran2=[];
+    let multi_tiempotran= new Array();
+    let rpmvector=[];
+    let rpmvector2=[];
+    let multi_rpmvector= new Array();
+    var Usuarios= new Array();
+    var Usuarios_validos= new Array();
+    var DataobjB= new Array();
+    var multipolylineHistoric= new Array();
+    var single_poly= false;
+    var multi_poly= false;
+    var PolylinesGroup;
+    var no_fit=false;
 
     //Este objeto es el ícono verde que se observa en el mapa. Es personalizado, por tanto se importa desde una URL externa.
     var greenIcon = new L.Icon({
@@ -422,6 +166,12 @@
     shadowSize: [41, 41]
     });
 
+    //Aquí se crea el objeto asignado para el mapa llamado "mymap".
+    let mymap = L.map('mapid').setView([lat, long], 14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19
+    }).addTo(mymap);
 
     //------------------Zona de funciones
 
@@ -429,11 +179,30 @@
     function imprimirValor(){
       var title=document.getElementById('title_poly');
       var slider= document.getElementById('myRange');
-      slide_valor= slider.value;
-      console.log("Moviéndose a la posición ("+ slide_valor + ") del vector de polilínea generado");
-      latlng = polylineHistoric.getLatLngs()[slide_valor];
-      let info = tiempotran[slide_valor].toString() + " Ubicación: " + latlng.toString();
-      popuphistorico = L.popup().setLatLng(latlng).setContent(info).openOn(mymap);
+      var dropdown_2= document.getElementById('vehiculo2');
+      var valor_dropdown_2= dropdown_2.options[dropdown_2.selectedIndex].value;
+      var slide_valor= slider.value;
+
+      if (single_poly){
+
+        console.log("Moviéndose a la posición ("+ slide_valor + ") del vector de polilínea generado");
+        latlng = polylineHistoric.getLatLngs()[slide_valor];
+        let info = tiempotran[slide_valor].toString() + " Ubicación: " + latlng.toString() + " RPM: " + rpmvector[slide_valor].toString();
+        popuphistorico = L.popup().setLatLng(latlng).setContent(info).openOn(mymap);
+
+
+      }
+      
+      if (multi_poly){
+        var posicion=Usuarios_validos.indexOf(valor_dropdown_2)
+        console.log("Moviéndose a la posición ("+ slide_valor + ") del vector de polilínea generado para el usuario: " + valor_dropdown_2);
+        latlng = multipolylineHistoric[posicion].getLatLngs()[slide_valor];
+        let info = multi_tiempotran[posicion][slide_valor].toString() + " Ubicación: " + latlng.toString() + " RPM: " + multi_rpmvector[posicion][slide_valor].toString();
+        popuphistorico = L.popup().setLatLng(latlng).setContent(info).openOn(mymap);
+      }
+
+
+
     };
 
     //Función que regula el valor de los calendarios de tal modo que el final se encuentre siempre igual o después del inicial.
@@ -459,13 +228,106 @@
       valor = document.getElementById('switch2').checked;
       var select = document.getElementById('vehiculo');
       var user_value = select.options[select.selectedIndex].value;
+      var label= document.getElementById('label_recorrido');
+      var dropdown_2= document.getElementById('vehiculo2');
+      var slider= document.getElementById('myRange');
 
       if (valor && user_value!='none') {
+          slider.value=0;
+          var selectobject = document.getElementById("vehiculo2");
+          if (selectobject.length>1){
+            loops=selectobject.length;
+            for (var i=0; i<loops; i++) {
+                selectobject.remove(1);      
+            }
+
+          }
+          
+
           historic_updated=true;
-          console.log('Se seleccionó el vehículo con la ID: '+ user_value);
-          enviarhist(user_value);
+          if (user_value!='all'){
+            label.style.visibility="hidden"; dropdown_2.style.visibility="hidden";
+            console.log('Se seleccionó el vehículo con la ID: '+ user_value);
+            if (multi_poly){
+              clearmultiPolyHist();
+              multi_poly=false;
+              hist_was_set=0;
+              multistartpointHist.forEach(function (item){
+                mymap.removeLayer(item);
+              })
+              multifinalpointHist.forEach(function (item){
+                mymap.removeLayer(item);
+              })
+            }
+            enviarhist(user_value);
+
+          } else{
+
+              console.log('Se seleccionaron todos los usuarios posibles');
+              if (single_poly){
+                clearPolyHist();
+                single_poly=false;
+                hist_was_set=0;
+                startpointHist.removeFrom(mymap);
+                finalpointHist.removeFrom(mymap);
+              }
+              
+              
+              enviarmultihist(Usuarios);
+              
+          }
+          
           
       }
+    }
+
+    //Función para cambiar el slider si se selecciona recorrer una ID o vehículo específico cuando hay múltiples polilíneas.
+    function changeslider(){
+
+        var slider= document.getElementById('myRange');
+        var guia= document.getElementById('guia_recorrido');
+        var dropdown_2= document.getElementById('vehiculo2');
+        var valor_dropdown_2= dropdown_2.options[dropdown_2.selectedIndex].value;
+
+        if (valor_dropdown_2!='none'){
+
+          //Acá va la lógica del Slider (En desarrollo)
+          var posicion=Usuarios_validos.indexOf(valor_dropdown_2)
+          slider.min=0; slider.max=multipolylineHistoric[posicion].getLatLngs().length-1;
+          multipolylineHistoric[posicion].on('click',(e)=>{
+            var i=0;
+            while (i < DataobjB[Usuarios.indexOf(valor_dropdown_2)].DatoTiempo.length) {
+              
+                  var errorlat = Math.abs((Math.abs(parseFloat(DataobjB[Usuarios.indexOf(valor_dropdown_2)].DataTimeStamp[i][0])) - Math.abs(parseFloat(e.latlng.lat)) ))/ Math.abs(parseFloat(DataobjB[Usuarios.indexOf(valor_dropdown_2)].DataTimeStamp[i][0])); 
+                  var errorlot = Math.abs((Math.abs(parseFloat(DataobjB[Usuarios.indexOf(valor_dropdown_2)].DataTimeStamp[i][1])) - Math.abs(parseFloat(e.latlng.lng)) ))/ Math.abs(parseFloat(DataobjB[Usuarios.indexOf(valor_dropdown_2)].DataTimeStamp[i][1])); 
+                  if((errorlat<0.000003)&&(errorlot<0.000003)){
+                    break; 
+                  }
+
+                  if (DataobjB[Usuarios.indexOf(valor_dropdown_2)].DatoTiempo.length==i+1) {
+                    break; 
+                  }
+
+                  i++;
+
+            }
+
+            var info =  multi_tiempotran[posicion][i].toString()+" Ubicación: " + e.latlng.toString() + " RPM: " + multi_rpmvector[posicion][i].toString();
+            L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);   
+
+            })
+
+            
+
+
+          guia.style.visibility="visible"; slider.style.visibility="visible";
+
+        } else {
+
+          guia.style.visibility="hidden"; slider.style.visibility="hidden";
+
+        }
+
     }
 
     //Función de conexión Frontend-Backend del histórico
@@ -492,15 +354,158 @@
       await fetch('/historic', options);
     }
 
+    //Función de conexión Frontend-Backend del histórico múltiple (Para pedir varias polilíneas a la vez)
+    async function enviarmultihist(user_vector) {
+      datainicio = document.getElementById('IHist').value;
+      datafin = document.getElementById('FHist').value;
+      datainicio = new Date(datainicio).valueOf();
+      datafin = new Date(datafin).valueOf();
+      datainicio = datainicio.toString();
+      datafin = datafin.toString();
+      multi_datauser = user_vector;
+      console.log('datainicio= ' + datainicio);
+      console.log('datafin= ' + datafin);
+      console.log('datauser= ' + multi_datauser);
+
+      const info = { datainicio, datafin, multi_datauser };
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(info)
+      };
+      await fetch('/multihistoric', options);
+    }
+
     //Esta función inicia el objeto de polilínea del histórico cuando se activa el switch o sea cambia el calendario/ID del vehículo siempre y cuando no se haya creado un objeto antes.
     function startPolyHist() {
       polylineHistoric = L.polyline(Coordinates, { color: 'red' }).addTo(mymap);
-      mymap.fitBounds(Coordinates)
+      mymap.fitBounds(Coordinates);
+      //Corrección de la visión opacada por el panel inferior de histórico.
+      let zoomparameter = mymap.getBoundsZoom(Coordinates, true);
+      mymap.setZoom(zoomparameter-5);
+      mymap.setView(Coordinates[0]);
+      single_poly=true;
     }
+
+    //Esta función genera un color hexadecimal aleatorio (Esto para el caso de generar múltiples polilíneas y diferenciar cada una)
+    function random_hex_color_code(){
+      var simbolos, color;
+      simbolos = "0123456789ABCDEF";
+      colorg = "#55";
+      for(var i = 0; i < 4; i++){
+        colorg = colorg + simbolos[Math.floor(Math.random() * 16)];
+      }
+      return colorg;
+    }
+
+    //Esta función genera por primera vez múltiples polilíneas.
+    function startmultiPolyHist(vector_obj) {
+      n=0;
+      var title=document.getElementById('title_poly');
+      var slider= document.getElementById('myRange');
+      var guia= document.getElementById('guia_recorrido');
+      var label= document.getElementById('label_recorrido');
+      var dropdown_2= document.getElementById('vehiculo2');
+      var panel= document.getElementById('panel-arriba');
+      vector_obj.forEach(function (obj){
+
+        var color=random_hex_color_code();
+
+        if (obj.DataTimeStamp.length!=0){ 
+          tiempotran2=[];
+          Coordinates2.push(obj.DataTimeStamp);
+          tiempo2 = obj.DatoTiempo;
+          for (var j = 0; j < tiempo2.length; j++) {
+            var date = new Date(parseFloat(tiempo2[j]));
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var month = months[date.getMonth()];
+            var hours = date.toLocaleTimeString();
+            var minutes = "0" + date.getMinutes();
+            var seconds = "0" + date.getSeconds();
+            var formattedTime = 'Tiempo: '+hours.substr(0, 2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2)+' Fecha: '+date.getDate() + "/" + month + "/" + date.getFullYear();
+            tiempotran2.push(formattedTime);
+          }
+
+          rpm2= obj.DataRPM;
+          rpmvector2=[];
+          for (var i=0; i < rpm2.length; i++){
+            var rpmTemp = rpm2[i];
+            rpmvector2.push(rpmTemp);
+          }
+
+          multipolylineHistoric.push(L.polyline(obj.DataTimeStamp, { color: color }).addTo(mymap));
+
+          hist_was_set=1;
+          multi_poly=true;
+
+          multistartpointHist.push(L.marker(obj.DataTimeStamp[0], {icon: greenIcon }).addTo(mymap).bindPopup("Inicio", { autoPan: false, autoClose: false }).openPopup());
+          multifinalpointHist.push(L.marker(obj.DataTimeStamp[obj.DataTimeStamp.length - 1]).addTo(mymap).bindPopup("Fin", { autoPan: false, autoClose: false }).openPopup());
+          multi_tiempotran.push(tiempotran2);
+          multi_rpmvector.push(rpmvector2);
+          
+
+          Usuarios_validos.push(Usuarios[n]);
+          
+
+        } else {
+
+          console.log('Las fechas ingresadas para el usuario "' + Usuarios[n] +'" son inválidas.');
+
+        }
+
+        n++;
+
+      });
+
+      var selectobject = document.getElementById("vehiculo2");
+
+      if (multi_poly){
+
+        if (!no_fit){
+          PolylinesGroup=L.featureGroup(multipolylineHistoric)
+          mymap.fitBounds(PolylinesGroup.getBounds());
+        }
+        
+        //Se llena el dropdown para seleccionar una ID por recorrer que sea válida.    
+        for (var i=0; i<Usuarios_validos.length; i++){
+
+          var new_opt = document.createElement('option');
+          new_opt.value = Usuarios_validos[i];
+          new_opt.innerHTML = Usuarios_validos[i];
+          selectobject.appendChild(new_opt);
+
+        }
+        panel.style.display="block";
+        guia.style.visibility="hidden"; title.style.visibility="visible"; slider.style.visibility="hidden"; label.style.visibility="visible"; dropdown_2.style.visibility="visible";
+      
+      } else{
+        panel.style.display="none";
+        guia.style.visibility="hidden"; title.style.visibility="hidden"; slider.style.visibility="hidden"; label.style.visibility="hidden"; dropdown_2.style.visibility="hidden";
+
+
+      }
+
+    }
+
 
     //Esta función limpia la polilínea que representa el histórico.
     function clearPolyHist() {
       polylineHistoric.removeFrom(mymap)
+      hist_was_set = 0;
+
+    }
+
+    //Esta función limpia las múltiples polilíneas  que representa el histórico.
+    function clearmultiPolyHist() {
+      multipolylineHistoric.forEach(function (item){
+
+        mymap.removeLayer(item);
+
+      })
+      multipolylineHistoric=[];
+      Usuarios_validos=[];
       hist_was_set = 0;
     }
 
@@ -508,12 +513,7 @@
 
     //-------------Zona de objetos, condicionales y ciclos para generar la lógica principal del documento.
 
-    //Aquí se crea el objeto asignado para el mapa llamado "mymap".
-    let mymap = L.map('mapid').setView([lat, long], 18);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 19
-    }).addTo(mymap);
+    
 
     //Este socket recibe el vector de usuarios de la base de datos vistos por primera vez cuando se conecta el cliente a la página.
     io().on('init_users', function (users){
@@ -528,19 +528,23 @@
           new_opt.value = Userv[i];
           new_opt.innerHTML = Userv[i];
           lista_select.appendChild(new_opt);
+          Usuarios.push(Userv[i]);
         }
-      } 
+      }     
+
     });
 
     //Este socket, a diferencia del anterior, detecta si hay un usuario nuevo en la base de datos y lo agrega a la lista desplegable. Esto es para que el cliente no se vea obligado a recargar la página.
     io().on('new_user_detected', function(user){
 
       usuario_detectado=user.Newuser;
+      
       var lista_select = document.getElementById('vehiculo');
       var new_opt = document.createElement('option');
       new_opt.value = usuario_detectado;
       new_opt.innerHTML = usuario_detectado;
       lista_select.appendChild(new_opt);
+      Usuarios.push(usuario_detectado);
 
     })
 
@@ -548,11 +552,14 @@
     //Este es el socket donde se reciben los vectores correspondientes a Usuario, Coordenadas y Tiempo desde el evento "timestamp" emitido por el Backend.
     //Aquí se llaman casi todas las funciones importantes que generan las polilíneas para que sea un proceso sincrónico.
     io().on('timestamp', function (dataTS) {
+
       User = dataTS.DataUsuario;
       Coordinates = dataTS.DataTimeStamp;
       tiempo = dataTS.DatoTiempo;
-      console.log('io-on-timestamp Coordinates= ' + Coordinates)
-
+      RPM = dataTS.DataRPM;
+      //console.log('io-on-timestamp Coordinates received ' + Coordinates)
+      console.log('io-on-timestamp Coordinates received');
+      tiempotran=[];
       for (var j = 0; j < tiempo.length; j++) {
         var date = new Date(parseFloat(tiempo[j]));
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -564,6 +571,12 @@
         tiempotran.push(formattedTime);
       }
 
+      rpmvector=[];
+      for (var i=0; i < RPM.length; i++){
+        var rpmTemp = RPM[i];
+        rpmvector.push(rpmTemp);
+      }
+
 
       if (switch_turned_on){
 
@@ -571,12 +584,14 @@
               var title=document.getElementById('title_poly');
               var slider= document.getElementById('myRange');
               var guia= document.getElementById('guia_recorrido');
+              var panel= document.getElementById('panel-arriba');
               startPolyHist();
               startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).addTo(mymap);
               finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
-              finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
-              startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
+              finalpointHist.bindPopup("Fin", { autoPan: false, autoClose: false  }).openPopup()
+              startpointHist.bindPopup("Inicio", { autoPan: false, autoClose: false  }).openPopup()
               slider.min=0; slider.max=polylineHistoric.getLatLngs().length-1;
+              panel.style.display="block";
               guia.style.visibility="visible"; title.style.visibility="visible"; slider.style.visibility="visible";
               polylineHistoric.on('click',(e)=>{
 
@@ -593,7 +608,7 @@
 
                 }
 
-                let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString();
+                let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString() + " RPM: " + rpmvector[i].toString();
                 L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
               })
               hist_was_set=1;
@@ -610,6 +625,9 @@
           var title=document.getElementById('title_poly');
           var slider= document.getElementById('myRange');
           var guia= document.getElementById('guia_recorrido');
+          var label= document.getElementById('label_recorrido');
+          var dropdown_2= document.getElementById('vehiculo2');
+          var panel= document.getElementById('panel-arriba');
           if (hist_was_set==0){
             if (Coordinates.length != 0){
 
@@ -617,9 +635,10 @@
                     startPolyHist();
                     startpointHist = L.marker(Coordinates[0], {icon: greenIcon }).addTo(mymap);
                     finalpointHist = L.marker(Coordinates[Coordinates.length - 1]).addTo(mymap);
-                    finalpointHist.bindPopup("Fin", { autoPan: false }).openPopup()
-                    startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
+                    finalpointHist.bindPopup("Fin", { autoPan: false, autoClose: false  }).openPopup();
+                    startpointHist.bindPopup("Inicio", { autoPan: false, autoClose: false  }).openPopup();
                     slider.min=0; slider.max=polylineHistoric.getLatLngs().length-1;
+                    panel.style.display="block";
                     guia.style.visibility="visible"; title.style.visibility="visible"; slider.style.visibility="visible";
                     polylineHistoric.on('click',(e)=>{
                       
@@ -636,7 +655,7 @@
 
                       }
 
-                      let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString();
+                      let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString() + " RPM: " + rpmvector[i].toString();
                       L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
 
                     })
@@ -658,10 +677,15 @@
             if (Coordinates.length != 0){
               setTimeout(function () { 
                 polylineHistoric.setLatLngs(Coordinates);
-                startpointHist.setLatLng(Coordinates[0]);
-                finalpointHist.setLatLng(Coordinates[Coordinates.length - 1]);
-                mymap.fitBounds(Coordinates);
                 mymap.closePopup();
+                startpointHist.setLatLng(Coordinates[0])
+                finalpointHist.setLatLng(Coordinates[Coordinates.length - 1])
+                startpointHist.openPopup();
+                mymap.fitBounds(Coordinates);
+                //Corrección de la visión opacada por el panel inferior de histórico.
+                let zoomparameter = mymap.getBoundsZoom(Coordinates, true);
+                mymap.setZoom(zoomparameter-5);
+                mymap.setView(Coordinates[0]);
                 slider.min=0; slider.max=polylineHistoric.getLatLngs().length-1;
                 polylineHistoric.on('click',(e)=>{
 
@@ -678,13 +702,17 @@
 
                   }
 
-                  let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString();
+                  let info =  tiempotran[i].toString()+" Ubicación: " + e.latlng.toString() + " RPM: " + rpmvector[i].toString();
                   L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
                 })
               }, 300)
 
             }else{
-
+              panel.style.display="none";
+              guia.style.visibility="hidden"; title.style.visibility="hidden"; slider.style.visibility="hidden"; label.style.visibility="hidden"; dropdown_2.style.visibility="hidden";
+              clearPolyHist();
+              startpointHist.removeFrom(mymap);
+              finalpointHist.removeFrom(mymap);
               console.log('El intervalo de tiempo nuevo no es válido.');
 
             }
@@ -699,30 +727,117 @@
 
 
     });
+
+    //Este es el socket donde se reciben los vectores correspondientes a Usuario, Coordenadas y Tiempo desde el evento "multitimestamp" emitido por el Backend.
+    //Aquí se llaman casi todas las funciones importantes que generan múltiples polilíneas, de modo que todo sea un proceso sincrónico.
+    io().on('multitimestamp', function (dataobjTS) {
+      console.log('Informacion recibida!');
+      
+      if (dataobjTS.Dataobj.length==multi_datauser.length){
+
+        DataobjB=dataobjTS.Dataobj;
+        //console.log('El vector de objetos leído tiene longitud de: ' + DataobjB.length);
+        //console.log('El vector de objetos (0) es: ' + DataobjB);
+
+        if (switch_turned_on){
+          no_fit=false;
+          startmultiPolyHist(DataobjB);
+          switch_turned_on=false;
+
+        }
+
+        if (historic_updated){
+
+          if (hist_was_set==0){
+            no_fit=false;
+            startmultiPolyHist(DataobjB);
+
+          } else{
+            no_fit=true;
+            if (multi_poly){
+              clearmultiPolyHist();
+              multi_poly=false;
+              multistartpointHist.forEach(function (item){
+                mymap.removeLayer(item);
+              })
+              multifinalpointHist.forEach(function (item){
+                mymap.removeLayer(item);
+              })
+            }
+            startmultiPolyHist(DataobjB);
+            changeslider();
+          }
+
+          historic_updated=false;        
+
+        }
+      }
+    });
+
    
     //Función que define la acción a realizar cuando se activa o desactiva el switch de histórico. (Su callback se da por presionar click en el switch)
     function condicional_switch_historico() {
         var valor = document.getElementById('switch2').checked;
         var guia= document.getElementById('guia_recorrido');
         var title=document.getElementById('title_poly');
+        var label= document.getElementById('label_recorrido');
+        var dropdown_2= document.getElementById('vehiculo2');
         var slider= document.getElementById('myRange');
         var select = document.getElementById('vehiculo');
         var user_value = select.options[select.selectedIndex].value;
+        var panel= document.getElementById('panel-arriba');
 
         if (valor) {
           if (hist_was_set == 1) {
 
-            guia.style.visibility="hidden"; title.style.visibility="hidden"; slider.style.visibility="hidden";
-            clearPolyHist();
-            startpointHist.removeFrom(mymap);
-            finalpointHist.removeFrom(mymap);
+            guia.style.visibility="hidden"; title.style.visibility="hidden"; slider.style.visibility="hidden"; label.style.visibility="hidden"; dropdown_2.style.visibility="hidden";
+            panel.style.display="none";
+            if (single_poly){
+              clearPolyHist();
+              single_poly=false;
+              startpointHist.removeFrom(mymap);
+              finalpointHist.removeFrom(mymap);
+            }
+
+            if (multi_poly){
+              clearmultiPolyHist();
+              multi_poly=false;
+              multistartpointHist.forEach(function (item){
+                mymap.removeLayer(item);
+              })
+              multifinalpointHist.forEach(function (item){
+                mymap.removeLayer(item);
+              })
+            }
+             
             mymap.closePopup();
+
           }
         } else {
+
           if(user_value!='none'){
             switch_turned_on=true;
-            console.log('Se seleccionó el vehículo con la ID: '+ user_value);
-            enviarhist(user_value);
+            
+            if (user_value!='all'){
+
+              console.log('Se seleccionó el vehículo con la ID: '+ user_value);
+              enviarhist(user_value);
+              
+
+            } else{
+
+                console.log('Se seleccionaron todos los usuarios posibles');
+                var selectobject = document.getElementById("vehiculo2");
+                if (selectobject.length>1){
+                  loops=selectobject.length;
+                  for (var i=0; i<loops; i++) {
+                      selectobject.remove(1);      
+                  }
+
+                }
+                enviarmultihist(Usuarios);               
+            }
+            
  
           }
 
