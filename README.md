@@ -28,12 +28,9 @@ University team project for the *Electronic Design* course at Universidad del No
 - **History:** the page sends a start and end timestamp, the server queries that range and returns the list of coordinates, which the map draws as a polyline.
 - **Deploy:** a GitHub webhook on `/github` makes the EC2 instance pull the latest commit, so every merge to `master` went live automatically.
 
-## My part
-
-I owned the repository, set up the server on AWS and integrated the team's work, and was one of the main contributors to the server and the history page:
+## Relevant areas
 
 - Infrastructure: the EC2 instance running the Node.js server, the MySQL database on Amazon RDS, and the GitHub webhook that deployed every merge to `master`.
-
 - The history feature end to end: the date-range UI in `historicos.html`, the `/historic` and `/historicact` endpoints, and drawing the returned route on the map.
 - Server work in `LocateCabsWeb.js`: environment-based database configuration (`.env`), the UDP-to-MySQL path and the Socket.IO updates.
 - Integration: branch-per-person workflow with pull requests into `master`.
@@ -79,7 +76,3 @@ This is the code as we submitted it in 2021, kept for reference. Looking back at
 - **Unauthenticated position updates:** any host can send UDP datagrams to port 3020 and move a taxi on the map.
 - **Credentials in logs:** the server prints the parsed `.env`, database password included, at startup.
 - **Resource leaks:** a new `io.on('connection')` listener is registered every 3 seconds, and the JSON body limit is 500 MB.
-
-## Team
-
-Built by a team of five students. Commit history and branches (`bozidar`, `daniel`, `jorge`, `juan`, `leonardo`, `android`) show each person's contributions.
