@@ -221,7 +221,7 @@
 
     function startRouteService(){
       control = L.Routing.control({
-        router: L.Routing.mapbox('pk.eyJ1IjoidG93YXJsZXhlciIsImEiOiJja3R3ZTBreXAyaWE2MndvMmJ4dHJuNzByIn0.bTSlek3T0aV_PqhZv_jIxQ', { profile: 'mapbox/walking' }),
+        router: L.Routing.mapbox('[INSERT_MAPBOX_TOKEN]', { profile: 'mapbox/walking' }),
         waypoints: latlngs_routing_extend,
         routeDragInterval: 3000,
         show: false,
@@ -260,7 +260,7 @@
     circle_marker.openPopup();
 
 
-    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + 'pk.eyJ1IjoidG93YXJsZXhlciIsImEiOiJja3R3ZTBreXAyaWE2MndvMmJ4dHJuNzByIn0.bTSlek3T0aV_PqhZv_jIxQ', {
+    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + '[INSERT_MAPBOX_TOKEN]', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
     }).addTo(mymap);

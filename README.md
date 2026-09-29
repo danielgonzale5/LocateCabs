@@ -69,7 +69,7 @@ Requirements: Node.js and a MySQL database.
 
 ## Known issues
 
-This is the code as we submitted it in 2021, kept for reference. Looking back at it as a security engineer, it would not be safe to expose today:
+This is the code as we submitted it in 2021, kept for reference. The only change is that the Mapbox token in `index_routingmachine.html` was replaced with a placeholder: put your own token where it says `[INSERT_MAPBOX_TOKEN]` to use the `/routing` page. Looking back at it as a security engineer, it would not be safe to expose today:
 
 - **SQL injection:** `/historic` and `/historicact` build their queries by concatenating values from the request body.
 - **Unauthenticated webhook:** anyone can call `POST /github` and trigger a `git reset --hard && git pull` on the server, because the GitHub signature is never checked.
