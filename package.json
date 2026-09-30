@@ -1,24 +1,27 @@
 {
   "name": "locatecabs",
-  "version": "1.0.0",
-  "description": "",
-  "main": "LocateCabsWeb.js",
-  "scripts": {
-    "Start": "nodemon LocateCabsWeb.js"
+  "version": "2.0.0",
+  "private": true,
+  "description": "Real-time GPS tracking for taxis: signed UDP position updates, MySQL storage and a live Leaflet map.",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22"
   },
-  "keywords": [],
-  "author": "",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "dev": "node --watch --env-file-if-exists=.env server.js",
+    "test": "node --test",
+    "init-env": "node scripts/init-env.js",
+    "hash-password": "node scripts/hash-password.js",
+    "simulate": "node --env-file-if-exists=.env scripts/simulate-taxi.js"
+  },
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^10.0.0",
-    "ejs": "^3.1.6",
-    "express": "^4.17.1",
-    "express-myconnection": "^1.0.4",
-    "mysql": "^2.18.1",
-    "no-ip": "^1.0.2",
-    "socket.io": "^4.2.0"
+    "express": "^5.2.1",
+    "mysql2": "^3.24.5",
+    "socket.io": "^4.8.4"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "socket.io-client": "^4.8.4"
   }
 }
