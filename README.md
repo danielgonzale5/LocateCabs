@@ -69,10 +69,11 @@ Requirements: Node.js and a MySQL database.
 
 ## Known issues
 
-This is the code as we submitted it in 2021, kept for reference. The only change is that the Mapbox token in `index_routingmachine.html` was replaced with a placeholder: put your own token where it says `[INSERT_MAPBOX_TOKEN]` to use the `/routing` page. Looking back at it as a security engineer, it would not be safe to expose today:
+This is the code as we submitted it in 2021, kept for reference. The only change is that the Mapbox token in `index_routingmachine.html` was replaced with a placeholder: put your own token where it says `[INSERT_MAPBOX_TOKEN]` to use the `/routing` page. Looking back at it as a security engineer, it would not be safe to expose today. The full review, with a CVSS score, a local reproduction and a fix for each finding, is in [SECURITY_REVIEW.md](SECURITY_REVIEW.md). The main issues:
 
 - **SQL injection:** `/historic` and `/historicact` build their queries by concatenating values from the request body.
 - **Unauthenticated webhook:** anyone can call `POST /github` and trigger a `git reset --hard && git pull` on the server, because the GitHub signature is never checked.
 - **Unauthenticated position updates:** any host can send UDP datagrams to port 3020 and move a taxi on the map.
+- **Stored XSS:** the taxi identifier from those datagrams is written into the map page as HTML.
 - **Credentials in logs:** the server prints the parsed `.env`, database password included, at startup.
 - **Resource leaks:** a new `io.on('connection')` listener is registered every 3 seconds, and the JSON body limit is 500 MB.
