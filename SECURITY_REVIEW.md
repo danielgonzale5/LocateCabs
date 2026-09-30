@@ -16,21 +16,21 @@ Every finding was reproduced on a local lab and nowhere else. The lab ran the 20
 
 ## Summary
 
-| ID | Finding | Severity | CVSS |
-| --- | --- | --- | --- |
-| [LC-01](#lc-01-sql-injection-in-the-history-endpoints) | SQL injection in the history endpoints | Critical | 9.1 |
-| [LC-02](#lc-02-unauthenticated-gps-updates-over-udp) | Unauthenticated GPS updates over UDP | High | 8.2 |
-| [LC-03](#lc-03-no-access-control-on-location-data) | No access control on location data | High | 7.5 |
-| [LC-04](#lc-04-denial-of-service-crash-on-any-database-error-and-a-growing-listener-leak) | Denial of service: crash on any database error, and a growing listener leak | High | 7.5 |
-| [LC-05](#lc-05-vulnerable-and-unused-dependencies) | Vulnerable and unused dependencies | High | per advisory |
-| [LC-06](#lc-06-unauthenticated-deploy-webhook) | Unauthenticated deploy webhook | Medium | 6.5 |
-| [LC-07](#lc-07-stored-xss-through-the-taxi-identifier) | Stored XSS through the taxi identifier | Medium | 6.1 |
-| [LC-08](#lc-08-database-credentials-written-to-the-logs) | Database credentials written to the logs | Medium | 5.5 |
-| [LC-09](#lc-09-history-results-broadcast-to-every-browser) | History results broadcast to every browser | Medium | 5.3 |
-| [LC-10](#lc-10-third-party-script-loaded-from-latest-without-integrity-check) | Third-party script loaded from `@latest` without integrity check | Medium | 4.7 |
-| [LC-11](#lc-11-cleartext-transport) | Cleartext transport | Informational | n/a |
+| ID | Finding | Severity | CVSS | Status |
+| --- | --- | --- | --- | --- |
+| [LC-01](#lc-01-sql-injection-in-the-history-endpoints) | SQL injection in the history endpoints | Critical | 9.1 | Fixed |
+| [LC-02](#lc-02-unauthenticated-gps-updates-over-udp) | Unauthenticated GPS updates over UDP | High | 8.2 | Fixed |
+| [LC-03](#lc-03-no-access-control-on-location-data) | No access control on location data | High | 7.5 | Fixed |
+| [LC-04](#lc-04-denial-of-service-crash-on-any-database-error-and-a-growing-listener-leak) | Denial of service: crash on any database error, and a growing listener leak | High | 7.5 | Fixed |
+| [LC-05](#lc-05-vulnerable-and-unused-dependencies) | Vulnerable and unused dependencies | High | per advisory | Fixed |
+| [LC-06](#lc-06-unauthenticated-deploy-webhook) | Unauthenticated deploy webhook | Medium | 6.5 | Fixed |
+| [LC-07](#lc-07-stored-xss-through-the-taxi-identifier) | Stored XSS through the taxi identifier | Medium | 6.1 | Fixed |
+| [LC-08](#lc-08-database-credentials-written-to-the-logs) | Database credentials written to the logs | Medium | 5.5 | Fixed |
+| [LC-09](#lc-09-history-results-broadcast-to-every-browser) | History results broadcast to every browser | Medium | 5.3 | Fixed |
+| [LC-10](#lc-10-third-party-script-loaded-from-latest-without-integrity-check) | Third-party script loaded from `@latest` without integrity check | Medium | 4.7 | Fixed |
+| [LC-11](#lc-11-cleartext-transport) | Cleartext transport | Informational | n/a | Documented |
 
-The fixes are tracked in a separate pull request. Each finding below lists the change it needs.
+LC-01 to LC-10 are fixed in the 2026 rewrite of the server (`server.js` and `src/`), and each has a regression test in `test/`. LC-11 needs a client change and is documented. Each finding below lists the change it needs, and [Verification after the fix](#verification-after-the-fix) shows the same reproduction steps run against the fixed version.
 
 ---
 
@@ -269,8 +269,29 @@ The web UI is served over plain HTTP on port 3000, and GPS positions travel as p
 
 For the web UI, terminate TLS in front of the app (a reverse proxy such as Caddy or Nginx, or a cloud load balancer) and redirect HTTP to HTTPS. For the device channel, if confidentiality of positions in transit matters, move from UDP to HTTPS or MQTT over TLS, or wrap UDP in DTLS. That is a client change, so it is out of scope for the server fix.
 
+## Verification after the fix
+
+The fixed version was started with `docker compose` from a fresh `.env`, and the same benign inputs were sent to it:
+
+```
+[LC-08] DB password or password hash in the app logs: false
+[LC-03] GET / without login -> 401 | with login -> 200
+[LC-03] Socket.IO without login: refused
+[LC-02/07] sent 1 unsigned datagram, 2 with an invalid id (markup, 80 characters), 1 signed, 1 replay of the signed one
+           rows stored: 1 (the signed datagram only)
+[LC-01] /historic with a quote -> 400
+[LC-04] server still answering afterwards -> 200
+[LC-04] 20 KB body -> 413
+[LC-06] POST /github -> 401 (without a secret the route does not exist, and the login is checked first)
+[LC-04] app container after all of the above: Up
+[LC-01] app DB user trying DELETE: ERROR 1142 (42000): DELETE command denied to user 'locatecabs'
+[LC-05] npm audit --omit=dev: found 0 vulnerabilities
+```
+
+The live map and the route history were then checked in a browser with the login: positions arrive live, the route draws from the HTTP response, and the console shows no CSP violations.
+
 ## Out of scope and notes
 
-- **Android client** (`android` branch): not reviewed beyond how it sends datagrams (`MessageSender.java`). It must be updated to sign datagrams before the LC-02 fix is deployed against real devices.
+- **Android client** (`android` branch): not reviewed beyond how it sends datagrams (`MessageSender.java`). It still sends the unsigned 2021 format, so it must be updated to sign datagrams before it can talk to the fixed server.
 - **Mapbox token in git history:** a teammate's Mapbox token remains in the history of `index_routingmachine.html` before commit `70f4492`. Its owner should revoke it. Rewriting public history was not done.
 - **Lab only:** no production system was touched. The EC2 and RDS resources from 2021 no longer exist.
