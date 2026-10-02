@@ -42,7 +42,11 @@ npm run simulate
 ```
 
 1. `npm run init-env` writes a `.env` with random secrets and prints the web password once. Only its hash is stored.
-2. `docker compose up` starts MySQL, creates the schema and a least-privilege user, and starts the app. Both ports are bound to `127.0.0.1` only.
+2. `docker compose up` starts MySQL, creates the schema and a least-privilege user, and starts the app. Both ports are bound to `127.0.0.1` only. The containers are hardened:
+   - The database is on an internal network with no route out, and its port is never published.
+   - Both containers have a read-only root filesystem and cannot gain privileges.
+   - Both drop every Linux capability. The database keeps only the four its entrypoint needs to set up the data directory, and its running process holds none.
+   - The app has memory and process limits.
 3. `npm run simulate` plays the part of the phone: it drives `taxi1` around a block in Barranquilla, sending one signed datagram every two seconds.
 4. Open `http://localhost:3000` and log in as `operator` with the printed password. The taxi moves on the map. On *Históricos*, pick today's date and turn on *Consultar trayecto* to draw its route.
 
