@@ -1,0 +1,42 @@
+rules:
+  - id: socketio-broadcast-in-request-handler
+    languages: [javascript]
+    severity: ERROR
+    message: >-
+      `io.emit` inside an HTTP handler sends this request's result to every
+      connected browser, not to the caller. Answer in the HTTP response instead
+      (LC-09, CW-03).
+    metadata:
+      cwe: "CWE-200: Exposure of Sensitive Information to an Unauthorized Actor"
+      owasp: "A01:2025 Broken Access Control"
+      category: security
+    patterns:
+      - pattern-either:
+          - pattern-inside: $APP.$VERB($PATH, ..., function ($REQ, $RES, ...) { ... })
+          - pattern-inside: $APP.$VERB($PATH, ..., ($REQ, $RES, ...) => { ... })
+          - pattern-inside: $APP.$VERB($PATH, ..., async function ($REQ, $RES, ...) { ... })
+          - pattern-inside: $APP.$VERB($PATH, ..., async ($REQ, $RES, ...) => { ... })
+      - metavariable-regex:
+          metavariable: $VERB
+          regex: ^(get|post|put|patch|delete|all)$
+      - pattern: $IO.emit(...)
+
+  - id: socketio-connection-listener-registered-repeatedly
+    languages: [javascript]
+    severity: ERROR
+    message: >-
+      A `connection` listener registered inside a timer or a request handler is
+      added again on every run and never removed: memory grows and every new
+      browser receives one stale message per listener. Register it once at
+      startup (LC-04).
+    metadata:
+      cwe: "CWE-401: Missing Release of Memory after Effective Lifetime"
+      owasp: "A10:2025 Mishandling of Exceptional Conditions"
+      category: security
+    patterns:
+      - pattern-either:
+          - pattern-inside: setInterval(...)
+          - pattern-inside: setTimeout(...)
+          - pattern-inside: $APP.$VERB($PATH, ..., function ($REQ, $RES, ...) { ... })
+          - pattern-inside: $APP.$VERB($PATH, ..., ($REQ, $RES, ...) => { ... })
+      - pattern: $IO.on("connection", ...)

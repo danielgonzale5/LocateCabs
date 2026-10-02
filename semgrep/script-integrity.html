@@ -1,0 +1,16 @@
+<!-- Test cases for script-integrity.yaml (semgrep --test). -->
+<head>
+  <!-- ruleid: third-party-script-without-integrity -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+  <!-- ok: third-party-script-without-integrity -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
+  <!-- ok: third-party-script-without-integrity -->
+  <script src="/js/api.js"></script>
+
+  <!-- ruleid: third-party-resource-unpinned -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+</head>

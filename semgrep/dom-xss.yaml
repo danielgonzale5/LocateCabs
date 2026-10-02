@@ -1,0 +1,44 @@
+rules:
+  - id: innerhtml-with-dynamic-value
+    languages: [javascript]
+    severity: ERROR
+    message: >-
+      A value that is not a constant is written with `innerHTML`, so any markup
+      in it runs in the page. Use `textContent`, or build the elements with DOM
+      methods (LC-07, CW-07).
+    metadata:
+      cwe: "CWE-79: Cross-site Scripting"
+      owasp: "A05:2025 Injection"
+      category: security
+    patterns:
+      - pattern-either:
+          - pattern: $EL.innerHTML = $VALUE
+          - pattern: $EL.outerHTML = $VALUE
+          - pattern: $EL.insertAdjacentHTML($POS, $VALUE)
+      - metavariable-pattern:
+          metavariable: $VALUE
+          patterns:
+            - pattern-not: |
+                "..."
+
+  - id: leaflet-popup-with-dynamic-html
+    languages: [javascript]
+    severity: ERROR
+    message: >-
+      Leaflet parses a string popup as HTML. Pass a constant, or an element
+      whose text was set with `textContent` (LC-07).
+    metadata:
+      cwe: "CWE-79: Cross-site Scripting"
+      owasp: "A05:2025 Injection"
+      category: security
+    patterns:
+      - pattern-either:
+          - pattern: $M.bindPopup($CONTENT, ...)
+          - pattern: $M.setContent($CONTENT)
+          - pattern: $M.bindTooltip($CONTENT, ...)
+      - metavariable-pattern:
+          metavariable: $CONTENT
+          patterns:
+            - pattern-not: |
+                "..."
+            - pattern-not: $FUNC(...)

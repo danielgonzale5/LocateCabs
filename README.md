@@ -68,7 +68,25 @@ npm test
 - one Socket.IO listener for the life of the process;
 - errors that do not stop the server.
 
-GitHub Actions runs them, plus `npm audit`, on every push.
+GitHub Actions runs them, plus `npm audit` and the Semgrep rules below, on every push.
+
+## Static analysis
+
+`semgrep/` holds [Semgrep](https://semgrep.dev/) rules written from the findings of the [security review](SECURITY_REVIEW.md), so the same bugs cannot come back. There is one rule per kind of bug:
+
+- SQL text built from request data or by joining strings;
+- `io.emit` inside an HTTP handler, and Socket.IO listeners registered repeatedly;
+- errors thrown inside callbacks, and a first row used without checking it exists;
+- `innerHTML` or Leaflet popups with dynamic values;
+- configuration, request bodies or credentials written to the logs;
+- commands run through a shell;
+- third-party scripts without `integrity` or pinned to `@latest`.
+
+Each rule has a test file. It holds the pattern from the 2021 code, which must be caught, and its fixed version, which must not. CI runs those tests and then scans the code, and any finding fails the build. To run them locally:
+
+```bash
+docker run --rm -v "${PWD}:/src" -w /src semgrep/semgrep:1.178.0 semgrep scan --config semgrep/ --error
+```
 
 ## Deploying
 

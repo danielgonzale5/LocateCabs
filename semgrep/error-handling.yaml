@@ -1,0 +1,37 @@
+rules:
+  - id: throw-inside-async-callback
+    languages: [javascript]
+    severity: ERROR
+    message: >-
+      An error thrown inside a callback is not caught by anything: it ends the
+      whole process, so one failed query stops the service for everyone. Log it
+      and answer the request with an error instead (LC-04, CW-04).
+    metadata:
+      cwe: "CWE-248: Uncaught Exception"
+      owasp: "A10:2025 Mishandling of Exceptional Conditions"
+      category: security
+    patterns:
+      - pattern-either:
+          - pattern-inside: $F(..., function ($ERR, ...) { ... })
+          - pattern-inside: $F(..., ($ERR, ...) => { ... })
+      - pattern: if ($ERR) throw $ERR;
+
+  - id: first-row-used-without-check
+    languages: [javascript]
+    severity: WARNING
+    message: >-
+      `rows[0]` is used without checking that the query found anything. An
+      unknown ID then makes this throw and stop the process. Check for "not
+      found" first and answer 404 (CW-04).
+    metadata:
+      cwe: "CWE-248: Uncaught Exception"
+      owasp: "A10:2025 Mishandling of Exceptional Conditions"
+      category: security
+    patterns:
+      - pattern: JSON.parse(JSON.stringify($ROWS[0]))
+      - pattern-not-inside: |
+          if ($ROWS.length != 0) { ... }
+      - pattern-not-inside: |
+          if ($ROWS.length !== 0) { ... }
+      - pattern-not-inside: |
+          if ($ROWS.length > 0) { ... }

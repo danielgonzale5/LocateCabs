@@ -1,0 +1,43 @@
+rules:
+  - id: request-data-in-sql-text
+    mode: taint
+    languages: [javascript]
+    severity: ERROR
+    message: >-
+      Request data reaches the text of an SQL query. Pass it as a parameter
+      instead (`execute('... WHERE x = ?', [value])`), so it can never change
+      the query. This is the bug behind LC-01 and CW-01 in SECURITY_REVIEW.md.
+    metadata:
+      cwe: "CWE-89: SQL Injection"
+      owasp: "A05:2025 Injection"
+      category: security
+    pattern-sources:
+      - pattern: $REQ.body
+      - pattern: $REQ.query
+      - pattern: $REQ.params
+    pattern-sinks:
+      - patterns:
+          - pattern: $DB.$METHOD($SQL, ...)
+          - metavariable-regex:
+              metavariable: $METHOD
+              regex: ^(query|execute)$
+          - focus-metavariable: $SQL
+
+  - id: sql-text-built-from-strings
+    languages: [javascript]
+    severity: ERROR
+    message: >-
+      The SQL text is built by joining strings, so any value in it becomes part
+      of the query. Use a constant query with `?` placeholders and pass the
+      values separately (LC-01, CW-01).
+    metadata:
+      cwe: "CWE-89: SQL Injection"
+      owasp: "A05:2025 Injection"
+      category: security
+    patterns:
+      - pattern-either:
+          - pattern: $DB.$METHOD($A + $B, ...)
+          - pattern: $DB.$METHOD(`...${$X}...`, ...)
+      - metavariable-regex:
+          metavariable: $METHOD
+          regex: ^(query|execute)$
