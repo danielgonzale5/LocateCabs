@@ -16,19 +16,21 @@ Every finding was reproduced on a local lab and nowhere else. The lab ran the 20
 
 ## Summary
 
-| ID | Finding | Severity | CVSS | Status |
-| --- | --- | --- | --- | --- |
-| [LC-01](#lc-01-sql-injection-in-the-history-endpoints) | SQL injection in the history endpoints | Critical | 9.1 | Fixed |
-| [LC-02](#lc-02-unauthenticated-gps-updates-over-udp) | Unauthenticated GPS updates over UDP | High | 8.2 | Fixed |
-| [LC-03](#lc-03-no-access-control-on-location-data) | No access control on location data | High | 7.5 | Fixed |
-| [LC-04](#lc-04-denial-of-service-crash-on-any-database-error-and-a-growing-listener-leak) | Denial of service: crash on any database error, and a growing listener leak | High | 7.5 | Fixed |
-| [LC-05](#lc-05-vulnerable-and-unused-dependencies) | Vulnerable and unused dependencies | High | per advisory | Fixed |
-| [LC-06](#lc-06-unauthenticated-deploy-webhook) | Unauthenticated deploy webhook | Medium | 6.5 | Fixed |
-| [LC-07](#lc-07-stored-xss-through-the-taxi-identifier) | Stored XSS through the taxi identifier | Medium | 6.1 | Fixed |
-| [LC-08](#lc-08-database-credentials-written-to-the-logs) | Database credentials written to the logs | Medium | 5.5 | Fixed |
-| [LC-09](#lc-09-history-results-broadcast-to-every-browser) | History results broadcast to every browser | Medium | 5.3 | Fixed |
-| [LC-10](#lc-10-third-party-script-loaded-from-latest-without-integrity-check) | Third-party script loaded from `@latest` without integrity check | Medium | 4.7 | Fixed |
-| [LC-11](#lc-11-cleartext-transport) | Cleartext transport | Informational | n/a | Documented |
+| ID | Finding | Severity | CVSS | CWE | OWASP Top 10:2025 | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| [LC-01](#lc-01-sql-injection-in-the-history-endpoints) | SQL injection in the history endpoints | Critical | 9.1 | CWE-89 | A05:2025 | Fixed |
+| [LC-02](#lc-02-unauthenticated-gps-updates-over-udp) | Unauthenticated GPS updates over UDP | High | 8.2 | CWE-306 | A07:2025 | Fixed |
+| [LC-03](#lc-03-no-access-control-on-location-data) | No access control on location data | High | 7.5 | CWE-862 | A01:2025 | Fixed |
+| [LC-04](#lc-04-denial-of-service-crash-on-any-database-error-and-a-growing-listener-leak) | Denial of service: crash on any database error, and a growing listener leak | High | 7.5 | CWE-248 | A10:2025 | Fixed |
+| [LC-05](#lc-05-vulnerable-and-unused-dependencies) | Vulnerable and unused dependencies | High | per advisory | CWE-1395 | A03:2025 | Fixed |
+| [LC-06](#lc-06-unauthenticated-deploy-webhook) | Unauthenticated deploy webhook | Medium | 6.5 | CWE-345 | A08:2025 | Fixed |
+| [LC-07](#lc-07-stored-xss-through-the-taxi-identifier) | Stored XSS through the taxi identifier | Medium | 6.1 | CWE-79 | A05:2025 | Fixed |
+| [LC-08](#lc-08-database-credentials-written-to-the-logs) | Database credentials written to the logs | Medium | 5.5 | CWE-532 | A09:2025 | Fixed |
+| [LC-09](#lc-09-history-results-broadcast-to-every-browser) | History results broadcast to every browser | Medium | 5.3 | CWE-200 | A01:2025 | Fixed |
+| [LC-10](#lc-10-third-party-script-loaded-from-latest-without-integrity-check) | Third-party script loaded from `@latest` without integrity check | Medium | 4.7 | CWE-829 | A08:2025 | Fixed |
+| [LC-11](#lc-11-cleartext-transport) | Cleartext transport | Informational | n/a | CWE-319 | A04:2025 | Documented |
+
+CWE IDs are from [MITRE's CWE list](https://cwe.mitre.org/); OWASP categories are from the [OWASP Top 10:2025](https://owasp.org/Top10/2025/). Each finding shows its closest OWASP category and, where more than one weakness is involved, the main CWE first.
 
 LC-01 to LC-10 are fixed in the 2026 rewrite of the server (`server.js` and `src/`), and each has a regression test in `test/`. LC-11 needs a client change and is documented. Each finding below lists the change it needs, and [Verification after the fix](#verification-after-the-fix) shows the same reproduction steps run against the fixed version.
 
@@ -37,6 +39,8 @@ LC-01 to LC-10 are fixed in the 2026 rewrite of the server (`server.js` and `src
 ## LC-01: SQL injection in the history endpoints
 
 **Critical, 9.1** `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H`
+
+**Classification:** [CWE-89](https://cwe.mitre.org/data/definitions/89.html) SQL Injection · OWASP A05:2025 Injection
 
 **Where:** [`LocateCabsWeb.js:151`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L151) (`/historic`) and [`LocateCabsWeb.js:191`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L191) (`/historicact`)
 
@@ -60,6 +64,8 @@ server process exited, exit code: 1
 ## LC-02: Unauthenticated GPS updates over UDP
 
 **High, 8.2** `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:L`
+
+**Classification:** [CWE-306](https://cwe.mitre.org/data/definitions/306.html) Missing Authentication for Critical Function · OWASP A07:2025 Authentication Failures
 
 **Where:** [`LocateCabsWeb.js:84-104`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L84-L104)
 
@@ -88,6 +94,8 @@ server process exited, exit code: 1
 
 **High, 7.5** `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N`
 
+**Classification:** [CWE-862](https://cwe.mitre.org/data/definitions/862.html) Missing Authorization, [CWE-306](https://cwe.mitre.org/data/definitions/306.html) Missing Authentication for Critical Function · OWASP A01:2025 Broken Access Control
+
 **Where:** every route in [`LocateCabsWeb.js`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L16-L36) and the Socket.IO server
 
 **What is wrong:** there is no login of any kind. The pages, the history endpoints and the Socket.IO stream are open to anyone who knows the address.
@@ -103,6 +111,8 @@ server process exited, exit code: 1
 ## LC-04: Denial of service: crash on any database error, and a growing listener leak
 
 **High, 7.5** `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H`
+
+**Classification:** [CWE-248](https://cwe.mitre.org/data/definitions/248.html) Uncaught Exception, [CWE-401](https://cwe.mitre.org/data/definitions/401.html) Missing Release of Memory after Effective Lifetime, [CWE-770](https://cwe.mitre.org/data/definitions/770.html) Allocation of Resources Without Limits or Throttling · OWASP A10:2025 Mishandling of Exceptional Conditions
 
 **Where:**
 - `if (err) throw err` inside query callbacks: [`L75`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L75), [`L101`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L101), [`L118`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L118), [`L152`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L152), [`L192`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L192)
@@ -140,6 +150,8 @@ exit=1                                     <- after one UDP datagram with an 80-
 
 **High (per advisory; `npm audit` reports 2 critical and 12 high)**
 
+**Classification:** [CWE-1395](https://cwe.mitre.org/data/definitions/1395.html) Dependency on Vulnerable Third-Party Component · OWASP A03:2025 Software Supply Chain Failures
+
 **Where:** [`package.json`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/package.json) and `package-lock.json`
 
 **What is wrong:** `npm audit --omit=dev` reports 18 vulnerable packages:
@@ -161,6 +173,8 @@ exit=1                                     <- after one UDP datagram with an 80-
 ## LC-06: Unauthenticated deploy webhook
 
 **Medium, 6.5** `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L`
+
+**Classification:** [CWE-345](https://cwe.mitre.org/data/definitions/345.html) Insufficient Verification of Data Authenticity, [CWE-306](https://cwe.mitre.org/data/definitions/306.html) Missing Authentication for Critical Function · OWASP A08:2025 Software or Data Integrity Failures
 
 **Where:** [`LocateCabsWeb.js:12-15`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L12-L15)
 
@@ -186,6 +200,8 @@ server logged the deploy trigger: true
 
 **Medium, 6.1** `CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N`
 
+**Classification:** [CWE-79](https://cwe.mitre.org/data/definitions/79.html) Cross-site Scripting · OWASP A05:2025 Injection
+
 **Where:**
 - sinks: [`index.html:545`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/index.html#L545) (`innerHTML`), [`index.html:495`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/index.html#L495) (`bindPopup`), and the same pattern in [`index_routingmachine.html:275`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/index_routingmachine.html#L275) and [`index_routingmachine.html:193`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/index_routingmachine.html#L193)
 - source: the UDP listener (LC-02)
@@ -209,6 +225,8 @@ taxi id reaches innerHTML/bindPopup unescaped: <b>lab-taxi</b>
 
 **Medium, 5.5** `CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N`
 
+**Classification:** [CWE-532](https://cwe.mitre.org/data/definitions/532.html) Insertion of Sensitive Information into Log File · OWASP A09:2025 Security Logging and Alerting Failures
+
 **Where:** [`LocateCabsWeb.js:52`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L52), plus request bodies and full query results logged at [`L146`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L146), [`L158`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L158) and [`L194`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L194)
 
 **What is wrong:** at startup the server prints the whole parsed `.env` object, database password included. Every history request also prints its body and every returned row. There is also a bug next to it: [`L50`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L50) throws `result.error`, but `result` is undefined, so a missing `.env` fails with the wrong error.
@@ -228,6 +246,8 @@ taxi id reaches innerHTML/bindPopup unescaped: <b>lab-taxi</b>
 ## LC-09: History results broadcast to every browser
 
 **Medium, 5.3** `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N`
+
+**Classification:** [CWE-200](https://cwe.mitre.org/data/definitions/200.html) Exposure of Sensitive Information to an Unauthorized Actor · OWASP A01:2025 Broken Access Control
 
 **Where:** [`LocateCabsWeb.js:168-175`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L168-L175) and [`L210-217`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/LocateCabsWeb.js#L210-L217)
 
@@ -251,6 +271,8 @@ browser C, connecting later, also gets it on connect: true
 
 **Medium, 4.7** `CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N`
 
+**Classification:** [CWE-829](https://cwe.mitre.org/data/definitions/829.html) Inclusion of Functionality from Untrusted Control Sphere · OWASP A08:2025 Software or Data Integrity Failures
+
 **Where:** [`index_routingmachine.html:120`](https://github.com/danielgonzale5/LocateCabs/blob/70f4492/index_routingmachine.html#L120)
 
 **What is wrong:** `leaflet-routing-machine@latest` is loaded from unpkg with no version pin and no `integrity` attribute. Leaflet itself, on the other pages, is pinned and has SRI.
@@ -264,6 +286,8 @@ browser C, connecting later, also gets it on connect: true
 ## LC-11: Cleartext transport
 
 **Informational**
+
+**Classification:** [CWE-319](https://cwe.mitre.org/data/definitions/319.html) Cleartext Transmission of Sensitive Information · OWASP A04:2025 Cryptographic Failures
 
 The web UI is served over plain HTTP on port 3000, and GPS positions travel as plain UDP. The HMAC from LC-02 protects integrity and authenticity, not confidentiality: positions remain readable on the network path.
 
@@ -295,3 +319,4 @@ The live map and the route history were then checked in a browser with the login
 - **Android client** (`android` branch): not reviewed beyond how it sends datagrams (`MessageSender.java`). It still sends the unsigned 2021 format, so it must be updated to sign datagrams before it can talk to the fixed server.
 - **Mapbox token in git history:** a teammate's Mapbox token remains in the history of `index_routingmachine.html` before commit `70f4492`. Its owner should revoke it. Rewriting public history was not done.
 - **Lab only:** no production system was touched. The EC2 and RDS resources from 2021 no longer exist.
+
