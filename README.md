@@ -4,7 +4,7 @@ Real-time GPS tracking for taxis. A phone app sends the vehicle's position over 
 
 University team project for the *Electronic Design* course at Universidad del Norte (Barranquilla, Colombia), Sep to Oct 2021. The server ran on AWS EC2 with the database on Amazon RDS.
 
-In 2026 I reviewed the 2021 code as a security engineer and fixed what I found. The review, with a CVSS score, a local reproduction and the fix for each finding, is in [SECURITY_REVIEW.md](SECURITY_REVIEW.md). The code as we submitted it in 2021 is at commit [`70f4492`](https://github.com/danielgonzale5/LocateCabs/tree/70f4492).
+In 2026 I reviewed the 2021 code as a security engineer and fixed what I found. The review, with a CVSS score, CWE and OWASP Top 10 classification, a local reproduction and the fix for each finding, is in [SECURITY_REVIEW.md](SECURITY_REVIEW.md). A one-page version for non-technical readers, with the business risk and the remediation roadmap, is in [EXECUTIVE_SUMMARY.md](EXECUTIVE_SUMMARY.md). The code as we submitted it in 2021 is at commit [`70f4492`](https://github.com/danielgonzale5/LocateCabs/tree/70f4492).
 
 ## Architecture
 
