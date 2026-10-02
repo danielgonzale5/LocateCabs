@@ -1,0 +1,29 @@
+rules:
+  - id: child-process-through-a-shell
+    languages: [javascript]
+    severity: WARNING
+    message: >-
+      `exec` runs the command through a shell. Use `execFile` with an argument
+      list, so no value can ever be read as shell syntax, and only after the
+      caller has been authenticated (LC-06, CW-06).
+    metadata:
+      cwe: "CWE-78: OS Command Injection"
+      owasp: "A05:2025 Injection"
+      category: security
+    pattern-either:
+      - pattern: require("child_process").exec(...)
+      - pattern: require("child_process").execSync(...)
+      - patterns:
+          - pattern-either:
+              - pattern-inside: |
+                  var $CP = require("child_process");
+                  ...
+              - pattern-inside: |
+                  const $CP = require("child_process");
+                  ...
+              - pattern-inside: |
+                  let $CP = require("child_process");
+                  ...
+          - pattern-either:
+              - pattern: $CP.exec(...)
+              - pattern: $CP.execSync(...)

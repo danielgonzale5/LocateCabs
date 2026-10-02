@@ -1,0 +1,28 @@
+rules:
+  - id: secrets-or-request-data-in-logs
+    languages: [javascript]
+    severity: ERROR
+    message: >-
+      This writes configuration, a request body or a credential to the logs,
+      where anyone who reads them gets it. Log the event ("login failed",
+      "case 42 viewed by user 7"), never the data (LC-08, CW-08).
+    metadata:
+      cwe: "CWE-532: Insertion of Sensitive Information into Log File"
+      owasp: "A09:2025 Security Logging and Alerting Failures"
+      category: security
+    patterns:
+      - pattern-either:
+          - pattern: console.$LOG(..., process.env, ...)
+          - pattern: console.$LOG(..., $CONFIG.parsed, ...)
+          - pattern: console.$LOG(..., $REQ.body, ...)
+          - patterns:
+              - pattern: console.$LOG(..., $VALUE, ...)
+              - metavariable-regex:
+                  metavariable: $VALUE
+                  regex: (?i).*(pass|contra|secret|token|apikey|api_key).*
+              # a fixed message such as "La contraseña no coincide" is fine
+              - metavariable-pattern:
+                  metavariable: $VALUE
+                  patterns:
+                    - pattern-not: |
+                        "..."

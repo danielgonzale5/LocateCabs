@@ -1,0 +1,3 @@
+# Not scanned: the rule tests contain the bad code on purpose.
+semgrep/
+node_modules/

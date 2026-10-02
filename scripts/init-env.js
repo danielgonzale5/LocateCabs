@@ -45,4 +45,6 @@ fs.writeFileSync(target, lines.join('\n'), { mode: 0o600 });
 
 console.log('Created .env');
 console.log('Web login: operator');
+// Printing this freshly generated demo password once is the point of the script.
+// nosemgrep: secrets-or-request-data-in-logs
 console.log(`Password:  ${password}   (shown only now; only its hash is stored in .env)`);

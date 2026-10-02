@@ -221,7 +221,7 @@ function condicional2() {
           startpointHist.bindPopup("Inicio", { autoPan: false }).openPopup()
           polylineHistoric.on('click',(e)=>{
             let info = "Ubicación: " + e.latlng.toString();
-            L.popup().setLatLng(e.latlng).setContent(info).openOn(mymap);
+            L.popup().setLatLng(e.latlng).setContent(textPopup(info)).openOn(mymap);
           })
         }
       });

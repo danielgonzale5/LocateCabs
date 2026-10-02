@@ -31,3 +31,14 @@ jobs:
       # without failing the build.
       - run: npm audit --omit=dev --audit-level=high
         continue-on-error: true
+
+  semgrep:
+    runs-on: ubuntu-latest
+    # Pinned so a new Semgrep release cannot change the results without a change here.
+    container: semgrep/semgrep:1.178.0
+    steps:
+      - uses: actions/checkout@v4
+      # Each rule must still catch its example of the original bug, and only that.
+      - run: semgrep --test --metrics=off semgrep/
+      # The code must have no findings.
+      - run: semgrep scan --config semgrep/ --error --metrics=off

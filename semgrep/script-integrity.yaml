@@ -1,0 +1,32 @@
+rules:
+  - id: third-party-script-without-integrity
+    languages: [generic]
+    severity: ERROR
+    message: >-
+      A script is loaded from another site with no `integrity` attribute: if
+      that site serves a different file, it runs with full access to the page.
+      Pin the version and add `integrity` and `crossorigin` (LC-10, CW-11).
+    metadata:
+      cwe: "CWE-829: Inclusion of Functionality from Untrusted Control Sphere"
+      owasp: "A08:2025 Software or Data Integrity Failures"
+      category: security
+    paths:
+      include:
+        - "*.html"
+    pattern-regex: <script\s(?![^>]*\bintegrity=)[^>]*\bsrc="https?://[^"]*"[^>]*>
+
+  - id: third-party-resource-unpinned
+    languages: [generic]
+    severity: ERROR
+    message: >-
+      `@latest` loads whatever version the CDN serves today, so the code can
+      change without any change here, and no integrity hash can match it. Pin
+      an exact version (LC-10).
+    metadata:
+      cwe: "CWE-829: Inclusion of Functionality from Untrusted Control Sphere"
+      owasp: "A08:2025 Software or Data Integrity Failures"
+      category: security
+    paths:
+      include:
+        - "*.html"
+    pattern-regex: (src|href)="https?://[^"]*@latest[^"]*"
